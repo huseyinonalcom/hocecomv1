@@ -7,6 +7,7 @@ const Users: CollectionConfig = {
     useAsTitle: "email",
   },
   fields: [
+    { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     {
       name: "firstName",
       type: "text",
@@ -37,8 +38,6 @@ const Users: CollectionConfig = {
         },
       ],
     },
-    // Email added by default
-    // Add more fields as needed
   ],
 };
 

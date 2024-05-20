@@ -13,6 +13,7 @@ const Logos: CollectionConfig = {
   fields: [
     { name: "name", type: "text" },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
+    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
   ],
 };
 
