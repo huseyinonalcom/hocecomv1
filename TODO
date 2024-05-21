@@ -1,0 +1,8 @@
+figure out how to allow the same email to be used with multiple tenants
+
+    possible solutions: 
+                1   add a suffix to the email address to make it unique
+                    this will require adding some hooks to user operations to automatically add this suffix for incoming requests and remove it for outgoing requests
+                
+                2   instead of the email being unique, figure out a way to make it a composite unique constraint
+                    this would require api calls for user operations to include a company id somewhere
