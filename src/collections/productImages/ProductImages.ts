@@ -13,6 +13,7 @@ const ProductImages: CollectionConfig = {
   fields: [
     { name: "name", type: "text" },
     { name: "product", type: "relationship", hasMany: false, relationTo: "products" },
+    { name: "priority", type: "number", defaultValue: 0 },
   ],
 };
 
