@@ -92,7 +92,8 @@ const Users: CollectionConfig = {
       defaultValue: false,
     },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
-    { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
+    { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments", required: true },
+    { name: "payments", type: "relationship", hasMany: true, relationTo: "payments" },
     // customer fields
     {
       name: "customerCategory",

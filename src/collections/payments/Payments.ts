@@ -1,8 +1,8 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 
-const Documents: CollectionConfig = {
-  slug: "documents",
+const Payments: CollectionConfig = {
+  slug: "payments",
   auth: true,
   admin: {
     useAsTitle: "category",
@@ -27,37 +27,45 @@ const Documents: CollectionConfig = {
     { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
     { name: "customer", type: "relationship", hasMany: false, relationTo: "users", required: true },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
-    { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
+    { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
-    { name: "payments", type: "relationship", hasMany: true, relationTo: "payments" },
+    { name: "isVerified", type: "checkbox", defaultValue: false },
+    { name: "value", type: "number", required: true },
+    { name: "date", type: "date", required: true },
+    { name: "reference", type: "text" },
+    { name: "document", type: "relationship", hasMany: false, relationTo: "documents" },
     {
       name: "type",
       type: "select",
       required: true,
       options: [
         {
-          label: "Quote",
-          value: "quote",
+          label: "Cash",
+          value: "cash",
         },
         {
-          label: "Order",
-          value: "order",
+          label: "Debit Card",
+          value: "debit_card",
         },
         {
-          label: "Delivery Note",
-          value: "delivery_note",
+          label: "Credit Card",
+          value: "credit_card",
         },
         {
-          label: "Invoice",
-          value: "invoice",
+          label: "Online Payment",
+          value: "online",
         },
         {
-          label: "Credit Note",
-          value: "credit_note",
+          label: "Bank Transfer",
+          value: "bank_transfer",
+        },
+        {
+          label: "Financing",
+          value: "financing",
         },
       ],
     },
   ],
 };
 
-export default Documents;
+export default Payments;
