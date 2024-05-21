@@ -14,6 +14,9 @@ export interface Config {
     logos: Logo;
     products: Product;
     productImages: ProductImage;
+    addresses: Address;
+    shelves: Shelf;
+    productCategories: ProductCategory;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -25,11 +28,17 @@ export interface Config {
  */
 export interface User {
   id: number;
-  company?: (number | null) | Company;
-  establishment?: (number | Establishment)[] | null;
+  role?: ('super_admin' | 'admin' | 'employee' | 'customer') | null;
   firstName?: string | null;
   lastName?: string | null;
-  role?: ('super_admin' | 'admin' | 'employee' | 'customer') | null;
+  phone?: string | null;
+  isBlocked?: boolean | null;
+  company?: (number | null) | Company;
+  establishment?: (number | Establishment)[] | null;
+  customerCategory?: ('professional' | 'private') | null;
+  customerCompany?: string | null;
+  customerTaxNumber?: string | null;
+  customerAddresses?: (number | Address)[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -85,8 +94,37 @@ export interface Establishment {
   logo?: (number | null) | Logo;
   company?: (number | null) | Company;
   users?: (number | User)[] | null;
+  addresses?: (number | Address)[] | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses".
+ */
+export interface Address {
+  id: number;
+  establishment?: (number | null) | Establishment;
+  customer?: (number | null) | User;
+  street?: string | null;
+  door?: string | null;
+  floor?: string | null;
+  zip?: string | null;
+  city?: string | null;
+  province?: string | null;
+  country?: string | null;
+  name?: string | null;
+  isDefault?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -95,6 +133,9 @@ export interface Establishment {
 export interface Product {
   id: number;
   name?: string | null;
+  description?: string | null;
+  price?: number | null;
+  category?: (number | ProductCategory)[] | null;
   company?: (number | null) | Company;
   extraFields?:
     | {
@@ -106,6 +147,23 @@ export interface Product {
     | boolean
     | null;
   productImages?: (number | ProductImage)[] | null;
+  shelves?: (number | Shelf)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productCategories".
+ */
+export interface ProductCategory {
+  id: number;
+  name?: string | null;
+  description?: string | null;
+  headCategory?: (number | null) | ProductCategory;
+  subCategories?: (number | ProductCategory)[] | null;
+  categoryImage?: (number | null) | ProductImage;
+  products?: (number | Product)[] | null;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -130,14 +188,35 @@ export interface ProductImage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shelves".
+ */
+export interface Shelf {
+  id: number;
+  company?: (number | null) | Company;
+  establishment?: (number | null) | Establishment;
+  product?: (number | null) | Product;
+  stock?: number | null;
+  region?: string | null;
+  stack?: string | null;
+  level?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
   id: number;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'addresses';
+        value: number | Address;
+      };
   key?: string | null;
   value?:
     | {
