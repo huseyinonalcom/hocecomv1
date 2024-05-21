@@ -1,5 +1,6 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
+import { setCompanyHook } from "../hooks/setCompany";
 
 const Logos: CollectionConfig = {
   slug: "logos",
@@ -10,6 +11,9 @@ const Logos: CollectionConfig = {
   },
   admin: {
     useAsTitle: "name",
+  },
+  hooks: {
+    beforeOperation: [setCompanyHook],
   },
   access: {
     read: ({ req }) => {

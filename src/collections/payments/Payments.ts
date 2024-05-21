@@ -1,11 +1,14 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
+import { setCompanyHook } from "../hooks/setCompany";
 
 const Payments: CollectionConfig = {
   slug: "payments",
-  auth: true,
   admin: {
     useAsTitle: "category",
+  },
+  hooks: {
+    beforeOperation: [setCompanyHook],
   },
   access: {
     read: ({ req }) => {

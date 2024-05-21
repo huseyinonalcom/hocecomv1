@@ -1,9 +1,13 @@
 import { CollectionConfig } from "payload/types";
+import { setCompanyHook } from "../hooks/setCompany";
 
 const ProductCategories: CollectionConfig = {
   slug: "productCategories",
   admin: {
     useAsTitle: "name",
+  },
+  hooks: {
+    beforeOperation: [setCompanyHook],
   },
   fields: [
     { name: "name", type: "text", required: true },

@@ -1,10 +1,14 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
+import { setCompanyHook } from "../hooks/setCompany";
 
 const Companies: CollectionConfig = {
   slug: "companies",
   admin: {
     useAsTitle: "name",
+  },
+  hooks: {
+    beforeOperation: [setCompanyHook],
   },
   access: {
     read: ({ req }) => {
@@ -29,6 +33,7 @@ const Companies: CollectionConfig = {
     { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
     { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     { name: "users", type: "relationship", hasMany: true, relationTo: "users" },
+    { name: "addresses", type: "relationship", hasMany: true, relationTo:"addresses"},
     {
       name: "active",
       type: "checkbox",
