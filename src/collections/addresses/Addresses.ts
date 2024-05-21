@@ -26,15 +26,16 @@ const Addresses: CollectionConfig = {
   fields: [
     { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
     { name: "customer", type: "relationship", hasMany: false, relationTo: "users" },
-    { name: "street", type: "text" },
-    { name: "door", type: "text" },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "street", type: "text", required: true },
+    { name: "door", type: "text", required: true },
     { name: "floor", type: "text" },
-    { name: "zip", type: "text" },
+    { name: "zip", type: "text", required: true },
     { name: "city", type: "text" },
     { name: "province", type: "text" },
-    { name: "country", type: "text" },
+    { name: "country", type: "text", required: true },
     { name: "name", type: "text" },
-    { name: "isDefault", type: "checkbox" },
+    { name: "isDefault", type: "checkbox", defaultValue: false },
   ],
 };
 

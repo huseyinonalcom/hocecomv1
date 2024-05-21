@@ -34,15 +34,36 @@ const Establishments: CollectionConfig = {
     },
   },
   fields: [
-    { name: "name", type: "text" },
+    { name: "name", type: "text", required: true },
     { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "users", type: "relationship", hasMany: true, relationTo: "users" },
     {
       name: "addresses",
       type: "relationship",
       hasMany: true,
       relationTo: "addresses",
+    },
+    {
+      name: "documents",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "documents",
+    },
+    {
+      name: "category",
+      type: "select",
+      required: true,
+      options: [
+        {
+          label: "Storefront",
+          value: "storefront",
+        },
+        {
+          label: "Warehouse",
+          value: "warehouse",
+        },
+      ],
     },
   ],
 };

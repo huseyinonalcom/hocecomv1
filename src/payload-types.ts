@@ -17,6 +17,7 @@ export interface Config {
     addresses: Address;
     shelves: Shelf;
     productCategories: ProductCategory;
+    documents: Document;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -28,14 +29,14 @@ export interface Config {
  */
 export interface User {
   id: number;
-  role?: ('super_admin' | 'admin' | 'employee' | 'customer') | null;
-  firstName?: string | null;
-  lastName?: string | null;
+  role: 'super_admin' | 'admin' | 'employee' | 'customer';
+  firstName: string;
+  lastName: string;
   phone?: string | null;
   isBlocked?: boolean | null;
-  company?: (number | null) | Company;
+  company: number | Company;
   establishment?: (number | Establishment)[] | null;
-  customerCategory?: ('professional' | 'private') | null;
+  customerCategory: 'professional' | 'private';
   customerCompany?: string | null;
   customerTaxNumber?: string | null;
   customerAddresses?: (number | Address)[] | null;
@@ -56,7 +57,7 @@ export interface User {
  */
 export interface Company {
   id: number;
-  name?: string | null;
+  name: string;
   logo?: (number | null) | Logo;
   establishment?: (number | Establishment)[] | null;
   users?: (number | User)[] | null;
@@ -90,11 +91,13 @@ export interface Logo {
  */
 export interface Establishment {
   id: number;
-  name?: string | null;
+  name: string;
   logo?: (number | null) | Logo;
-  company?: (number | null) | Company;
+  company: number | Company;
   users?: (number | User)[] | null;
   addresses?: (number | Address)[] | null;
+  documents?: (number | Document)[] | null;
+  category: 'storefront' | 'warehouse';
   updatedAt: string;
   createdAt: string;
 }
@@ -106,15 +109,39 @@ export interface Address {
   id: number;
   establishment?: (number | null) | Establishment;
   customer?: (number | null) | User;
-  street?: string | null;
-  door?: string | null;
+  company: number | Company;
+  street: string;
+  door: string;
   floor?: string | null;
-  zip?: string | null;
+  zip: string;
   city?: string | null;
   province?: string | null;
-  country?: string | null;
+  country: string;
   name?: string | null;
   isDefault?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  establishment: number | Establishment;
+  customer: number | User;
+  company: number | Company;
+  creator: number | User;
+  isDeleted?: boolean | null;
+  type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -132,11 +159,11 @@ export interface Address {
  */
 export interface Product {
   id: number;
-  name?: string | null;
+  name: string;
   description?: string | null;
-  price?: number | null;
-  category?: (number | ProductCategory)[] | null;
-  company?: (number | null) | Company;
+  value: number;
+  category: (number | ProductCategory)[];
+  company: number | Company;
   extraFields?:
     | {
         [k: string]: unknown;
@@ -157,13 +184,13 @@ export interface Product {
  */
 export interface ProductCategory {
   id: number;
-  name?: string | null;
+  name: string;
   description?: string | null;
   headCategory?: (number | null) | ProductCategory;
   subCategories?: (number | ProductCategory)[] | null;
   categoryImage?: (number | null) | ProductImage;
   products?: (number | Product)[] | null;
-  company?: (number | null) | Company;
+  company: number | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -192,9 +219,9 @@ export interface ProductImage {
  */
 export interface Shelf {
   id: number;
-  company?: (number | null) | Company;
-  establishment?: (number | null) | Establishment;
-  product?: (number | null) | Product;
+  company: number | Company;
+  establishment: number | Establishment;
+  product: number | Product;
   stock?: number | null;
   region?: string | null;
   stack?: string | null;
@@ -216,6 +243,10 @@ export interface PayloadPreference {
     | {
         relationTo: 'addresses';
         value: number | Address;
+      }
+    | {
+        relationTo: 'documents';
+        value: number | Document;
       };
   key?: string | null;
   value?:

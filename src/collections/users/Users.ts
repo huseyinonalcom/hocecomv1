@@ -52,6 +52,7 @@ const Users: CollectionConfig = {
     {
       name: "role",
       type: "select",
+      required: true,
       options: [
         {
           label: "Super Admin",
@@ -74,10 +75,12 @@ const Users: CollectionConfig = {
     {
       name: "firstName",
       type: "text",
+      required: true,
     },
     {
       name: "lastName",
       type: "text",
+      required: true,
     },
     {
       name: "phone",
@@ -86,13 +89,15 @@ const Users: CollectionConfig = {
     {
       name: "isBlocked",
       type: "checkbox",
+      defaultValue: false,
     },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     // customer fields
     {
       name: "customerCategory",
       type: "select",
+      required: true,
       options: [
         {
           label: "Professional",

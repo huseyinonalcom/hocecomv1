@@ -25,7 +25,7 @@ const Companies: CollectionConfig = {
     update: ({ req, id }) => req.user.role === "super_admin" || (req.user.role === "admin" && req.user.company.id == id),
   },
   fields: [
-    { name: "name", type: "text" },
+    { name: "name", type: "text", required: true },
     { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
     { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     { name: "users", type: "relationship", hasMany: true, relationTo: "users" },

@@ -15,6 +15,7 @@ import ProductImages from "./collections/productImages/ProductImages";
 import Addresses from "./collections/addresses/Addresses";
 import Shelves from "./collections/shelves/Shelves";
 import ProductCategories from "./collections/productCategories/Categories";
+import Documents from "./collections/documents/Documents";
 
 export default buildConfig({
   admin: {
@@ -22,7 +23,7 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
-  collections: [Users, Companies, Establishments, Logos, Products, ProductImages, Addresses, Shelves, ProductCategories],
+  collections: [Users, Companies, Establishments, Logos, Products, ProductImages, Addresses, Shelves, ProductCategories, Documents],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },

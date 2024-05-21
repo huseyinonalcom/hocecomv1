@@ -6,13 +6,13 @@ const ProductCategories: CollectionConfig = {
     useAsTitle: "name",
   },
   fields: [
-    { name: "name", type: "text" },
+    { name: "name", type: "text", required: true },
     { name: "description", type: "textarea" },
     { name: "headCategory", type: "relationship", relationTo: "productCategories", hasMany: false },
     { name: "subCategories", type: "relationship", relationTo: "productCategories", hasMany: true },
     { name: "categoryImage", type: "relationship", relationTo: "productImages", hasMany: false },
     { name: "products", type: "relationship", relationTo: "products", hasMany: true },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 
