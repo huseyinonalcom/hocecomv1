@@ -30,6 +30,12 @@ const Documents: CollectionConfig = {
     { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "payments", type: "relationship", hasMany: true, relationTo: "payments" },
+    { name: "number", type: "text", required: true },
+    { name: "date", type: "date", required: true },
+    { name: "notes", type: "textarea" },
+    { name: "reference", type: "text" },
+    { name: "prefix", type: "text" },
+    { name: "phase", type: "number", defaultValue: 0 },
     {
       name: "type",
       type: "select",

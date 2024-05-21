@@ -24,9 +24,9 @@ const Payments: CollectionConfig = {
     },
   },
   fields: [
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
     { name: "customer", type: "relationship", hasMany: false, relationTo: "users", required: true },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "isVerified", type: "checkbox", defaultValue: false },
