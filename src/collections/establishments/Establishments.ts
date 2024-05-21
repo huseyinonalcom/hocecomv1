@@ -38,6 +38,12 @@ const Establishments: CollectionConfig = {
     { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
     { name: "users", type: "relationship", hasMany: true, relationTo: "users" },
+    {
+      name: "addresses",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "addresses",
+    },
   ],
 };
 

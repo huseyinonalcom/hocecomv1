@@ -12,6 +12,7 @@ import Logos from "./collections/logos/Logos";
 import Establishments from "./collections/establishments/Establishments";
 import Products from "./collections/products/Products";
 import ProductImages from "./collections/productImages/ProductImages";
+import Addresses from "./collections/addresses/Addresses";
 
 export default buildConfig({
   admin: {
@@ -19,7 +20,7 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
-  collections: [Users, Companies, Establishments, Logos, Products, ProductImages],
+  collections: [Users, Companies, Establishments, Logos, Products, ProductImages, Addresses],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },

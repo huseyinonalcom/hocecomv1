@@ -27,14 +27,6 @@ const Users: CollectionConfig = {
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
     { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     {
-      name: "firstName",
-      type: "text",
-    },
-    {
-      name: "lastName",
-      type: "text",
-    },
-    {
       name: "role",
       type: "select",
       options: [
@@ -55,6 +47,47 @@ const Users: CollectionConfig = {
           value: "customer",
         },
       ],
+    },
+    {
+      name: "firstName",
+      type: "text",
+    },
+    {
+      name: "lastName",
+      type: "text",
+    },
+    {
+      name: "phone",
+      type: "text",
+    },
+    // customer fields
+    {
+      name: "customerCategory",
+      type: "select",
+      options: [
+        {
+          label: "Professional",
+          value: "professional",
+        },
+        {
+          label: "Private",
+          value: "private",
+        },
+      ],
+    },
+    {
+      name: "customerCompany",
+      type: "text",
+    },
+    {
+      name: "customerTaxNumber",
+      type: "text",
+    },
+    {
+      name: "customerAddresses",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "addresses",
     },
   ],
 };
