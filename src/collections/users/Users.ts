@@ -3,6 +3,7 @@ import isSuperAdmin from "./access/superAdminCheck";
 
 const Users: CollectionConfig = {
   slug: "users",
+  // adds email and password fields by default
   auth: true,
   admin: {
     useAsTitle: "email",
@@ -19,13 +20,35 @@ const Users: CollectionConfig = {
         };
       }
     },
+    update: ({ req }) => {
+      // super admins can update any user
+      if (isSuperAdmin({ req })) {
+        return true;
+      } else {
+        // admins can update users in their company
+        if (req.user.role === "admin") {
+          return {
+            company: {
+              equals: req.user.company.id,
+            },
+          };
+        } else {
+          // anyone can update themselves
+          return {
+            id: {
+              equals: req.user.id,
+            },
+          };
+        }
+      }
+    },
     delete: () => {
       return false;
     },
   },
   fields: [
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
-    { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
+    // email and password exist by default
+    // common fields
     {
       name: "role",
       type: "select",
@@ -60,6 +83,12 @@ const Users: CollectionConfig = {
       name: "phone",
       type: "text",
     },
+    {
+      name: "isBlocked",
+      type: "checkbox",
+    },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
+    { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     // customer fields
     {
       name: "customerCategory",
