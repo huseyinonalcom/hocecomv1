@@ -7,6 +7,7 @@ const Users: CollectionConfig = {
     useAsTitle: "email",
   },
   fields: [
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
     { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     {
       name: "firstName",
