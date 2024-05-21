@@ -29,7 +29,7 @@ export interface User {
   establishment?: (number | Establishment)[] | null;
   firstName?: string | null;
   lastName?: string | null;
-  role?: ('super_admin' | 'admin' | 'user' | 'customer') | null;
+  role?: ('super_admin' | 'admin' | 'employee' | 'customer') | null;
   updatedAt: string;
   createdAt: string;
   email: string;

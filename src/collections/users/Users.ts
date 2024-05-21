@@ -30,8 +30,8 @@ const Users: CollectionConfig = {
           value: "admin",
         },
         {
-          label: "User",
-          value: "user",
+          label: "Employee",
+          value: "employee",
         },
         {
           label: "Customer",
