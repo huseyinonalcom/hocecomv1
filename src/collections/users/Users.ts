@@ -1,10 +1,27 @@
 import { CollectionConfig } from "payload/types";
+import isSuperAdmin from "./access/superAdminCheck";
 
 const Users: CollectionConfig = {
   slug: "users",
   auth: true,
   admin: {
     useAsTitle: "email",
+  },
+  access: {
+    read: ({ req }) => {
+      if (isSuperAdmin({ req })) {
+        return true;
+      } else {
+        return {
+          company: {
+            equals: req.user.company.id,
+          },
+        };
+      }
+    },
+    delete: () => {
+      return false;
+    },
   },
   fields: [
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },

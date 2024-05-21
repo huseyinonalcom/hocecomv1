@@ -1,4 +1,5 @@
 import { CollectionConfig } from "payload/types";
+import isSuperAdmin from "../users/access/superAdminCheck";
 
 const Companies: CollectionConfig = {
   slug: "companies",
@@ -6,7 +7,22 @@ const Companies: CollectionConfig = {
     useAsTitle: "name",
   },
   access: {
-    create: ({ req }) => req.user.role === "super_admin",
+    read: ({ req }) => {
+      if (isSuperAdmin({ req })) {
+        return true;
+      } else {
+        return {
+          id: {
+            equals: req.user.company.id,
+          },
+        };
+      }
+    },
+    create: isSuperAdmin,
+    delete: () => {
+      return false;
+    },
+    update: ({ req, id }) => req.user.role === "super_admin" || (req.user.role === "admin" && req.user.company.id == id),
   },
   fields: [
     { name: "name", type: "text" },
