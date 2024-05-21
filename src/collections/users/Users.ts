@@ -91,14 +91,13 @@ const Users: CollectionConfig = {
       type: "checkbox",
       defaultValue: false,
     },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
-    { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments", required: true },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
+    { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     { name: "payments", type: "relationship", hasMany: true, relationTo: "payments" },
     // customer fields
     {
       name: "customerCategory",
       type: "select",
-      required: true,
       options: [
         {
           label: "Professional",

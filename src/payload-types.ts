@@ -18,6 +18,7 @@ export interface Config {
     shelves: Shelf;
     productCategories: ProductCategory;
     documents: Document;
+    payments: Payment;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -35,7 +36,8 @@ export interface User {
   phone?: string | null;
   isBlocked?: boolean | null;
   company: number | Company;
-  establishment?: (number | Establishment)[] | null;
+  establishment: (number | Establishment)[];
+  payments?: (number | Payment)[] | null;
   customerCategory: 'professional' | 'private';
   customerCompany?: string | null;
   customerTaxNumber?: string | null;
@@ -141,7 +143,42 @@ export interface Document {
   company: number | Company;
   creator: number | User;
   isDeleted?: boolean | null;
+  payments?: (number | Payment)[] | null;
+  number: string;
+  date: string;
+  notes?: string | null;
+  reference?: string | null;
+  prefix?: string | null;
+  phase?: number | null;
   type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: number;
+  company: number | Company;
+  establishment: number | Establishment;
+  customer: number | User;
+  creator?: (number | null) | User;
+  isDeleted?: boolean | null;
+  isVerified?: boolean | null;
+  value: number;
+  date: string;
+  reference?: string | null;
+  document?: (number | null) | Document;
+  type: 'cash' | 'debit_card' | 'credit_card' | 'online' | 'bank_transfer' | 'financing';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -247,6 +284,10 @@ export interface PayloadPreference {
     | {
         relationTo: 'documents';
         value: number | Document;
+      }
+    | {
+        relationTo: 'payments';
+        value: number | Payment;
       };
   key?: string | null;
   value?:

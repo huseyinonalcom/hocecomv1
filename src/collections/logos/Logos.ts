@@ -43,7 +43,7 @@ const Logos: CollectionConfig = {
       name: "name",
       type: "text",
     },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
   ],
 };
