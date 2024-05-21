@@ -35,10 +35,10 @@ export interface User {
   lastName: string;
   phone?: string | null;
   isBlocked?: boolean | null;
-  company: number | Company;
-  establishment: (number | Establishment)[];
+  company?: (number | null) | Company;
+  establishment?: (number | Establishment)[] | null;
   payments?: (number | Payment)[] | null;
-  customerCategory: 'professional' | 'private';
+  customerCategory?: ('professional' | 'private') | null;
   customerCompany?: string | null;
   customerTaxNumber?: string | null;
   customerAddresses?: (number | Address)[] | null;
@@ -63,6 +63,7 @@ export interface Company {
   logo?: (number | null) | Logo;
   establishment?: (number | Establishment)[] | null;
   users?: (number | User)[] | null;
+  addresses?: (number | Address)[] | null;
   active?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -74,7 +75,7 @@ export interface Company {
 export interface Logo {
   id: number;
   name?: string | null;
-  company?: (number | null) | Company;
+  company: number | Company;
   establishment?: (number | null) | Establishment;
   updatedAt: string;
   createdAt: string;
@@ -123,14 +124,6 @@ export interface Address {
   isDefault?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -153,14 +146,6 @@ export interface Document {
   type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note';
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -181,14 +166,6 @@ export interface Payment {
   type: 'cash' | 'debit_card' | 'credit_card' | 'online' | 'bank_transfer' | 'financing';
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -237,8 +214,10 @@ export interface ProductCategory {
  */
 export interface ProductImage {
   id: number;
-  name?: string | null;
-  product?: (number | null) | Product;
+  name: string;
+  product: number | Product;
+  priority?: number | null;
+  company: number | Company;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -272,23 +251,10 @@ export interface Shelf {
  */
 export interface PayloadPreference {
   id: number;
-  user:
-    | {
-        relationTo: 'users';
-        value: number | User;
-      }
-    | {
-        relationTo: 'addresses';
-        value: number | Address;
-      }
-    | {
-        relationTo: 'documents';
-        value: number | Document;
-      }
-    | {
-        relationTo: 'payments';
-        value: number | Payment;
-      };
+  user: {
+    relationTo: 'users';
+    value: number | User;
+  };
   key?: string | null;
   value?:
     | {
