@@ -1,6 +1,5 @@
 import path from "path";
 
-import { payloadCloud } from "@payloadcms/plugin-cloud";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { webpackBundler } from "@payloadcms/bundler-webpack";
 import { slateEditor } from "@payloadcms/richtext-slate";
@@ -45,7 +44,7 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
   },
-  plugins: [payloadCloud()],
+  plugins: [],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI,
