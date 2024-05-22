@@ -5,15 +5,14 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
   if (operation == "login" || operation == "forgotPassword") {
     if (!req.query.company) {
     } else {
-      req.body.email = `${req.query.company}+${req.body.email}`;
+      req.body.email = `${req.body.email.split("@")[0]}+${req.query.company}${req.body.email.split("@")[1]}`;
     }
   } else if (isSuperAdmin({ req })) {
-    console.log("Super Admin creating user");
   } else {
-    if (!req.params.company && !req.user) {
+    if (!req.query.company && !req.user) {
     } else {
       if (operation == "create" || operation == "update" || operation == "refresh" || operation == "autosave") {
-        req.body.email = `${req.user.company}+${req.body.email}`;
+        req.body.email = `${req.body.email.split("@")[0]}+${req.query.company}${req.body.email.split("@")[1]}`;
       }
     }
   }

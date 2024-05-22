@@ -8,6 +8,15 @@ const Users: CollectionConfig = {
   // adds email and password fields by default
   auth: {
     useAPIKey: true,
+    forgotPassword: {
+      generateEmailHTML: ({ token, user }) => {
+        return `<div>
+          <h1>Seems like you've lost your password for ${JSON.stringify(user.company.name)}</h1>
+          <p>Click the link below to reset your password</p>
+        <a href=" http://localhost:3000/admin/reset/${token}">Reset Password</a>
+        </div>`;
+      },
+    },
   },
   admin: {
     useAsTitle: "email",
@@ -15,9 +24,21 @@ const Users: CollectionConfig = {
   hooks: {
     beforeOperation: [emailPrefix, setCompanyHook],
     afterRead: [
-      async ({ doc }) => {
-        if (doc.company) {
-          doc.email = doc.email.split("+")[1];
+      async ({ req, doc }) => {
+        try {
+          if (doc.company && req.user && req.user.role != "super_admin") {
+            console.log("formatting email");
+            console.log("docemail: ", doc.email);
+            let email = doc.email;
+            console.log("email: ", email);
+            let parts = email.split("@");
+            let localPart = parts[0].split("+")[0];
+            let domainPart = parts[1];
+            doc.email = localPart + "@" + domainPart;
+            console.log("docemail: ", doc.email);
+          }
+        } catch (e) {
+          console.log(e);
         }
       },
     ],
@@ -32,9 +53,9 @@ const Users: CollectionConfig = {
     },
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
-        console.log("super admin read access granted for users");
         return true;
       } else {
+        console.log(req.user);
         return {
           company: {
             equals: req.user.company.id,
