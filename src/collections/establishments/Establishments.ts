@@ -48,6 +48,7 @@ const Establishments: CollectionConfig = {
       hasMany: true,
       relationTo: "addresses",
     },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
     {
       name: "documents",
       type: "relationship",

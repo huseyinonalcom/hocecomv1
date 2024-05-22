@@ -1,5 +1,5 @@
 import type { Access } from "payload/types";
-import { checkRole } from "../checkRole";
+import { checkRole } from "../../hooks/checkRole";
 
 const isSuperAdmin: Access = ({ req: { user } }) => {
   if (user) {

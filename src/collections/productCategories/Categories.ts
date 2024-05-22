@@ -16,6 +16,7 @@ const ProductCategories: CollectionConfig = {
     { name: "subCategories", type: "relationship", relationTo: "productCategories", hasMany: true },
     { name: "categoryImage", type: "relationship", relationTo: "productImages", hasMany: false },
     { name: "products", type: "relationship", relationTo: "products", hasMany: true },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };

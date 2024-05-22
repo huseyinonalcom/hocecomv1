@@ -36,6 +36,7 @@ const Shelves: CollectionConfig = {
   fields: [
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "establishment", type: "relationship", relationTo: "establishments", hasMany: false, required: true },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "product", type: "relationship", relationTo: "products", hasMany: false, required: true },
     { name: "stock", type: "number", defaultValue: 0 },
     { name: "region", type: "text", defaultValue: "0" },

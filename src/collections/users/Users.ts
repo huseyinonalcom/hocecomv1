@@ -22,19 +22,6 @@ const Users: CollectionConfig = {
     useAsTitle: "email",
   },
   hooks: {
-    afterOperation: [
-      async ({
-        args, // arguments passed into the operation
-        operation, // name of the operation
-        req, // full express request
-        result, // the result of the operation, before modifications
-      }) => {
-        if (operation === "login") {
-          console.log("login operation ", result);
-        }
-        return result; // return modified result as necessary
-      },
-    ],
     beforeOperation: [emailPrefix, setCompanyHook],
     afterRead: [
       async ({ req, doc }) => {

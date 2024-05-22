@@ -32,6 +32,7 @@ const Addresses: CollectionConfig = {
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "street", type: "text", required: true },
     { name: "door", type: "text", required: true },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "floor", type: "text" },
     { name: "zip", type: "text", required: true },
     { name: "city", type: "text" },
