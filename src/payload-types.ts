@@ -66,7 +66,7 @@ export interface Company {
   id: number;
   name: string;
   logo?: (number | null) | Logo;
-  establishment?: (number | Establishment)[] | null;
+  establishments?: (number | Establishment)[] | null;
   users?: (number | User)[] | null;
   addresses?: (number | Address)[] | null;
   active?: boolean | null;
@@ -104,6 +104,7 @@ export interface Establishment {
   company: number | Company;
   users?: (number | User)[] | null;
   addresses?: (number | Address)[] | null;
+  isDeleted?: boolean | null;
   documents?: (number | Document)[] | null;
   category: 'storefront' | 'warehouse';
   updatedAt: string;
@@ -120,6 +121,7 @@ export interface Address {
   company: number | Company;
   street: string;
   door: string;
+  isDeleted?: boolean | null;
   floor?: string | null;
   zip: string;
   city?: string | null;
@@ -180,6 +182,9 @@ export interface Product {
   id: number;
   name: string;
   description?: string | null;
+  isDeleted?: boolean | null;
+  EAN?: string | null;
+  internalCode?: string | null;
   value: number;
   category: (number | ProductCategory)[];
   company: number | Company;
@@ -209,6 +214,7 @@ export interface ProductCategory {
   subCategories?: (number | ProductCategory)[] | null;
   categoryImage?: (number | null) | ProductImage;
   products?: (number | Product)[] | null;
+  isDeleted?: boolean | null;
   company: number | Company;
   updatedAt: string;
   createdAt: string;
@@ -242,6 +248,7 @@ export interface Shelf {
   id: number;
   company: number | Company;
   establishment: number | Establishment;
+  isDeleted?: boolean | null;
   product: number | Product;
   stock?: number | null;
   region?: string | null;
