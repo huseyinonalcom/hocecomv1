@@ -24,6 +24,19 @@ export default buildConfig({
     user: Users.slug,
     bundler: webpackBundler(),
   },
+  email: {
+    fromName: "Admin",
+    fromAddress: process.env.SMTP_USER,
+    transportOptions: {
+      host: process.env.SMTP_HOST,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+      port: process.env.SMTP_PORT,
+      secure: false,
+    },
+  },
   editor: slateEditor({}),
   collections: [Users, Companies, Establishments, Logos, Products, ProductImages, Addresses, Shelves, ProductCategories, Documents, Payments, DocumentProducts],
   typescript: {
