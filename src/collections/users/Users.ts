@@ -1,16 +1,38 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "./access/superAdminCheck";
+import { emailPrefix } from "./hooks/emailPrefix";
+import { setCompanyHook } from "../hooks/setCompany";
 
 const Users: CollectionConfig = {
   slug: "users",
   // adds email and password fields by default
-  auth: true,
+  auth: {
+    useAPIKey: true,
+  },
   admin: {
     useAsTitle: "email",
   },
+  hooks: {
+    beforeOperation: [emailPrefix, setCompanyHook],
+    afterRead: [
+      async ({ doc }) => {
+        if (doc.company) {
+          doc.email = doc.email.split("+")[1];
+        }
+      },
+    ],
+  },
   access: {
+    create: ({ req }) => {
+      if (isSuperAdmin({ req }) || req.user.role === "admin" || req.user.role === "website") {
+        return true;
+      } else {
+        return false;
+      }
+    },
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
+        console.log("super admin read access granted for users");
         return true;
       } else {
         return {
@@ -20,12 +42,10 @@ const Users: CollectionConfig = {
         };
       }
     },
-    update: ({ req }) => {
-      // super admins can update any user
+    update: async ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
       } else {
-        // admins can update users in their company
         if (req.user.role === "admin") {
           return {
             company: {
@@ -33,7 +53,6 @@ const Users: CollectionConfig = {
             },
           };
         } else {
-          // anyone can update themselves
           return {
             id: {
               equals: req.user.id,
@@ -52,7 +71,7 @@ const Users: CollectionConfig = {
     {
       name: "role",
       type: "select",
-      required: true,
+      defaultValue: "customer",
       options: [
         {
           label: "Super Admin",
@@ -94,6 +113,7 @@ const Users: CollectionConfig = {
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
     { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
     { name: "payments", type: "relationship", hasMany: true, relationTo: "payments" },
+    { name: "preferredLanguage", type: "text" },
     // customer fields
     {
       name: "customerCategory",

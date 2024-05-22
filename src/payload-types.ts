@@ -19,6 +19,7 @@ export interface Config {
     productCategories: ProductCategory;
     documents: Document;
     payments: Payment;
+    documentProducts: DocumentProduct;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -30,7 +31,7 @@ export interface Config {
  */
 export interface User {
   id: number;
-  role: 'super_admin' | 'admin' | 'employee' | 'customer';
+  role?: ('super_admin' | 'admin' | 'employee' | 'customer') | null;
   firstName: string;
   lastName: string;
   phone?: string | null;
@@ -38,12 +39,16 @@ export interface User {
   company?: (number | null) | Company;
   establishment?: (number | Establishment)[] | null;
   payments?: (number | Payment)[] | null;
+  preferredLanguage?: string | null;
   customerCategory?: ('professional' | 'private') | null;
   customerCompany?: string | null;
   customerTaxNumber?: string | null;
   customerAddresses?: (number | Address)[] | null;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -242,6 +247,29 @@ export interface Shelf {
   region?: string | null;
   stack?: string | null;
   level?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documentProducts".
+ */
+export interface DocumentProduct {
+  id: number;
+  company: number | Company;
+  establishment: number | Establishment;
+  customer: number | User;
+  products?: (number | null) | Product;
+  prefix?: string | null;
+  value: number;
+  quantity: number;
+  tax: number;
+  reduction?: number | null;
+  document: number | Document;
+  name: string;
+  description?: string | null;
+  subTotal?: number | null;
+  subTotalTax?: number | null;
   updatedAt: string;
   createdAt: string;
 }
