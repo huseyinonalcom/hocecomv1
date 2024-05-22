@@ -17,11 +17,29 @@ import ProductCategories from "./collections/productCategories/Categories";
 import Documents from "./collections/documents/Documents";
 import Payments from "./collections/payments/Payments";
 import DocumentProducts from "./collections/documentProducts/DocumentsProducts";
+import { cloudStorage } from "@payloadcms/plugin-cloud-storage";
+import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
+import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
+
+const s3ad = s3Adapter({
+  config: {
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    },
+    region: process.env.S3_REGION,
+  },
+  bucket: process.env.S3_BUCKET,
+});
 
 export default buildConfig({
   admin: {
     user: Users.slug,
     bundler: webpackBundler(),
+    webpack: (config) => ({
+      ...config,
+      plugins: [...config.plugins, new NodePolyfillPlugin()],
+    }),
   },
   email: {
     fromName: "Admin",
@@ -44,7 +62,18 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
   },
-  plugins: [],
+  plugins: [
+    cloudStorage({
+      collections: {
+        logos: {
+          adapter: s3ad,
+        },
+        productImages: {
+          adapter: s3ad,
+        },
+      },
+    }),
+  ],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI,

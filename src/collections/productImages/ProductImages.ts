@@ -5,7 +5,8 @@ import isSuperAdmin from "../users/access/superAdminCheck";
 const ProductImages: CollectionConfig = {
   slug: "productImages",
   upload: {
-    staticURL: "product-images",
+    disableLocalStorage: true,
+    staticURL: "https://d3bocqotv3jto7.cloudfront.net",
     staticDir: "product-images",
     mimeTypes: ["image/*"],
   },

@@ -5,7 +5,8 @@ import { setCompanyHook } from "../hooks/setCompany";
 const Logos: CollectionConfig = {
   slug: "logos",
   upload: {
-    staticURL: "/logos",
+    disableLocalStorage: true,
+    staticURL: "https://d3bocqotv3jto7.cloudfront.net",
     staticDir: "logos",
     mimeTypes: ["image/*"],
   },
