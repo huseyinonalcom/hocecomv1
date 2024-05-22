@@ -22,24 +22,31 @@ const Users: CollectionConfig = {
     useAsTitle: "email",
   },
   hooks: {
+    afterOperation: [
+      async ({
+        args, // arguments passed into the operation
+        operation, // name of the operation
+        req, // full express request
+        result, // the result of the operation, before modifications
+      }) => {
+        if (operation === "login") {
+          console.log("login operation ", result);
+        }
+        return result; // return modified result as necessary
+      },
+    ],
     beforeOperation: [emailPrefix, setCompanyHook],
     afterRead: [
       async ({ req, doc }) => {
         try {
           if (doc.company && req.user && req.user.role != "super_admin") {
-            console.log("formatting email");
-            console.log("docemail: ", doc.email);
             let email = doc.email;
-            console.log("email: ", email);
             let parts = email.split("@");
             let localPart = parts[0].split("+")[0];
             let domainPart = parts[1];
             doc.email = localPart + "@" + domainPart;
-            console.log("docemail: ", doc.email);
           }
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (e) {}
       },
     ],
   },
@@ -55,7 +62,6 @@ const Users: CollectionConfig = {
       if (isSuperAdmin({ req })) {
         return true;
       } else {
-        console.log(req.user);
         return {
           company: {
             equals: req.user.company.id,
