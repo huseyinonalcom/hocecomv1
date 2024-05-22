@@ -11,6 +11,7 @@ const Companies: CollectionConfig = {
     beforeOperation: [setCompanyHook],
   },
   access: {
+    create: isSuperAdmin,
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
@@ -22,7 +23,6 @@ const Companies: CollectionConfig = {
         };
       }
     },
-    create: isSuperAdmin,
     delete: () => {
       return false;
     },

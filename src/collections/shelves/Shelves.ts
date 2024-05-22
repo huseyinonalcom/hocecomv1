@@ -7,6 +7,17 @@ const Shelves: CollectionConfig = {
     useAsTitle: "product",
   },
   access: {
+    create: ({ req }) => {
+      if (isSuperAdmin({ req })) {
+        return true;
+      } else {
+        return {
+          company: {
+            equals: req.user.company.id,
+          },
+        };
+      }
+    },
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
