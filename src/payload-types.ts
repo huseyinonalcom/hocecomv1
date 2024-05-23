@@ -31,7 +31,7 @@ export interface Config {
  */
 export interface User {
   id: number;
-  role?: ('super_admin' | 'admin' | 'employee' | 'customer') | null;
+  role?: ('super_admin' | 'website' | 'admin' | 'employee' | 'customer') | null;
   firstName: string;
   lastName: string;
   phone?: string | null;

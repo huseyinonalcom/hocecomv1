@@ -2,10 +2,12 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "./access/superAdminCheck";
 import { emailPrefix } from "./hooks/emailPrefix";
 import { setCompanyHook } from "../hooks/setCompany";
+import { validateRole } from "./hooks/validateRole";
+import { checkRole } from "../hooks/checkRole";
 
 const Users: CollectionConfig = {
   slug: "users",
-  // adds email and password fields by default
+  // auth adds email and password fields by default
   auth: {
     tokenExpiration: 604800,
     useAPIKey: true,
@@ -23,7 +25,7 @@ const Users: CollectionConfig = {
     useAsTitle: "email",
   },
   hooks: {
-    beforeOperation: [emailPrefix, setCompanyHook],
+    beforeOperation: [validateRole, setCompanyHook, emailPrefix],
     afterRead: [
       async ({ req, doc }) => {
         try {
@@ -34,13 +36,15 @@ const Users: CollectionConfig = {
             let domainPart = parts[1];
             doc.email = localPart + "@" + domainPart;
           }
-        } catch (e) {}
+        } catch (e) {
+          console.log(e);
+        }
       },
     ],
   },
   access: {
     create: ({ req }) => {
-      if (isSuperAdmin({ req }) || req.user.role === "admin" || req.user.role === "website") {
+      if (isSuperAdmin({ req }) || checkRole(["admin", "employee", "website", "super_admin"], req.user)) {
         return true;
       } else {
         return false;
@@ -49,6 +53,12 @@ const Users: CollectionConfig = {
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
+      } else if (checkRole(["customer"], req.user)) {
+        return {
+          id: {
+            equals: req.user.id,
+          },
+        };
       } else {
         return {
           company: {
@@ -60,25 +70,21 @@ const Users: CollectionConfig = {
     update: async ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
+      } else if (checkRole(["admin"], req.user)) {
+        return {
+          company: {
+            equals: req.user.company.id,
+          },
+        };
       } else {
-        if (req.user.role === "admin") {
-          return {
-            company: {
-              equals: req.user.company.id,
-            },
-          };
-        } else {
-          return {
-            id: {
-              equals: req.user.id,
-            },
-          };
-        }
+        return {
+          id: {
+            equals: req.user.id,
+          },
+        };
       }
     },
-    delete: () => {
-      return false;
-    },
+    delete: ({ req }) => isSuperAdmin({ req }),
   },
   fields: [
     // email and password exist by default
@@ -92,6 +98,7 @@ const Users: CollectionConfig = {
           label: "Super Admin",
           value: "super_admin",
         },
+        { label: "Website", value: "website" },
         {
           label: "Admin",
           value: "admin",
@@ -105,6 +112,15 @@ const Users: CollectionConfig = {
           value: "customer",
         },
       ],
+      access: {
+        update: ({ req }) => {
+          if (isSuperAdmin({ req }) || checkRole(["admin", "super_admin"], req.user)) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
     },
     {
       name: "firstName",
@@ -124,9 +140,37 @@ const Users: CollectionConfig = {
       name: "isBlocked",
       type: "checkbox",
       defaultValue: false,
+      access: {
+        update: ({ req }) => {
+          if (isSuperAdmin({ req }) || checkRole(["admin", "employee", "super_admin"], req.user)) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
     },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
-    { name: "establishment", type: "relationship", hasMany: true, relationTo: "establishments" },
+    {
+      name: "company",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "companies",
+      access: {
+        update: ({ req }) => {
+          if (isSuperAdmin({ req })) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+    },
+    {
+      name: "establishment",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "establishments",
+    },
     { name: "payments", type: "relationship", hasMany: true, relationTo: "payments" },
     { name: "preferredLanguage", type: "text" },
     // customer fields

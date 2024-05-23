@@ -1,12 +1,17 @@
 import { CollectionBeforeOperationHook } from "payload/types";
+import isSuperAdmin from "../users/access/superAdminCheck";
 
 export const setCompanyHook: CollectionBeforeOperationHook = async ({ args, operation, req }) => {
-  if (req.user) {
-    if (req.user.role != "super_admin") {
-      if (operation == "create" || operation == "update") {
-        req.body.company = req.user.company.id;
+  try {
+    if (req.user) {
+      if (!isSuperAdmin({ req })) {
+        if (operation == "create" || operation == "update") {
+          req.body.company = req.user.company.id;
+        }
       }
     }
+  } catch (e) {
+    console.log(e);
   }
 
   return args;
