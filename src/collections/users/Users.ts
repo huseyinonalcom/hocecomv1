@@ -9,7 +9,7 @@ const Users: CollectionConfig = {
   slug: "users",
   // auth adds email and password fields by default
   auth: {
-    tokenExpiration: 604800,
+    tokenExpiration: 302400,
     useAPIKey: true,
     forgotPassword: {
       generateEmailHTML: ({ token, user }) => {

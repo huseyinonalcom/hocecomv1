@@ -44,9 +44,7 @@ const ProductImages: CollectionConfig = {
         };
       }
     },
-    delete: () => {
-      return false;
-    },
+    delete: ({ req }) => isSuperAdmin({ req }),
   },
   hooks: {
     beforeOperation: [setCompanyHook],
