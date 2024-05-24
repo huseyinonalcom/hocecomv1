@@ -3,7 +3,7 @@ import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 
 const DocumentProducts: CollectionConfig = {
-  slug: "documentProducts",
+  slug: "document-products",
   admin: {
     useAsTitle: "name",
   },

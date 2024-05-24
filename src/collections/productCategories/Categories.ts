@@ -3,7 +3,7 @@ import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
 
 const ProductCategories: CollectionConfig = {
-  slug: "productCategories",
+  slug: "product-categories",
   admin: {
     useAsTitle: "name",
   },
@@ -51,9 +51,9 @@ const ProductCategories: CollectionConfig = {
   fields: [
     { name: "name", type: "text", required: true },
     { name: "description", type: "textarea" },
-    { name: "headCategory", type: "relationship", relationTo: "productCategories", hasMany: false },
-    { name: "subCategories", type: "relationship", relationTo: "productCategories", hasMany: true },
-    { name: "categoryImage", type: "relationship", relationTo: "productImages", hasMany: false },
+    { name: "headCategory", type: "relationship", relationTo: "product-categories", hasMany: false },
+    { name: "subCategories", type: "relationship", relationTo: "product-categories", hasMany: true },
+    { name: "categoryImage", type: "relationship", relationTo: "product-images", hasMany: false },
     { name: "products", type: "relationship", relationTo: "products", hasMany: true },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },

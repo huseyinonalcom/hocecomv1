@@ -3,7 +3,7 @@ import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
 
 const ProductImages: CollectionConfig = {
-  slug: "productImages",
+  slug: "product-images",
   upload: {
     disableLocalStorage: true,
     staticURL: "https://d3bocqotv3jto7.cloudfront.net",

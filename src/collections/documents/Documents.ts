@@ -53,6 +53,7 @@ const Documents: CollectionConfig = {
     { name: "customer", type: "relationship", hasMany: false, relationTo: "users", required: true },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
+    { name: "documentProducts", type: "relationship", hasMany: true, relationTo: "document-products"},
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "payments", type: "relationship", hasMany: true, relationTo: "payments" },
     { name: "number", type: "text", required: true },

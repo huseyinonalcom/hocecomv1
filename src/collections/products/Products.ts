@@ -51,10 +51,10 @@ const Products: CollectionConfig = {
     { name: "EAN", type: "text" },
     { name: "internalCode", type: "text" },
     { name: "value", type: "number", required: true },
-    { name: "category", type: "relationship", relationTo: "productCategories", hasMany: true, required: true },
+    { name: "category", type: "relationship", relationTo: "product-categories", hasMany: true, required: true },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "extraFields", type: "json" },
-    { name: "productImages", type: "relationship", hasMany: true, relationTo: "productImages" },
+    { name: "productImages", type: "relationship", hasMany: true, relationTo: "product-images" },
     { name: "shelves", type: "relationship", hasMany: true, relationTo: "shelves" },
   ],
 };
