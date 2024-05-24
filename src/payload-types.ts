@@ -13,13 +13,13 @@ export interface Config {
     establishments: Establishment;
     logos: Logo;
     products: Product;
-    productImages: ProductImage;
+    'product-images': ProductImage;
     addresses: Address;
     shelves: Shelf;
-    productCategories: ProductCategory;
+    'product-categories': ProductCategory;
     documents: Document;
     payments: Payment;
-    documentProducts: DocumentProduct;
+    'document-products': DocumentProduct;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -142,6 +142,7 @@ export interface Document {
   customer: number | User;
   company: number | Company;
   creator: number | User;
+  documentProducts?: (number | DocumentProduct)[] | null;
   isDeleted?: boolean | null;
   payments?: (number | Payment)[] | null;
   number: string;
@@ -156,21 +157,24 @@ export interface Document {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payments".
+ * via the `definition` "document-products".
  */
-export interface Payment {
+export interface DocumentProduct {
   id: number;
   company: number | Company;
   establishment: number | Establishment;
   customer: number | User;
-  creator?: (number | null) | User;
-  isDeleted?: boolean | null;
-  isVerified?: boolean | null;
+  products?: (number | null) | Product;
+  prefix?: string | null;
   value: number;
-  date: string;
-  reference?: string | null;
-  document?: (number | null) | Document;
-  type: 'cash' | 'debit_card' | 'credit_card' | 'online' | 'bank_transfer' | 'financing';
+  quantity: number;
+  tax: number;
+  reduction?: number | null;
+  document: number | Document;
+  name: string;
+  description?: string | null;
+  subTotal?: number | null;
+  subTotalTax?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -204,7 +208,7 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productCategories".
+ * via the `definition` "product-categories".
  */
 export interface ProductCategory {
   id: number;
@@ -221,7 +225,7 @@ export interface ProductCategory {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productImages".
+ * via the `definition` "product-images".
  */
 export interface ProductImage {
   id: number;
@@ -259,24 +263,21 @@ export interface Shelf {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "documentProducts".
+ * via the `definition` "payments".
  */
-export interface DocumentProduct {
+export interface Payment {
   id: number;
   company: number | Company;
   establishment: number | Establishment;
   customer: number | User;
-  products?: (number | null) | Product;
-  prefix?: string | null;
+  creator?: (number | null) | User;
+  isDeleted?: boolean | null;
+  isVerified?: boolean | null;
   value: number;
-  quantity: number;
-  tax: number;
-  reduction?: number | null;
-  document: number | Document;
-  name: string;
-  description?: string | null;
-  subTotal?: number | null;
-  subTotalTax?: number | null;
+  date: string;
+  reference?: string | null;
+  document?: (number | null) | Document;
+  type: 'cash' | 'debit_card' | 'credit_card' | 'online' | 'bank_transfer' | 'financing';
   updatedAt: string;
   createdAt: string;
 }
