@@ -1,6 +1,7 @@
 import { CollectionConfig } from "payload/types";
 import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
+import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
 const ProductImages: CollectionConfig = {
   slug: "product-images",
@@ -9,6 +10,10 @@ const ProductImages: CollectionConfig = {
     staticURL: "https://d3bocqotv3jto7.cloudfront.net",
     staticDir: "product-images",
     mimeTypes: ["image/*"],
+  },
+  hooks: {
+    beforeOperation: [setCompanyHook],
+    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {
@@ -45,9 +50,6 @@ const ProductImages: CollectionConfig = {
       }
     },
     delete: ({ req }) => isSuperAdmin({ req }),
-  },
-  hooks: {
-    beforeOperation: [setCompanyHook],
   },
   admin: {
     useAsTitle: "name",

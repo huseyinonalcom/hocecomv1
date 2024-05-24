@@ -1,6 +1,7 @@
 import { CollectionConfig } from "payload/types";
 import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
+import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
 const ProductCategories: CollectionConfig = {
   slug: "product-categories",
@@ -9,6 +10,7 @@ const ProductCategories: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [setCompanyHook],
+    afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {

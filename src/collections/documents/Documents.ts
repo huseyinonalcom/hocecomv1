@@ -1,6 +1,7 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
+import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
 const Documents: CollectionConfig = {
   slug: "documents",
@@ -9,6 +10,7 @@ const Documents: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [setCompanyHook],
+    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {

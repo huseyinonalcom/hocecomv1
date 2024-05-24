@@ -1,10 +1,16 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
+import { fieldSelectionHook } from "../hooks/field-selection-hook";
+import { setCompanyHook } from "../hooks/setCompany";
 
 const Shelves: CollectionConfig = {
   slug: "shelves",
   admin: {
     useAsTitle: "product",
+  },
+  hooks: {
+    beforeOperation: [setCompanyHook],
+    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {

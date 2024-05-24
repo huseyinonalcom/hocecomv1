@@ -4,6 +4,7 @@ import { emailPrefix } from "./hooks/emailPrefix";
 import { setCompanyHook } from "../hooks/setCompany";
 import { validateRole } from "./hooks/validateRole";
 import { checkRole } from "../hooks/checkRole";
+import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
 const Users: CollectionConfig = {
   slug: "users",
@@ -27,6 +28,7 @@ const Users: CollectionConfig = {
   hooks: {
     beforeOperation: [validateRole, setCompanyHook, emailPrefix],
     afterRead: [
+      // fieldSelectionHook,
       async ({ req, doc }) => {
         try {
           if (doc.company && req.user && req.user.role != "super_admin") {

@@ -1,10 +1,16 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
+import { fieldSelectionHook } from "../hooks/field-selection-hook";
+import { setCompanyHook } from "../hooks/setCompany";
 
 const Products: CollectionConfig = {
   slug: "products",
   admin: {
     useAsTitle: "name",
+  },
+  hooks: {
+    beforeOperation: [setCompanyHook],
+    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {
@@ -51,7 +57,7 @@ const Products: CollectionConfig = {
     { name: "EAN", type: "text" },
     { name: "internalCode", type: "text" },
     { name: "value", type: "number", required: true },
-    { name: "category", type: "relationship", relationTo: "product-categories", hasMany: true, required: true },
+    { name: "category", type: "relationship", relationTo: "product-categories", hasMany: true, required: true, index: true },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "extraFields", type: "json" },
     { name: "productImages", type: "relationship", hasMany: true, relationTo: "product-images" },
