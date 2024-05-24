@@ -4,7 +4,6 @@ import { emailPrefix } from "./hooks/emailPrefix";
 import { setCompanyHook } from "../hooks/setCompany";
 import { validateRole } from "./hooks/validateRole";
 import { checkRole } from "../hooks/checkRole";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
 const Users: CollectionConfig = {
   slug: "users",

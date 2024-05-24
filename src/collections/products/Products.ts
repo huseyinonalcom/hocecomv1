@@ -1,7 +1,7 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 import { setCompanyHook } from "../hooks/setCompany";
+import { hideDeletedHook } from "../hooks/hide-deleted";
 
 const Products: CollectionConfig = {
   slug: "products",
@@ -9,7 +9,7 @@ const Products: CollectionConfig = {
     useAsTitle: "name",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeOperation: [hideDeletedHook, setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
   access: {
