@@ -2,6 +2,10 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
+import { adminCheck } from "../access/adminCheck";
+import { websiteCheck } from "../access/websiteCheck";
+import { companyCheck } from "../access/companyCheck";
+import { customerCheck } from "../access/customerCheck";
 
 const Companies: CollectionConfig = {
   slug: "companies",
@@ -14,21 +18,9 @@ const Companies: CollectionConfig = {
   },
   access: {
     create: isSuperAdmin,
-    read: ({ req }) => {
-      if (isSuperAdmin({ req })) {
-        return true;
-      } else {
-        return {
-          id: {
-            equals: req.user.company.id,
-          },
-        };
-      }
-    },
-    delete: () => {
-      return false;
-    },
-    update: ({ req, id }) => req.user.role === "super_admin" || (req.user.role === "admin" && req.user.company.id == id),
+    read: adminCheck || websiteCheck || companyCheck || customerCheck,
+    delete: () => false,
+    update: adminCheck,
   },
   fields: [
     { name: "name", type: "text", required: true },

@@ -69,6 +69,7 @@ const Deliveries: CollectionConfig = {
     { name: "documentProducts", type: "relationship", hasMany: true, relationTo: "document-products" },
     { name: "address", type: "relationship", hasMany: false, relationTo: "addresses", required: true },
     { name: "supplierOrderProducts", type: "relationship", hasMany: true, relationTo: "supplier-order-products" },
+    { name: "customer", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "assignee", type: "relationship", hasMany: false, relationTo: "users" },
     // company relationship is always required

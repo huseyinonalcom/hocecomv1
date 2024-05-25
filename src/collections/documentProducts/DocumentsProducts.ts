@@ -79,6 +79,7 @@ const DocumentProducts: CollectionConfig = {
     { name: "tax", type: "number", required: true },
     // relations
     { name: "product", type: "relationship", hasMany: false, relationTo: "products" },
+    { name: "customer", type: "relationship", hasMany: false, relationTo: "users", required: true },
     // calculated fields
     {
       name: "subTotal",
