@@ -51,18 +51,16 @@ const Tasks: CollectionConfig = {
     },
   },
   fields: [
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
     { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "assignee", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "category", type: "text", required: true },
     { name: "description", type: "textarea" },
     { name: "isCompleted", type: "checkbox", defaultValue: false },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
-    { name: "isVerified", type: "checkbox", defaultValue: false },
-    { name: "value", type: "number", required: true },
     { name: "date", type: "date", required: true },
     { name: "document", type: "relationship", hasMany: false, relationTo: "documents" },
+    // company relation is always required
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 

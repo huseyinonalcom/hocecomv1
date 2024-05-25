@@ -52,13 +52,15 @@ const SupplierOrders: CollectionConfig = {
   },
   fields: [
     { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
     { name: "supplierOrderProducts", type: "relationship", hasMany: true, relationTo: "supplier-order-products" },
+    { name: "supplier", type: "relationship", relationTo: "suppliers", hasMany: false, required: true },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "date", type: "date", required: true },
     { name: "notes", type: "textarea" },
     { name: "reference", type: "text" },
+    // company relation is always required
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 

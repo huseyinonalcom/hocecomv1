@@ -52,10 +52,17 @@ const ProductPromos: CollectionConfig = {
   },
   fields: [
     { name: "name", type: "text", required: true },
-    { name: "description", type: "textarea" },
-    { name: "collectionImage", type: "relationship", relationTo: "product-images", hasMany: false },
+    { name: "promoCode", type: "text", required: true },
+    { name: "calculation", type: "json", required: true },
     { name: "products", type: "relationship", relationTo: "products", hasMany: true },
+    { name: "categories", type: "relationship", relationTo: "product-categories", hasMany: true },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
+    { name: "isActive", type: "checkbox", defaultValue: false },
+    { name: "startDate", type: "date", required: true },
+    { name: "endDate", type: "date", required: true },
+    { name: "customers", type: "relationship", relationTo: "users", hasMany: true },
+    { name: "creator", type: "relationship", relationTo: "users", hasMany: false, required: true },
+    // company relation is awlways required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };

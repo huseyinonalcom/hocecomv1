@@ -53,7 +53,6 @@ const Suppliers: CollectionConfig = {
   fields: [
     { name: "name", type: "text", required: true },
     { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     {
       name: "addresses",
       type: "relationship",
@@ -62,26 +61,18 @@ const Suppliers: CollectionConfig = {
     },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     {
-      name: "documents",
+      name: "supplierOrders",
       type: "relationship",
       hasMany: true,
-      relationTo: "documents",
+      relationTo: "supplier-orders",
     },
     {
       name: "category",
-      type: "select",
+      type: "text",
       required: true,
-      options: [
-        {
-          label: "Storefront",
-          value: "storefront",
-        },
-        {
-          label: "Warehouse",
-          value: "warehouse",
-        },
-      ],
     },
+    // company relation is always required
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 

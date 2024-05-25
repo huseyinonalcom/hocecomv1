@@ -51,15 +51,13 @@ const SupportTicketMessages: CollectionConfig = {
     },
   },
   fields: [
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
     { name: "supportTicket", type: "relationship", hasMany: false, relationTo: "support-tickets", required: true },
-    { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
-    { name: "supplierOrderProducts", type: "relationship", hasMany: true, relationTo: "supplier-order-products" },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "date", type: "date", required: true },
-    { name: "notes", type: "textarea" },
-    { name: "reference", type: "text" },
+    { name: "message", type: "textarea" },
+    { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
+    // company relation is always required
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 

@@ -56,6 +56,9 @@ const ProductCollections: CollectionConfig = {
     { name: "collectionImage", type: "relationship", relationTo: "product-images", hasMany: false },
     { name: "products", type: "relationship", relationTo: "products", hasMany: true },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
+    { name: "isFeatured", type: "checkbox", defaultValue: false },
+    { name: "tags", type: "textarea" },
+    // company relation is awlways required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };

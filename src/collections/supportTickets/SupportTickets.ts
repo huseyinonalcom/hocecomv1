@@ -51,14 +51,13 @@ const SupportTickets: CollectionConfig = {
     },
   },
   fields: [
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
-    { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
-    { name: "supplierOrderProducts", type: "relationship", hasMany: true, relationTo: "supplier-order-products" },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
-    { name: "date", type: "date", required: true },
+    { name: "openDate", type: "date", required: true },
+    { name: "closedDate", type: "date", required: true },
+    { name: "document", type: "relationship", hasMany: false, relationTo: "documents", required: true },
     { name: "notes", type: "textarea" },
-    { name: "reference", type: "text" },
+    // company relation is always required
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 
