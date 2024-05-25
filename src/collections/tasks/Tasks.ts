@@ -1,16 +1,16 @@
 import { CollectionConfig } from "payload/types";
-import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
+import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
-const ProductCategories: CollectionConfig = {
-  slug: "product-categories",
+const Tasks: CollectionConfig = {
+  slug: "tasks",
   admin: {
-    useAsTitle: "name",
+    useAsTitle: "category",
   },
   hooks: {
     beforeOperation: [setCompanyHook],
-    afterRead: [fieldSelectionHook],
+    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {
@@ -51,19 +51,19 @@ const ProductCategories: CollectionConfig = {
     },
   },
   fields: [
-    { name: "name", type: "text", required: true },
-    { name: "description", type: "textarea" },
-    { name: "priority", type: "number", required: true, defaultValue: 0 },
-    { name: "isDeleted", type: "checkbox", defaultValue: false },
-    // relations
-    { name: "headCategory", type: "relationship", relationTo: "product-categories", hasMany: false },
-    { name: "subCategories", type: "relationship", relationTo: "product-categories", hasMany: true },
-    { name: "categoryImage", type: "relationship", relationTo: "product-images", hasMany: false },
-    { name: "promos", type: "relationship", relationTo: "product-promos", hasMany: true },
-    { name: "products", type: "relationship", relationTo: "products", hasMany: true },
-    // company relation is always required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
+    { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
+    { name: "assignee", type: "relationship", hasMany: false, relationTo: "users" },
+    { name: "category", type: "text", required: true },
+    { name: "description", type: "textarea" },
+    { name: "isCompleted", type: "checkbox", defaultValue: false },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
+    { name: "isVerified", type: "checkbox", defaultValue: false },
+    { name: "value", type: "number", required: true },
+    { name: "date", type: "date", required: true },
+    { name: "document", type: "relationship", hasMany: false, relationTo: "documents" },
   ],
 };
 
-export default ProductCategories;
+export default Tasks;

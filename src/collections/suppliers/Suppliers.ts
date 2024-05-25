@@ -3,8 +3,8 @@ import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
-const Establishments: CollectionConfig = {
-  slug: "establishments",
+const Suppliers: CollectionConfig = {
+  slug: "suppliers",
   admin: {
     useAsTitle: "name",
   },
@@ -52,21 +52,21 @@ const Establishments: CollectionConfig = {
   },
   fields: [
     { name: "name", type: "text", required: true },
+    { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    {
+      name: "addresses",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "addresses",
+    },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
     {
       name: "documents",
       type: "relationship",
       hasMany: true,
       relationTo: "documents",
     },
-    { name: "deliveries", type: "relationship", hasMany: true, relationTo: "deliveries" },
-    { name: "supplierOrders", type: "relationship", hasMany: true, relationTo: "supplier-orders" },
-    { name: "isDeleted", type: "checkbox", defaultValue: false },
-    { name: "phone", type: "text" },
-    { name: "phone2", type: "text" },
-    { name: "taxID", type: "text" },
-    { name: "bankAccount1", type: "text" },
-    { name: "bankAccount2", type: "text" },
-    { name: "bankAccount3", type: "text" },
     {
       name: "category",
       type: "select",
@@ -82,19 +82,7 @@ const Establishments: CollectionConfig = {
         },
       ],
     },
-    {
-      name: "addresses",
-      type: "relationship",
-      hasMany: true,
-      relationTo: "addresses",
-    },
-    { name: "shelves", type: "relationship", hasMany: true, relationTo: "shelves" },
-    { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
-    { name: "users", type: "relationship", hasMany: true, relationTo: "users" },
-    { name: "customers", type: "relationship", hasMany: true, relationTo: "users" },
-    // company relation is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 
-export default Establishments;
+export default Suppliers;

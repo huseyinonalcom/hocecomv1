@@ -3,8 +3,8 @@ import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
-const DocumentProducts: CollectionConfig = {
-  slug: "document-products",
+const SupplierOrderProducts: CollectionConfig = {
+  slug: "supplier-order-products",
   admin: {
     useAsTitle: "name",
   },
@@ -71,15 +71,15 @@ const DocumentProducts: CollectionConfig = {
     },
   },
   fields: [
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
+    { name: "products", type: "relationship", hasMany: false, relationTo: "products" },
+    { name: "value", type: "number", required: true },
+    { name: "quantity", type: "number", required: true },
+    { name: "tax", type: "number", required: true },
+    { name: "reduction", type: "number", defaultValue: 0 },
     { name: "name", type: "text", required: true },
     { name: "description", type: "text" },
-    { name: "value", type: "number", required: true },
-    { name: "reduction", type: "number", defaultValue: 0 },
-    { name: "amount", type: "number", required: true },
-    { name: "tax", type: "number", required: true },
-    // relations
-    { name: "product", type: "relationship", hasMany: false, relationTo: "products" },
-    // calculated fields
     {
       name: "subTotal",
       type: "number",
@@ -116,9 +116,7 @@ const DocumentProducts: CollectionConfig = {
         ],
       },
     },
-    // company relationship is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 
-export default DocumentProducts;
+export default SupplierOrderProducts;

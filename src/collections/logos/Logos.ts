@@ -61,8 +61,8 @@ const Logos: CollectionConfig = {
       name: "name",
       type: "text",
     },
+    // company relationship is always required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
   ],
 };
 

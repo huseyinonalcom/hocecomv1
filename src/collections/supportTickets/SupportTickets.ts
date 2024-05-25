@@ -3,10 +3,10 @@ import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
-const Payments: CollectionConfig = {
-  slug: "payments",
+const SupportTickets: CollectionConfig = {
+  slug: "support-tickets",
   admin: {
-    useAsTitle: "category",
+    useAsTitle: "document",
   },
   hooks: {
     beforeOperation: [setCompanyHook],
@@ -51,50 +51,15 @@ const Payments: CollectionConfig = {
     },
   },
   fields: [
-    { name: "value", type: "number", required: true },
-    { name: "date", type: "date", required: true },
-    {
-      name: "type",
-      type: "select",
-      required: true,
-      options: [
-        {
-          label: "Cash",
-          value: "cash",
-        },
-        {
-          label: "Debit Card",
-          value: "debit_card",
-        },
-        {
-          label: "Credit Card",
-          value: "credit_card",
-        },
-        {
-          label: "Online Payment",
-          value: "online",
-        },
-        {
-          label: "Bank Transfer",
-          value: "bank_transfer",
-        },
-        {
-          label: "Financing",
-          value: "financing",
-        },
-      ],
-    },
-    { name: "notes", type: "text" },
-    { name: "reference", type: "text" },
-    { name: "isVerified", type: "checkbox", defaultValue: false },
-    { name: "isDeleted", type: "checkbox", defaultValue: false },
-    // relationships
-    { name: "document", type: "relationship", hasMany: false, relationTo: "documents", required: true },
-    { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
-    // company relationship is always required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
+    { name: "supplierOrderProducts", type: "relationship", hasMany: true, relationTo: "supplier-order-products" },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
+    { name: "date", type: "date", required: true },
+    { name: "notes", type: "textarea" },
+    { name: "reference", type: "text" },
   ],
 };
 
-export default Payments;
+export default SupportTickets;

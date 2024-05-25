@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
+import { checkRole } from "../hooks/checkRole";
 
 const Addresses: CollectionConfig = {
   slug: "addresses",
@@ -13,57 +14,65 @@ const Addresses: CollectionConfig = {
     // afterRead: [fieldSelectionHook],
   },
   access: {
-    create: ({ req }) => {
-      if (isSuperAdmin({ req })) {
-        return true;
-      } else {
-        return {
-          company: {
-            equals: req.user.company.id,
-          },
-        };
-      }
-    },
+    create: ({}) => true,
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
-      } else {
+      } else if (checkRole(["admin", "employee", "website"], req.user())) {
         return {
           company: {
             equals: req.user.company.id,
           },
         };
+      } else if (checkRole(["customer"], req.user())) {
+        return {
+          customer: {
+            equals: req.user.id,
+          },
+        };
+      } else {
+        return false;
       }
     },
     update: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
-      } else {
+      } else if (checkRole(["admin", "employee"], req.user())) {
         return {
           company: {
             equals: req.user.company.id,
           },
         };
+      } else if (checkRole(["customer"], req.user())) {
+        return {
+          customer: {
+            equals: req.user.id,
+          },
+        };
+      } else {
+        return false;
       }
     },
-    delete: () => {
-      return false;
-    },
+    delete: ({ req }) => isSuperAdmin({ req }),
   },
   fields: [
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
-    { name: "customer", type: "relationship", hasMany: false, relationTo: "users" },
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "country", type: "text", required: true },
     { name: "street", type: "text", required: true },
     { name: "door", type: "text", required: true },
-    { name: "isDeleted", type: "checkbox", defaultValue: false },
-    { name: "floor", type: "text" },
     { name: "zip", type: "text", required: true },
+    { name: "floor", type: "text" },
     { name: "city", type: "text" },
     { name: "province", type: "text" },
-    { name: "country", type: "text", required: true },
     { name: "name", type: "text" },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "isDefault", type: "checkbox", defaultValue: false },
+    // relationships
+    { name: "customer", type: "relationship", hasMany: false, relationTo: "users" },
+    { name: "supplier", type: "relationship", hasMany: false, relationTo: "suppliers" },
+    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
+    { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
+    // company relation is always required
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 

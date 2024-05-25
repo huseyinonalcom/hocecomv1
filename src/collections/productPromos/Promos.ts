@@ -3,14 +3,14 @@ import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
-const ProductCategories: CollectionConfig = {
-  slug: "product-categories",
+const ProductPromos: CollectionConfig = {
+  slug: "product-promos",
   admin: {
     useAsTitle: "name",
   },
   hooks: {
     beforeOperation: [setCompanyHook],
-    afterRead: [fieldSelectionHook],
+    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {
@@ -53,17 +53,11 @@ const ProductCategories: CollectionConfig = {
   fields: [
     { name: "name", type: "text", required: true },
     { name: "description", type: "textarea" },
-    { name: "priority", type: "number", required: true, defaultValue: 0 },
-    { name: "isDeleted", type: "checkbox", defaultValue: false },
-    // relations
-    { name: "headCategory", type: "relationship", relationTo: "product-categories", hasMany: false },
-    { name: "subCategories", type: "relationship", relationTo: "product-categories", hasMany: true },
-    { name: "categoryImage", type: "relationship", relationTo: "product-images", hasMany: false },
-    { name: "promos", type: "relationship", relationTo: "product-promos", hasMany: true },
+    { name: "collectionImage", type: "relationship", relationTo: "product-images", hasMany: false },
     { name: "products", type: "relationship", relationTo: "products", hasMany: true },
-    // company relation is always required
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 
-export default ProductCategories;
+export default ProductPromos;

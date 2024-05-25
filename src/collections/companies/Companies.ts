@@ -33,9 +33,6 @@ const Companies: CollectionConfig = {
   fields: [
     { name: "name", type: "text", required: true },
     { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
-    { name: "establishments", type: "relationship", hasMany: true, relationTo: "establishments" },
-    { name: "users", type: "relationship", hasMany: true, relationTo: "users" },
-    { name: "addresses", type: "relationship", hasMany: true, relationTo: "addresses" },
     {
       name: "active",
       type: "checkbox",

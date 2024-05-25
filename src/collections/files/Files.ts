@@ -3,14 +3,16 @@ import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
-const ProductCategories: CollectionConfig = {
-  slug: "product-categories",
-  admin: {
-    useAsTitle: "name",
+const Files: CollectionConfig = {
+  slug: "files",
+  upload: {
+    disableLocalStorage: true,
+    staticURL: "https://d3bocqotv3jto7.cloudfront.net",
+    staticDir: "files",
   },
   hooks: {
     beforeOperation: [setCompanyHook],
-    afterRead: [fieldSelectionHook],
+    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {
@@ -46,24 +48,17 @@ const ProductCategories: CollectionConfig = {
         };
       }
     },
-    delete: () => {
-      return false;
-    },
+    delete: ({ req }) => isSuperAdmin({ req }),
+  },
+  admin: {
+    useAsTitle: "name",
   },
   fields: [
     { name: "name", type: "text", required: true },
-    { name: "description", type: "textarea" },
-    { name: "priority", type: "number", required: true, defaultValue: 0 },
-    { name: "isDeleted", type: "checkbox", defaultValue: false },
-    // relations
-    { name: "headCategory", type: "relationship", relationTo: "product-categories", hasMany: false },
-    { name: "subCategories", type: "relationship", relationTo: "product-categories", hasMany: true },
-    { name: "categoryImage", type: "relationship", relationTo: "product-images", hasMany: false },
-    { name: "promos", type: "relationship", relationTo: "product-promos", hasMany: true },
-    { name: "products", type: "relationship", relationTo: "products", hasMany: true },
-    // company relation is always required
+    { name: "priority", type: "number", defaultValue: 0 },
+    // company relationship is always required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
 };
 
-export default ProductCategories;
+export default Files;

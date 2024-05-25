@@ -1,10 +1,8 @@
 import path from "path";
-
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { webpackBundler } from "@payloadcms/bundler-webpack";
 import { slateEditor } from "@payloadcms/richtext-slate";
 import { buildConfig } from "payload/config";
-
 import Users from "./collections/users/Users";
 import Companies from "./collections/companies/Companies";
 import Logos from "./collections/logos/Logos";
@@ -20,6 +18,16 @@ import DocumentProducts from "./collections/documentProducts/DocumentsProducts";
 import { cloudStorage } from "@payloadcms/plugin-cloud-storage";
 import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
+import Deliveries from "./collections/deliveries/Deliveries";
+import Tasks from "./collections/tasks/Tasks";
+import SupportTicketMessages from "./collections/supportTicketsMessages/SupportTicketMessages";
+import SupportTickets from "./collections/supportTickets/SupportTickets";
+import ProductCollections from "./collections/productCollections/Collections";
+import ProductPromos from "./collections/productPromos/Promos";
+import Suppliers from "./collections/suppliers/Suppliers";
+import SupplierOrders from "./collections/supplierOrders/SupplierOrders";
+import SupplierOrderProducts from "./collections/supplierOrderProducts/SupplierOrderProducts";
+import Files from "./collections/files/Files";
 
 const s3ad = s3Adapter({
   config: {
@@ -55,7 +63,33 @@ export default buildConfig({
     },
   },
   editor: slateEditor({}),
-  collections: [Users, Companies, Establishments, Logos, Products, ProductImages, Addresses, Shelves, ProductCategories, Documents, Payments, DocumentProducts],
+  rateLimit: {
+    trustProxy: true,
+  },
+  collections: [
+    Addresses,
+    Companies,
+    Deliveries,
+    DocumentProducts,
+    Documents,
+    Establishments,
+    Logos,
+    Payments,
+    ProductCategories,
+    ProductCollections,
+    ProductImages,
+    ProductPromos,
+    Products,
+    Shelves,
+    SupplierOrders,
+    SupplierOrderProducts,
+    Suppliers,
+    SupportTicketMessages,
+    SupportTickets,
+    Tasks,
+    Users,
+    Files,
+  ],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },
