@@ -18,7 +18,7 @@ export const validateRole: CollectionBeforeOperationHook = async ({ args, operat
           }
           break;
         case "admin":
-          if (req.body.role != "customer" || req.body.role != "employee") {
+          if (req.body.role != "customer" && req.body.role != "employee") {
             throw new APIError("You do not have permission to create a user with this role.", 403);
           }
           break;

@@ -145,7 +145,7 @@ const Users: CollectionConfig = {
       defaultValue: false,
       access: {
         update: ({ req }) => {
-          if (isSuperAdmin({ req }) || checkRole(["admin", "employee", "super_admin"], req.user)) {
+          if (isSuperAdmin({ req }) || checkRole(["admin", "super_admin"], req.user)) {
             return true;
           } else {
             return false;
