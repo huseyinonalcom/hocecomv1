@@ -1,5 +1,5 @@
 import { Access } from "payload/config";
-import { checkRole } from "../hooks/checkRole";
+import { checkRole } from "../../hooks/checkRole";
 
 /**
  * Check if the current user is a customer of the company
@@ -7,11 +7,11 @@ import { checkRole } from "../hooks/checkRole";
  * @returns boolean
  */
 
-export const customerCheck: Access = ({ req }) => {
+export const customerCheckForCompany: Access = ({ req }) => {
   if (checkRole(["customer"], req.user)) {
     return {
-      company: {
-        equals: req.user.company,
+      id: {
+        equals: req.user.company?.id ?? req.user.company,
       },
     };
   } else {

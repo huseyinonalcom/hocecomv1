@@ -1,6 +1,6 @@
 import { Access } from "payload/config";
-import isSuperAdmin from "../users/access/superAdminCheck";
-import { checkRole } from "../hooks/checkRole";
+import isSuperAdmin from "../../users/access/superAdminCheck";
+import { checkRole } from "../../hooks/checkRole";
 
 /**
  * Check if the current user is an admin of the company or a super admin
@@ -8,14 +8,13 @@ import { checkRole } from "../hooks/checkRole";
  * @returns boolean
  */
 
-export const adminCheck: Access = ({ req }) => {
+export const adminCheckForCompany: Access = ({ req }) => {
   if (isSuperAdmin({ req })) {
     return true;
   } else if (checkRole(["admin"], req.user)) {
-    console.log(req.user);
     return {
-      company: {
-        equals: req.user.company,
+      id: {
+        equals: req.user.company?.id ?? req.user.company,
       },
     };
   } else {

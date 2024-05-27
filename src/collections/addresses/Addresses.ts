@@ -18,13 +18,13 @@ const Addresses: CollectionConfig = {
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
-      } else if (checkRole(["admin", "employee", "website"], req.user())) {
+      } else if (checkRole(["admin", "employee", "website"], req.user)) {
         return {
           company: {
             equals: req.user.company.id,
           },
         };
-      } else if (checkRole(["customer"], req.user())) {
+      } else if (checkRole(["customer"], req.user)) {
         return {
           customer: {
             equals: req.user.id,

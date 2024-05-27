@@ -1,11 +1,11 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 import { adminCheck } from "../access/adminCheck";
-import { websiteCheck } from "../access/websiteCheck";
-import { companyCheck } from "../access/companyCheck";
-import { customerCheck } from "../access/customerCheck";
+import { adminCheckForCompany } from "./access/adminCheck";
+import { customerCheckForCompany } from "./access/customerCheck";
+import { companyCheckForCompany } from "./access/companyCheck";
+import { websiteCheckForCompany } from "./access/websiteCheck";
 
 const Companies: CollectionConfig = {
   slug: "companies",
@@ -14,13 +14,12 @@ const Companies: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [setCompanyHook],
-    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: isSuperAdmin,
-    read: adminCheck || websiteCheck || companyCheck || customerCheck,
+    read: adminCheckForCompany || websiteCheckForCompany || companyCheckForCompany || customerCheckForCompany,
     delete: () => false,
-    update: adminCheck,
+    update: adminCheckForCompany,
   },
   fields: [
     { name: "name", type: "text", required: true },
