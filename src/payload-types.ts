@@ -8,22 +8,56 @@
 
 export interface Config {
   collections: {
-    users: User;
+    addresses: Address;
     companies: Company;
+    deliveries: Delivery;
+    'document-products': DocumentProduct;
+    documents: Document;
     establishments: Establishment;
     logos: Logo;
-    products: Product;
-    'product-images': ProductImage;
-    addresses: Address;
-    shelves: Shelf;
-    'product-categories': ProductCategory;
-    documents: Document;
     payments: Payment;
-    'document-products': DocumentProduct;
+    'product-categories': ProductCategory;
+    'product-collections': ProductCollection;
+    'product-images': ProductImage;
+    'product-promos': ProductPromo;
+    products: Product;
+    shelves: Shelf;
+    'supplier-orders': SupplierOrder;
+    'supplier-order-products': SupplierOrderProduct;
+    suppliers: Supplier;
+    'support-ticket-messages': SupportTicketMessage;
+    'support-tickets': SupportTicket;
+    tasks: Task;
+    users: User;
+    files: File;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   globals: {};
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses".
+ */
+export interface Address {
+  id: number;
+  country: string;
+  street: string;
+  door: string;
+  zip: string;
+  floor?: string | null;
+  city?: string | null;
+  province?: string | null;
+  name?: string | null;
+  isDeleted?: boolean | null;
+  isDefault?: boolean | null;
+  customer?: (number | null) | User;
+  supplier?: (number | null) | Supplier;
+  establishment?: (number | null) | Establishment;
+  creator?: (number | null) | User;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -40,6 +74,7 @@ export interface User {
   establishment?: (number | Establishment)[] | null;
   payments?: (number | Payment)[] | null;
   preferredLanguage?: string | null;
+  employeeRank?: ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9') | null;
   customerCategory?: ('professional' | 'private') | null;
   customerCompany?: string | null;
   customerTaxNumber?: string | null;
@@ -66,9 +101,6 @@ export interface Company {
   id: number;
   name: string;
   logo?: (number | null) | Logo;
-  establishments?: (number | Establishment)[] | null;
-  users?: (number | User)[] | null;
-  addresses?: (number | Address)[] | null;
   active?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -81,7 +113,6 @@ export interface Logo {
   id: number;
   name?: string | null;
   company: number | Company;
-  establishment?: (number | null) | Establishment;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -100,35 +131,23 @@ export interface Logo {
 export interface Establishment {
   id: number;
   name: string;
-  logo?: (number | null) | Logo;
-  company: number | Company;
-  users?: (number | User)[] | null;
-  addresses?: (number | Address)[] | null;
-  isDeleted?: boolean | null;
   documents?: (number | Document)[] | null;
-  category: 'storefront' | 'warehouse';
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "addresses".
- */
-export interface Address {
-  id: number;
-  establishment?: (number | null) | Establishment;
-  customer?: (number | null) | User;
-  company: number | Company;
-  street: string;
-  door: string;
+  deliveries?: (number | Delivery)[] | null;
+  supplierOrders?: (number | SupplierOrder)[] | null;
   isDeleted?: boolean | null;
-  floor?: string | null;
-  zip: string;
-  city?: string | null;
-  province?: string | null;
-  country: string;
-  name?: string | null;
-  isDefault?: boolean | null;
+  phone?: string | null;
+  phone2?: string | null;
+  taxID?: string | null;
+  bankAccount1?: string | null;
+  bankAccount2?: string | null;
+  bankAccount3?: string | null;
+  category: 'storefront' | 'warehouse';
+  addresses?: (number | Address)[] | null;
+  shelves?: (number | Shelf)[] | null;
+  logo?: (number | null) | Logo;
+  users?: (number | User)[] | null;
+  customers?: (number | User)[] | null;
+  company: number | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -138,99 +157,40 @@ export interface Address {
  */
 export interface Document {
   id: number;
-  establishment: number | Establishment;
-  customer: number | User;
-  company: number | Company;
-  creator: number | User;
-  documentProducts?: (number | DocumentProduct)[] | null;
-  isDeleted?: boolean | null;
-  payments?: (number | Payment)[] | null;
   number: string;
-  date: string;
-  notes?: string | null;
-  reference?: string | null;
-  prefix?: string | null;
-  phase?: number | null;
   type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note';
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "document-products".
- */
-export interface DocumentProduct {
-  id: number;
-  company: number | Company;
-  establishment: number | Establishment;
+  prefix: string;
+  date: string;
+  phase?: number | null;
+  files?: (number | File)[] | null;
+  comments?: string | null;
+  references?: string | null;
+  notes?: string | null;
+  managerNotes?: string | null;
+  isDeleted?: boolean | null;
+  decisionMaker?: string | null;
   customer: number | User;
-  products?: (number | null) | Product;
-  prefix?: string | null;
-  value: number;
-  quantity: number;
-  tax: number;
-  reduction?: number | null;
-  document: number | Document;
-  name: string;
-  description?: string | null;
-  subTotal?: number | null;
-  subTotalTax?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  name: string;
-  description?: string | null;
-  isDeleted?: boolean | null;
-  EAN?: string | null;
-  internalCode?: string | null;
-  value: number;
-  category: (number | ProductCategory)[];
-  company: number | Company;
-  extraFields?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  productImages?: (number | ProductImage)[] | null;
-  shelves?: (number | Shelf)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "product-categories".
- */
-export interface ProductCategory {
-  id: number;
-  name: string;
-  description?: string | null;
-  headCategory?: (number | null) | ProductCategory;
-  subCategories?: (number | ProductCategory)[] | null;
-  categoryImage?: (number | null) | ProductImage;
-  products?: (number | Product)[] | null;
-  isDeleted?: boolean | null;
+  establishment: number | Establishment;
+  documentProducts: (number | DocumentProduct)[];
+  payments?: (number | Payment)[] | null;
+  supportTickets?: (number | SupportTicket)[] | null;
+  tasks?: (number | Task)[] | null;
+  toDocument?: (number | null) | Document;
+  fromDocument?: (number | null) | Document;
+  docAddress: number | Address;
+  delAddress: number | Address;
+  creator: number | User;
   company: number | Company;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "product-images".
+ * via the `definition` "files".
  */
-export interface ProductImage {
+export interface File {
   id: number;
   name: string;
-  product: number | Product;
   priority?: number | null;
   company: number | Company;
   updatedAt: string;
@@ -246,11 +206,127 @@ export interface ProductImage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "document-products".
+ */
+export interface DocumentProduct {
+  id: number;
+  name: string;
+  description?: string | null;
+  value: number;
+  reduction?: number | null;
+  amount: number;
+  tax: number;
+  product?: (number | null) | Product;
+  customer: number | User;
+  subTotal?: number | null;
+  subTotalTax?: number | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  name: string;
+  description?: string | null;
+  isDeleted?: boolean | null;
+  EAN?: string | null;
+  internalCode?: string | null;
+  value: number;
+  tax: number;
+  category: (number | ProductCategory)[];
+  extraFields?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  productImages?: (number | ProductImage)[] | null;
+  shelves?: (number | Shelf)[] | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-categories".
+ */
+export interface ProductCategory {
+  id: number;
+  name: string;
+  description?: string | null;
+  priority: number;
+  isDeleted?: boolean | null;
+  headCategory?: (number | null) | ProductCategory;
+  subCategories?: (number | ProductCategory)[] | null;
+  categoryImage?: (number | null) | ProductImage;
+  promos?: (number | ProductPromo)[] | null;
+  products?: (number | Product)[] | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-images".
+ */
+export interface ProductImage {
+  id: number;
+  name: string;
+  priority?: number | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-promos".
+ */
+export interface ProductPromo {
+  id: number;
+  name: string;
+  promoCode: string;
+  calculation:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  products?: (number | Product)[] | null;
+  categories?: (number | ProductCategory)[] | null;
+  isDeleted?: boolean | null;
+  isActive?: boolean | null;
+  startDate: string;
+  endDate: string;
+  customers?: (number | User)[] | null;
+  creator: number | User;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shelves".
  */
 export interface Shelf {
   id: number;
-  company: number | Company;
   establishment: number | Establishment;
   isDeleted?: boolean | null;
   product: number | Product;
@@ -258,6 +334,7 @@ export interface Shelf {
   region?: string | null;
   stack?: string | null;
   level?: string | null;
+  company: number | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -267,17 +344,163 @@ export interface Shelf {
  */
 export interface Payment {
   id: number;
-  company: number | Company;
-  establishment: number | Establishment;
-  customer: number | User;
-  creator?: (number | null) | User;
-  isDeleted?: boolean | null;
-  isVerified?: boolean | null;
   value: number;
   date: string;
-  reference?: string | null;
-  document?: (number | null) | Document;
   type: 'cash' | 'debit_card' | 'credit_card' | 'online' | 'bank_transfer' | 'financing';
+  notes?: string | null;
+  reference?: string | null;
+  isVerified?: boolean | null;
+  isDeleted?: boolean | null;
+  document: number | Document;
+  creator?: (number | null) | User;
+  establishment: number | Establishment;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-tickets".
+ */
+export interface SupportTicket {
+  id: number;
+  isDeleted?: boolean | null;
+  openDate: string;
+  closedDate: string;
+  document: number | Document;
+  notes?: string | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tasks".
+ */
+export interface Task {
+  id: number;
+  creator?: (number | null) | User;
+  assignee?: (number | null) | User;
+  category: string;
+  description?: string | null;
+  isCompleted?: boolean | null;
+  isDeleted?: boolean | null;
+  date: string;
+  document?: (number | null) | Document;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deliveries".
+ */
+export interface Delivery {
+  id: number;
+  date: string;
+  dateCreated: string;
+  timeStart?: string | null;
+  timeEnd?: string | null;
+  notes?: string | null;
+  deliveryTaker?: string | null;
+  deliveryTakerPhone?: string | null;
+  lift?: boolean | null;
+  liftPhone?: string | null;
+  isCompleted?: boolean | null;
+  isIncoming?: boolean | null;
+  isDeleted?: boolean | null;
+  files?: (number | File)[] | null;
+  establishment: number | Establishment;
+  documentProducts?: (number | DocumentProduct)[] | null;
+  address: number | Address;
+  supplierOrderProducts?: (number | SupplierOrderProduct)[] | null;
+  customer?: (number | null) | User;
+  creator?: (number | null) | User;
+  assignee?: (number | null) | User;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supplier-order-products".
+ */
+export interface SupplierOrderProduct {
+  id: number;
+  product?: (number | null) | Product;
+  quantity: number;
+  name: string;
+  description?: string | null;
+  creator: number | User;
+  establishment: number | Establishment;
+  supplierOrder: number | SupplierOrder;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supplier-orders".
+ */
+export interface SupplierOrder {
+  id: number;
+  establishment: number | Establishment;
+  creator: number | User;
+  supplierOrderProducts?: (number | SupplierOrderProduct)[] | null;
+  supplier: number | Supplier;
+  isDeleted?: boolean | null;
+  date: string;
+  notes?: string | null;
+  reference?: string | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "suppliers".
+ */
+export interface Supplier {
+  id: number;
+  name: string;
+  logo?: (number | null) | Logo;
+  addresses?: (number | Address)[] | null;
+  isDeleted?: boolean | null;
+  supplierOrders?: (number | SupplierOrder)[] | null;
+  category: string;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-collections".
+ */
+export interface ProductCollection {
+  id: number;
+  name: string;
+  description?: string | null;
+  collectionImage?: (number | null) | ProductImage;
+  products?: (number | Product)[] | null;
+  isDeleted?: boolean | null;
+  isFeatured?: boolean | null;
+  tags?: string | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-ticket-messages".
+ */
+export interface SupportTicketMessage {
+  id: number;
+  supportTicket: number | SupportTicket;
+  isDeleted?: boolean | null;
+  date: string;
+  message?: string | null;
+  creator: number | User;
+  company: number | Company;
   updatedAt: string;
   createdAt: string;
 }
