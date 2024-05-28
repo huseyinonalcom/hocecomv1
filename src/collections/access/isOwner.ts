@@ -13,7 +13,7 @@ export const ownerCheck: Access = ({ req }) => {
   if (checkRole(["employee", "customer"], req.user)) {
     return {
       company: {
-        equals: req.user.company.id,
+        equals: req.user.company.id ?? req.user.company,
       },
     };
   } else {

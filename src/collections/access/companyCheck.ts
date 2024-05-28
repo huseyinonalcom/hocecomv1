@@ -11,7 +11,7 @@ export const companyCheck: Access = ({ req }) => {
   if (checkRole(["employee"], req.user)) {
     return {
       company: {
-        equals: req.user.company,
+        equals: req.user.company.id ?? req.user.company,
       },
     };
   } else {

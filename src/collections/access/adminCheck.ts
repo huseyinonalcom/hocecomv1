@@ -15,7 +15,7 @@ export const adminCheck: Access = ({ req }) => {
     console.log(req.user);
     return {
       company: {
-        equals: req.user.company,
+        equals: req.user.company.id ?? req.user.company,
       },
     };
   } else {

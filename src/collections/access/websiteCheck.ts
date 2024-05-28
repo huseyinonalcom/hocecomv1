@@ -11,7 +11,7 @@ export const websiteCheck: Access = ({ req }) => {
   if (checkRole(["website"], req.user)) {
     return {
       company: {
-        equals: req.user.company,
+        equals: req.user.company.id ?? req.user.company,
       },
     };
   } else {

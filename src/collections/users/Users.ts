@@ -157,6 +157,7 @@ const Users: CollectionConfig = {
       name: "company",
       type: "relationship",
       hasMany: false,
+      saveToJWT: true,
       relationTo: "companies",
       access: {
         update: ({ req }) => {
