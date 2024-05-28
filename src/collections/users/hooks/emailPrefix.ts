@@ -7,13 +7,10 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
     if (isSuperAdmin({ req })) {
       return args;
     } else if (operation == "login" || operation == "forgotPassword") {
-      console.log("login");
       if (req.query.company) {
-        console.log("company query present");
         // company query param denotes which company the acoount belongs to
         // we add this to the email as a tag so we can differentiate between accounts with the same email
         req.body.email = `${req.body.email.split("@")[0]}+${req.query.company}@${req.body.email.split("@")[1]}`;
-        console.log("email prefixed with company tag");
       }
       // no company query means the user might be trying to login from the admin panel
       // probably won't succeed, but even if they succeed, they won't be able to do anything
