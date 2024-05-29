@@ -12,7 +12,6 @@ export const adminCheck: Access = ({ req }) => {
   if (isSuperAdmin({ req })) {
     return true;
   } else if (checkRole(["admin"], req.user)) {
-    console.log(req.user);
     return {
       company: {
         equals: req.user.company.id ?? req.user.company,

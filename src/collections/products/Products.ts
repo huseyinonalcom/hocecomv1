@@ -28,7 +28,6 @@ const Products: CollectionConfig = {
       if (isSuperAdmin({ req })) {
         return true;
       } else {
-        console.log(req.user);
         return {
           company: {
             equals: req.user.company.id,
@@ -40,7 +39,6 @@ const Products: CollectionConfig = {
       if (isSuperAdmin({ req })) {
         return true;
       } else {
-        console.log(req.user);
         return {
           company: {
             equals: req.user.company.id,

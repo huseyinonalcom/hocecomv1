@@ -104,7 +104,10 @@ export default buildConfig({
         logos: {
           adapter: s3ad,
         },
-        productImages: {
+        "product-images": {
+          adapter: s3ad,
+        },
+        files: {
           adapter: s3ad,
         },
       },
