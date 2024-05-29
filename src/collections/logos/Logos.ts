@@ -1,7 +1,6 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
 const Logos: CollectionConfig = {
   slug: "logos",
@@ -52,9 +51,7 @@ const Logos: CollectionConfig = {
         };
       }
     },
-    delete: () => {
-      return false;
-    },
+    delete: ({ req }) => isSuperAdmin({ req }),
   },
   fields: [
     {
