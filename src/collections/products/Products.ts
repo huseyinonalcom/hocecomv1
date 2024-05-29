@@ -48,9 +48,7 @@ const Products: CollectionConfig = {
         };
       }
     },
-    delete: () => {
-      return false;
-    },
+    delete: ({ req }) => isSuperAdmin({ req }),
   },
   fields: [
     { name: "name", type: "text", required: true },
@@ -60,7 +58,7 @@ const Products: CollectionConfig = {
     { name: "internalCode", type: "text" },
     { name: "value", type: "number", required: true },
     { name: "tax", type: "number", required: true },
-    { name: "category", type: "relationship", relationTo: "product-categories", hasMany: true, required: true, index: true },
+    { name: "categories", type: "relationship", relationTo: "product-categories", hasMany: true, required: true, index: true },
     { name: "extraFields", type: "json" },
     { name: "productImages", type: "relationship", hasMany: true, relationTo: "product-images" },
     { name: "shelves", type: "relationship", hasMany: true, relationTo: "shelves" },

@@ -237,7 +237,7 @@ export interface Product {
   internalCode?: string | null;
   value: number;
   tax: number;
-  category: (number | ProductCategory)[];
+  categories: (number | ProductCategory)[];
   extraFields?:
     | {
         [k: string]: unknown;
