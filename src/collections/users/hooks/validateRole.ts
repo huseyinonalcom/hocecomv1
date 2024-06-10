@@ -1,20 +1,8 @@
 import { CollectionBeforeChangeHook } from "payload/types";
 import APIError from "payload/dist/errors/APIError";
-import payload from "payload";
 
-export const validateRole: CollectionBeforeChangeHook = async ({ operation, req }) => {
+export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
   try {
-    const users = await payload.find({
-      collection: "users",
-      overrideAccess: true,
-      depth: 0,
-      page: 1,
-      limit: 1,
-    });
-    console.log(users);
-    console.log(users.docs);
-    console.log(users.totalDocs);
-    console.log(req.user);
     switch (req.user.role) {
       case "super_admin":
         break;

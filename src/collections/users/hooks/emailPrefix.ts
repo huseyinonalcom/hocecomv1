@@ -21,12 +21,9 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
         req.body.email = `${req.body.email.split("@")[0]}+${req.user.company.id}@${req.body.email.split("@")[1]}`;
       } else if (req.query.company) {
         req.body.email = `${req.body.email.split("@")[0]}+${req.query.company}@${req.body.email.split("@")[1]}`;
-      } else {
-        throw new APIError("No company could be determined for this user.", 403);
       }
     }
   } catch (e) {
-    console.log(e);
     throw new APIError("No company could be determined for this user.", 403);
   }
 
