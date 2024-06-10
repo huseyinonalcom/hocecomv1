@@ -12,7 +12,7 @@ const Users: CollectionConfig = {
     tokenExpiration: 302400,
     useAPIKey: true,
     forgotPassword: {
-      generateEmailHTML: ({ token, user }) => {
+      generateEmailHTML: ({ token, user }: { token: string; user: { company: { name } } }) => {
         return `<div>
           <h1>Seems like you've lost your password for ${JSON.stringify(user.company.name)}</h1>
           <p>Click the link below to reset your password</p>
