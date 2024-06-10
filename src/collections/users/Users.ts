@@ -44,13 +44,7 @@ const Users: CollectionConfig = {
     ],
   },
   access: {
-    create: ({ req }) => {
-      if (isSuperAdmin({ req }) || checkRole(["admin", "employee", "website"], req.user)) {
-        return true;
-      } else {
-        return false;
-      }
-    },
+    create: () => true,
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;

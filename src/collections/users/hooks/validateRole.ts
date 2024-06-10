@@ -1,8 +1,13 @@
 import { CollectionBeforeOperationHook } from "payload/types";
 import APIError from "payload/dist/errors/APIError";
+import payload from "payload";
 
 export const validateRole: CollectionBeforeOperationHook = async ({ args, operation, req }) => {
   try {
+    const users = await payload.find({
+      collection: "users",
+    });
+    console.log(users);
     if (operation == "create" || operation == "update") {
       switch (req.user.role) {
         case "super_admin":
