@@ -25,7 +25,8 @@ const Users: CollectionConfig = {
     useAsTitle: "email",
   },
   hooks: {
-    beforeOperation: [validateRole, setCompanyHook, emailPrefix],
+    beforeOperation: [setCompanyHook, emailPrefix],
+    beforeChange: [validateRole],
     afterRead: [
       // fieldSelectionHook,
       async ({ req, doc }) => {
