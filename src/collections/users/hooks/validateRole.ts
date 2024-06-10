@@ -4,7 +4,6 @@ import APIError from "payload/dist/errors/APIError";
 export const validateRole: CollectionBeforeOperationHook = async ({ args, operation, req }) => {
   try {
     if (operation == "create" || operation == "update") {
-      return true;
       switch (req.user.role) {
         case "super_admin":
           break;
