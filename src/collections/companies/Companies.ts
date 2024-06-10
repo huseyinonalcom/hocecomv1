@@ -13,7 +13,7 @@ const Companies: CollectionConfig = {
     useAsTitle: "name",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
   },
   access: {
     create: isSuperAdmin,

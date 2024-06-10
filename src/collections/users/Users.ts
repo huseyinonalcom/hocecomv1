@@ -90,6 +90,7 @@ const Users: CollectionConfig = {
     {
       name: "role",
       type: "select",
+      saveToJWT: true,
       defaultValue: "customer",
       options: [
         {
@@ -168,6 +169,7 @@ const Users: CollectionConfig = {
       name: "establishment",
       type: "relationship",
       hasMany: true,
+      saveToJWT: true,
       relationTo: "establishments",
     },
     { name: "payments", type: "relationship", hasMany: true, relationTo: "payments" },
@@ -175,6 +177,7 @@ const Users: CollectionConfig = {
     // employee fields
     {
       name: "employeeRank",
+      saveToJWT: true,
       type: "select",
       options: [
         {
@@ -222,6 +225,7 @@ const Users: CollectionConfig = {
     // customer fields
     {
       name: "customerCategory",
+      saveToJWT: true,
       type: "select",
       options: [
         {

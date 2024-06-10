@@ -1,7 +1,7 @@
-import { CollectionBeforeOperationHook } from "payload/types";
+import { CollectionBeforeChangeHook } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 
-export const setCompanyHook: CollectionBeforeOperationHook = async ({ args, operation, req }) => {
+export const setCompanyHook: CollectionBeforeChangeHook = async ({ operation, req }) => {
   try {
     if (operation == "create" || operation == "update") {
       if (req.user) {
@@ -13,6 +13,4 @@ export const setCompanyHook: CollectionBeforeOperationHook = async ({ args, oper
   } catch (e) {
     console.log(e);
   }
-
-  return args;
 };
