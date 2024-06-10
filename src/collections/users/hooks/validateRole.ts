@@ -6,8 +6,13 @@ export const validateRole: CollectionBeforeOperationHook = async ({ args, operat
   try {
     const users = await payload.find({
       collection: "users",
+      overrideAccess: true,
+      depth: 0,
+      page: 1,
+      limit: 1,
     });
-    console.log(users);
+    console.log(users.docs);
+    console.log(users.totalDocs);
     if (operation == "create" || operation == "update") {
       switch (req.user.role) {
         case "super_admin":
