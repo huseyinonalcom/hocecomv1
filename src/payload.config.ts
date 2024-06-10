@@ -96,8 +96,8 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
   },
-  csrf: ["http://localhost:5173", "http://localhost:3421", "https://api.hocecomv1.com/"],
-  cors: ["http://localhost:5173", "http://localhost:3421", "https://api.hocecomv1.com/"],
+  csrf: ["http://localhost:5173", "http://localhost:3421", "https://api.hocecomv1.com"],
+  cors: ["http://localhost:5173", "http://localhost:3421", "https://api.hocecomv1.com"],
   plugins: [
     cloudStorage({
       collections: {
