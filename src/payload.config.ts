@@ -28,6 +28,7 @@ import Suppliers from "./collections/suppliers/Suppliers";
 import SupplierOrders from "./collections/supplierOrders/SupplierOrders";
 import SupplierOrderProducts from "./collections/supplierOrderProducts/SupplierOrderProducts";
 import Files from "./collections/files/Files";
+import Projects from "./collections/projects/Projects";
 
 const s3ad = s3Adapter({
   config: {
@@ -79,6 +80,7 @@ export default buildConfig({
     ProductCollections,
     ProductImages,
     ProductPromos,
+    Projects,
     Products,
     Shelves,
     SupplierOrders,
