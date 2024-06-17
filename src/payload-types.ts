@@ -20,6 +20,7 @@ export interface Config {
     'product-collections': ProductCollection;
     'product-images': ProductImage;
     'product-promos': ProductPromo;
+    projects: Project;
     products: Product;
     shelves: Shelf;
     'supplier-orders': SupplierOrder;
@@ -485,6 +486,21 @@ export interface ProductCollection {
   isDeleted?: boolean | null;
   isFeatured?: boolean | null;
   tags?: string | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  description?: string | null;
+  featured?: boolean | null;
+  files?: (number | File)[] | null;
+  cover?: (number | null) | File;
   company: number | Company;
   updatedAt: string;
   createdAt: string;

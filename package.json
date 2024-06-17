@@ -1,6 +1,6 @@
 {
   "name": "hocecomv1",
-  "description": "Payloard powered multi-tenant CMS for hocecomv1 with AWS S3 object storage",
+  "description": "Payload powered multi-tenant CMS for hocecomv1 with AWS S3 object storage",
   "version": "1.0.0",
   "main": "dist/server.js",
   "license": "MIT",
