@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload/types";
 import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
+import { adminCheck } from "../access/adminCheck";
 
 const ProductCategories: CollectionConfig = {
   slug: "product-categories",
@@ -46,9 +47,7 @@ const ProductCategories: CollectionConfig = {
         };
       }
     },
-    delete: () => {
-      return false;
-    },
+    delete: ({ req }) => adminCheck({req}),
   },
   fields: [
     { name: "name", type: "text", required: true },
@@ -56,13 +55,44 @@ const ProductCategories: CollectionConfig = {
     { name: "priority", type: "number", required: true, defaultValue: 0 },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     // relations
-    { name: "headCategory", type: "relationship", relationTo: "product-categories", hasMany: false },
-    { name: "subCategories", type: "relationship", relationTo: "product-categories", hasMany: true },
-    { name: "categoryImage", type: "relationship", relationTo: "product-images", hasMany: false },
-    { name: "promos", type: "relationship", relationTo: "product-promos", hasMany: true },
-    { name: "products", type: "relationship", relationTo: "products", hasMany: true },
+    {
+      name: "headCategory",
+      type: "relationship",
+      relationTo: "product-categories",
+      hasMany: false,
+    },
+    {
+      name: "subCategories",
+      type: "relationship",
+      relationTo: "product-categories",
+      hasMany: true,
+    },
+    {
+      name: "categoryImage",
+      type: "relationship",
+      relationTo: "product-images",
+      hasMany: false,
+    },
+    {
+      name: "promos",
+      type: "relationship",
+      relationTo: "product-promos",
+      hasMany: true,
+    },
+    {
+      name: "products",
+      type: "relationship",
+      relationTo: "products",
+      hasMany: true,
+    },
     // company relation is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    {
+      name: "company",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "companies",
+      required: true,
+    },
   ],
 };
 
