@@ -62,12 +62,6 @@ const ProductCategories: CollectionConfig = {
       hasMany: false,
     },
     {
-      name: "subCategories",
-      type: "relationship",
-      relationTo: "product-categories",
-      hasMany: true,
-    },
-    {
       name: "categoryImage",
       type: "relationship",
       relationTo: "product-images",
