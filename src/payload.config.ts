@@ -66,7 +66,7 @@ export default buildConfig({
   editor: slateEditor({}),
   rateLimit: {
     trustProxy: true,
-    max: 2000,
+    max: 5000,
   },
   collections: [
     Addresses,
