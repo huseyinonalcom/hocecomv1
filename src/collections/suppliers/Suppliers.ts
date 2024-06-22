@@ -71,8 +71,30 @@ const Suppliers: CollectionConfig = {
       type: "text",
       required: true,
     },
+    {
+      name: "products",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "products",
+    },
+    { name: "phone", type: "text" },
+    { name: "orderMail", type: "text" },
+    { name: "contactMail", type: "text" },
+    { name: "orderTime", type: "number" },
+    {
+      name: "products",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "products",
+    },
     // company relation is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    {
+      name: "company",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "companies",
+      required: true,
+    },
   ],
 };
 
