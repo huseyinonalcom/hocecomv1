@@ -103,6 +103,11 @@ export interface Company {
   name: string;
   logo?: (number | null) | Logo;
   active?: boolean | null;
+  emailUser?: string | null;
+  emailPassword?: string | null;
+  emailHost?: string | null;
+  emailPort?: number | null;
+  emailSec?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -265,7 +270,6 @@ export interface ProductCategory {
   priority: number;
   isDeleted?: boolean | null;
   headCategory?: (number | null) | ProductCategory;
-  subCategories?: (number | ProductCategory)[] | null;
   categoryImage?: (number | null) | ProductImage;
   promos?: (number | ProductPromo)[] | null;
   products?: (number | Product)[] | null;
