@@ -83,9 +83,9 @@ const Establishments: CollectionConfig = {
       ],
     },
     {
-      name: "addresses",
+      name: "address",
       type: "relationship",
-      hasMany: true,
+      hasMany: false,
       relationTo: "addresses",
     },
     { name: "shelves", type: "relationship", hasMany: true, relationTo: "shelves" },
