@@ -17,7 +17,11 @@ const Companies: CollectionConfig = {
   },
   access: {
     create: isSuperAdmin,
-    read: adminCheckForCompany || websiteCheckForCompany || companyCheckForCompany || customerCheckForCompany,
+    read:
+      adminCheckForCompany ||
+      websiteCheckForCompany ||
+      companyCheckForCompany ||
+      customerCheckForCompany,
     delete: () => false,
     update: adminCheckForCompany,
   },
@@ -32,6 +36,11 @@ const Companies: CollectionConfig = {
       },
       defaultValue: false,
     },
+    { name: "emailUser", type: "email" },
+    { name: "emailPassword", type: "text" },
+    { name: "emailHost", type: "text" },
+    { name: "emailPort", type: "number" },
+    { name: "emailSec", type: "text" },
   ],
 };
 
