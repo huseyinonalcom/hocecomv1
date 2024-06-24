@@ -78,9 +78,38 @@ const DocumentProducts: CollectionConfig = {
     { name: "amount", type: "number", required: true },
     { name: "tax", type: "number", required: true },
     // relations
-    { name: "product", type: "relationship", hasMany: false, relationTo: "products" },
-    { name: "customer", type: "relationship", hasMany: false, relationTo: "users", required: true },
-    { name: "document", type: "relationship", hasMany: false, relationTo: "documents", required: true},
+    {
+      name: "product",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "products",
+    },
+    {
+      name: "customer",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "users",
+      required: true,
+    },
+    {
+      name: "document",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "documents",
+      required: true,
+    },
+    {
+      name: "receivedTasks",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "tasks",
+    },
+    {
+      name: "issuedTasks",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "tasks",
+    },
     // calculated fields
     {
       name: "subTotal",
@@ -119,7 +148,13 @@ const DocumentProducts: CollectionConfig = {
       },
     },
     // company relationship is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    {
+      name: "company",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "companies",
+      required: true,
+    },
   ],
 };
 

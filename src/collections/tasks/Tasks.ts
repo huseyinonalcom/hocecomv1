@@ -68,6 +68,7 @@ const Tasks: CollectionConfig = {
     { name: "isCompleted", type: "checkbox", defaultValue: false },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "date", type: "date", required: true },
+    { name: "dateCreated", type: "date", required: true },
     { name: "notes", type: "textarea" },
     {
       name: "document",
@@ -76,6 +77,12 @@ const Tasks: CollectionConfig = {
       relationTo: "documents",
     },
     { name: "files", type: "relationship", hasMany: true, relationTo: "files" },
+    {
+      name: "taskComments",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "task-comments",
+    },
     // company relation is always required
     {
       name: "company",

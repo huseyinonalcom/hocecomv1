@@ -53,11 +53,23 @@ const SupportTickets: CollectionConfig = {
   fields: [
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "openDate", type: "date", required: true },
-    { name: "closedDate", type: "date", required: true },
-    { name: "document", type: "relationship", hasMany: false, relationTo: "documents", required: true },
+    { name: "closedDate", type: "date", required: false },
+    {
+      name: "document",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "documents",
+      required: true,
+    },
     { name: "notes", type: "textarea" },
     // company relation is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    {
+      name: "company",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "companies",
+      required: true,
+    },
   ],
 };
 
