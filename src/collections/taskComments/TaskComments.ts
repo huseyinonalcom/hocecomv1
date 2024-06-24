@@ -1,12 +1,11 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
-const Tasks: CollectionConfig = {
-  slug: "tasks",
+const TaskComments: CollectionConfig = {
+  slug: "task-comments",
   admin: {
-    useAsTitle: "category",
+    useAsTitle: "comment",
   },
   hooks: {
     beforeOperation: [setCompanyHook],
@@ -51,31 +50,18 @@ const Tasks: CollectionConfig = {
     },
   },
   fields: [
+    { name: "date", type: "date", required: true },
+    { name: "comment", type: "text" },
+    { name: "isDeleted", type: "checkbox", defaultValue: false },
+    // relations
+    { name: "task", type: "relationship", hasMany: false, relationTo: "tasks" },
     {
       name: "creator",
       type: "relationship",
       hasMany: false,
       relationTo: "users",
+      required: true,
     },
-    {
-      name: "assignee",
-      type: "relationship",
-      hasMany: false,
-      relationTo: "users",
-    },
-    { name: "category", type: "text", required: true },
-    { name: "description", type: "textarea" },
-    { name: "isCompleted", type: "checkbox", defaultValue: false },
-    { name: "isDeleted", type: "checkbox", defaultValue: false },
-    { name: "date", type: "date", required: true },
-    { name: "notes", type: "textarea" },
-    {
-      name: "document",
-      type: "relationship",
-      hasMany: false,
-      relationTo: "documents",
-    },
-    { name: "files", type: "relationship", hasMany: true, relationTo: "files" },
     // company relation is always required
     {
       name: "company",
@@ -87,4 +73,4 @@ const Tasks: CollectionConfig = {
   ],
 };
 
-export default Tasks;
+export default TaskComments;
