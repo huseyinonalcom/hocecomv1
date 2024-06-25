@@ -26,7 +26,7 @@ const ProductCategories: CollectionConfig = {
       }
     },
     read: ({ req }) => {
-      if (isSuperAdmin({ req })) {
+      if (adminCheck({ req })) {
         return true;
       } else {
         return {
@@ -47,7 +47,7 @@ const ProductCategories: CollectionConfig = {
         };
       }
     },
-    delete: ({ req }) => adminCheck({req}),
+    delete: ({ req }) => adminCheck({ req }),
   },
   fields: [
     { name: "name", type: "text", required: true },
