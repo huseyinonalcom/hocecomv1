@@ -84,7 +84,7 @@ const Products: CollectionConfig = {
       type: "relationship",
       relationTo: "suppliers",
       hasMany: false,
-      required: true,
+      required: false,
     },
     { name: "discountRange", type: "number", required: true, defaultValue: 10 },
     { name: "isActive", type: "checkbox", defaultValue: false },
