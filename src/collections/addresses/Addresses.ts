@@ -34,7 +34,25 @@ const Addresses: CollectionConfig = {
         return false;
       }
     },
-    update: ({}) => false,
+    update: ({ req }) => {
+      if (isSuperAdmin({ req })) {
+        return true;
+      } else if (checkRole(["admin", "employee"], req.user)) {
+        return {
+          company: {
+            equals: req.user.company.id,
+          },
+        };
+      } else if (checkRole(["customer"], req.user)) {
+        return {
+          customer: {
+            equals: req.user.id,
+          },
+        };
+      } else {
+        return false;
+      }
+    },
     delete: ({}) => false,
   },
   fields: [
