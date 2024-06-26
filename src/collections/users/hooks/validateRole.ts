@@ -49,6 +49,7 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
               403
             );
           }
+          break;
         default:
           throw new APIError("No user detected.", 403);
       }
