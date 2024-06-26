@@ -49,12 +49,38 @@ const Addresses: CollectionConfig = {
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "isDefault", type: "checkbox", defaultValue: false },
     // relationships
-    { name: "customer", type: "relationship", hasMany: false, relationTo: "users" },
-    { name: "supplier", type: "relationship", hasMany: false, relationTo: "suppliers" },
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
-    { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
+    {
+      name: "customer",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "users",
+    },
+    {
+      name: "supplier",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "suppliers",
+    },
+    {
+      name: "establishment",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "establishments",
+    },
+    {
+      name: "creator",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "users",
+    },
     // company relation is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    {
+      name: "company",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "companies",
+      required: true,
+    },
   ],
 };
 

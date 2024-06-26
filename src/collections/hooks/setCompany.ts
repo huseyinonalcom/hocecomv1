@@ -12,8 +12,6 @@ export const setCompanyHook: CollectionBeforeChangeHook = async ({
           req.body.company = req.user.company.id;
         }
       }
-    } else {
-      console.log(req.user);
     }
   } catch (e) {
     console.log(e);
