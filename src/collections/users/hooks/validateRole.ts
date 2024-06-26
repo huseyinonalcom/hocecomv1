@@ -41,6 +41,13 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
             );
           }
           break;
+        case "customer":
+          if (req.body.role && req.body.role != "customer") {
+            throw new APIError(
+              "You do not have permission to create a user with this role.",
+              403
+            );
+          }
         default:
           throw new APIError("No user detected.", 403);
       }
