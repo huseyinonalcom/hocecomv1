@@ -1,7 +1,9 @@
-import { CollectionBeforeChangeHook } from "payload/types";
+import {
+  CollectionBeforeOperationHook,
+} from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 
-export const setCompanyHook: CollectionBeforeChangeHook = async ({
+export const setCompanyHook: CollectionBeforeOperationHook = async ({
   operation,
   req,
 }) => {
