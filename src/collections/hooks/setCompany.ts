@@ -5,7 +5,6 @@ export const setCompanyHook: CollectionBeforeOperationHook = async ({
   operation,
   req,
 }) => {
-  console.log(req.body);
   try {
     if (operation == "create" || operation == "update") {
       if (req.user) {
