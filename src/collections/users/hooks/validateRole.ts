@@ -12,7 +12,7 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
       limit: 1,
     });
     if (users.totalDocs > 0) {
-      console.log(req.user);
+      console.log(req.body);
       switch (req.user.role) {
         case "website":
           if (req.body.role && req.body.role != "customer") {
