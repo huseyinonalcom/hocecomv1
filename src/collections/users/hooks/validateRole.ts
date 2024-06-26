@@ -13,16 +13,8 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
     });
     if (users.totalDocs > 0) {
       switch (req.user.role) {
-        case null:
-          break;
-        case undefined:
-          break;
-        case "":
-          break;
-        case "super_admin":
-          break;
         case "website":
-          if (req.body.role != "customer") {
+          if (req.body.role && req.body.role != "customer") {
             throw new APIError(
               "You do not have permission to create a user with this role.",
               403
@@ -30,7 +22,7 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
           }
           break;
         case "employee":
-          if (req.body.role != "customer") {
+          if (req.body.role && req.body.role != "customer") {
             throw new APIError(
               "You do not have permission to create a user with this role.",
               403
@@ -38,7 +30,11 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
           }
           break;
         case "admin":
-          if (req.body.role != "customer" && req.body.role != "employee") {
+          if (
+            req.body.role &&
+            req.body.role != "customer" &&
+            req.body.role != "employee"
+          ) {
             throw new APIError(
               "You do not have permission to create a user with this role.",
               403
