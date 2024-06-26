@@ -64,11 +64,7 @@ const Users: CollectionConfig = {
           },
         };
       } else if (checkRole(["website"], req.user)) {
-        return {
-          id: {
-            equals: req.user.id,
-          },
-        };
+        return false;
       } else {
         return {
           company: {
