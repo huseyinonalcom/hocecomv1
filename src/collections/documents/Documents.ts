@@ -148,7 +148,7 @@ const Documents: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "users",
-      required: true,
+      required: true, 
     },
     {
       name: "establishment",
@@ -193,14 +193,14 @@ const Documents: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "addresses",
-      required: true,
+      required: false,
     },
     {
       name: "delAddress",
       type: "relationship",
       hasMany: false,
       relationTo: "addresses",
-      required: true,
+      required: false,
     },
     {
       name: "creator",
