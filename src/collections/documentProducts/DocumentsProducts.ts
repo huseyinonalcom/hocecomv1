@@ -96,7 +96,6 @@ const DocumentProducts: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "documents",
-      required: true,
     },
     {
       name: "receivedTasks",
