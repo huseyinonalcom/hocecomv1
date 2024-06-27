@@ -112,6 +112,7 @@ const DocumentProducts: CollectionConfig = {
         ],
         afterRead: [
           ({ data }) => {
+            console.log(data);
             return data.quantity * (data.value * (1 - data.reduction / 100));
           },
         ],
