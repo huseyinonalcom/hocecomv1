@@ -4,6 +4,7 @@ import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
 import payload from "payload";
 import stripe from "stripe";
+import { Company, DocumentProduct } from "payload/generated-types";
 
 const Payments: CollectionConfig = {
   slug: "payments",
@@ -19,52 +20,60 @@ const Payments: CollectionConfig = {
       path: "stripe-payment-link",
       method: "post",
       handler: async (req, res, next) => {
-        const documentID = req.params.document;
-        if (!documentID) {
-          res.status(400).send({ error: "document id is required" });
-          return;
-        }
-        const document = await payload.findByID({
-          collection: "documents",
-          id: documentID,
-          depth: 5,
-        });
+        try {
+          const documentID = req.params.document;
+          if (!documentID) {
+            res.status(400).send({ error: "document id is required" });
+            return;
+          }
+          const document = await payload.findByID({
+            collection: "documents",
+            id: documentID,
+            depth: 5,
+          });
 
-        const company = await payload.findByID({
-          collection: "companies",
-          id: document.company.id,
-          depth: 3,
-        });
+          const company = await payload.findByID({
+            collection: "companies",
+            id: (document.company as Company).id,
+            depth: 3,
+          });
 
-        const stripe = require("stripe")(company.stripeSecretKey);
+          const stripe = require("stripe")(company.stripeSecretKey);
 
-        const paymentLink = await stripe.paymentLinks.create({
-          line_items: [
-            {
-              price_data: {
-                currency: "eur",
-                product_data: {
-                  name: "Bestelling " + document.prefix + document.number,
+          const paymentLink = await stripe.paymentLinks.create({
+            line_items: [
+              {
+                price_data: {
+                  currency: "eur",
+                  product_data: {
+                    name: "Bestelling " + document.prefix + document.number,
+                  },
+                  unit_amount:
+                    document.documentProducts.reduce(
+                      (accumulator: any, product: DocumentProduct) => {
+                        return accumulator + product.subTotal;
+                      },
+                      0
+                    ) * 100,
                 },
-                unit_amount:
-                  document.documentProducts.reduce((accumulator, product) => {
-                    return accumulator + product.subTotal;
-                  }, 0) * 100,
+                quantity: 1,
               },
-              quantity: 1,
-            },
-          ],
-          // after_completion: {
-          //   type: "redirect",
-          //   redirect: {
-          //     url: "your-app://payment-complete", // Deep link to your app
-          //   },
-          // },
-        });
+            ],
+            // after_completion: {
+            //   type: "redirect",
+            //   redirect: {
+            //     url: "your-app://payment-complete", // Deep link to your app
+            //   },
+            // },
+          });
 
-        console.log(paymentLink);
+          console.log(paymentLink);
 
-        res.status(200).send({ url: paymentLink.url });
+          res.status(200).send({ url: paymentLink.url });
+        } catch (error) {
+          console.log(error);
+          res.status(500).send({ error: "An error occurred" });
+        }
       },
     },
   ],
