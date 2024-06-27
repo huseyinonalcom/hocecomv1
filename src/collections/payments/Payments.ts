@@ -17,7 +17,7 @@ const Payments: CollectionConfig = {
   },
   endpoints: [
     {
-      path: "stripe-payment-link",
+      path: "/stripe-payment-link",
       method: "post",
       handler: async (req, res, next) => {
         try {
