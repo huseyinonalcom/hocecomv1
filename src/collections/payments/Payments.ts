@@ -30,8 +30,6 @@ const Payments: CollectionConfig = {
             overrideAccess: true,
           });
 
-          console.log("document", document);
-
           const company = await payload.findByID({
             collection: "companies",
             id: (document.company as Company).id,
@@ -39,26 +37,28 @@ const Payments: CollectionConfig = {
             overrideAccess: true,
           });
 
-          console.log("company", company);
-
           const stripe = require("stripe")(company.stripeSecretKey);
+
+          const price = await stripe.prices.create({
+            currency: "eur",
+            unit_amount:
+              document.documentProducts.reduce(
+                (accumulator: any, product: DocumentProduct) => {
+                  return accumulator + product.subTotal;
+                },
+                0
+              ) * 100,
+            product_data: {
+              name: "Bestelling " + document.prefix + document.number,
+            },
+          });
+
+          console.log(price);
 
           const paymentLink = await stripe.paymentLinks.create({
             line_items: [
               {
-                price_data: {
-                  currency: "eur",
-                  product_data: {
-                    name: "Bestelling " + document.prefix + document.number,
-                  },
-                  unit_amount:
-                    document.documentProducts.reduce(
-                      (accumulator: any, product: DocumentProduct) => {
-                        return accumulator + product.subTotal;
-                      },
-                      0
-                    ) * 100,
-                },
+                price: "sd",
                 quantity: 1,
               },
             ],
