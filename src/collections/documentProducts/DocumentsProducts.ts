@@ -129,7 +129,11 @@ const DocumentProducts: CollectionConfig = {
         ],
         afterRead: [
           ({ data }) => {
-            return data.subTotal - data.subTotal / (data.tax / 100 + 1);
+            return (
+              data.amount * (data.value * (1 - data.reduction / 100)) -
+              (data.amount * (data.value * (1 - data.reduction / 100))) /
+                (data.tax / 100 + 1)
+            );
           },
         ],
       },
