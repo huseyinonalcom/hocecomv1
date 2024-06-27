@@ -14,6 +14,8 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
     if (users.totalDocs > 0) {
       console.log(req.body);
       switch (req.user.role) {
+        case "super_admin":
+          break;
         case "website":
           if (req.body.role && req.body.role != "customer") {
             throw new APIError(
