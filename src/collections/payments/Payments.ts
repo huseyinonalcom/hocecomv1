@@ -20,6 +20,7 @@ const Payments: CollectionConfig = {
       path: "/stripe-payment-link",
       method: "post",
       handler: async (req, res, next) => {
+        console.log("stripe-payment-link");
         try {
           const documentID = req.params.document;
           if (!documentID) {
