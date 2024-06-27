@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
+import payload from "payload";
 
 const Documents: CollectionConfig = {
   slug: "documents",
@@ -10,8 +11,52 @@ const Documents: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [setCompanyHook],
-    // afterRead: [fieldSelectionHook],
   },
+  endpoints: [
+    {
+      path: "/generate-number",
+      method: "get",
+      handler: async (req, res) => {
+        const { type } = req.query;
+
+        if (!type) {
+          res.status(400).send({ error: "type required" });
+          return;
+        }
+
+        let companyID;
+        if (typeof req.user.company === "number") {
+          companyID = req.user.company;
+        } else {
+          companyID = req.user.company.id;
+        }
+
+        const documents = await payload.find({
+          collection: "documents",
+          depth: 2,
+          where: {
+            type: {
+              equals: type,
+            },
+            company: {
+              equals: companyID,
+            },
+          },
+          limit: 1,
+          sort: "-number",
+        });
+
+        const lastDocument = documents.docs[0];
+
+        if (!lastDocument) {
+          res.send({ number: 1 });
+          return;
+        }
+
+        res.send({ number: Number(lastDocument.number) + 1 });
+      },
+    },
+  ],
   access: {
     create: ({ req }) => {
       if (isSuperAdmin({ req })) {
