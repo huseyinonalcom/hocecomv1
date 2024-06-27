@@ -182,7 +182,6 @@ const Users: CollectionConfig = {
     {
       name: "establishment",
       type: "relationship",
-      hasMany: true,
       saveToJWT: true,
       relationTo: "establishments",
     },

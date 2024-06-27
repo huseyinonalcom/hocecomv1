@@ -73,7 +73,7 @@ export interface User {
   phone?: string | null;
   isBlocked?: boolean | null;
   company?: (number | null) | Company;
-  establishment?: (number | Establishment)[] | null;
+  establishment?: (number | null) | Establishment;
   payments?: (number | Payment)[] | null;
   preferredLanguage?: string | null;
   employeeRank?: ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9') | null;
