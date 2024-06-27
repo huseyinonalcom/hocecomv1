@@ -97,18 +97,6 @@ const DocumentProducts: CollectionConfig = {
       hasMany: false,
       relationTo: "documents",
     },
-    {
-      name: "receivedTasks",
-      type: "relationship",
-      hasMany: true,
-      relationTo: "tasks",
-    },
-    {
-      name: "issuedTasks",
-      type: "relationship",
-      hasMany: true,
-      relationTo: "tasks",
-    },
     // calculated fields
     {
       name: "subTotal",

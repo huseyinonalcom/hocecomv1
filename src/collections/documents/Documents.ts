@@ -109,7 +109,6 @@ const Documents: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "establishments",
-      required: true,
     },
     {
       name: "documentProducts",
