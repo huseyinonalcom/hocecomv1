@@ -58,8 +58,18 @@ const Establishments: CollectionConfig = {
       hasMany: true,
       relationTo: "documents",
     },
-    { name: "deliveries", type: "relationship", hasMany: true, relationTo: "deliveries" },
-    { name: "supplierOrders", type: "relationship", hasMany: true, relationTo: "supplier-orders" },
+    {
+      name: "deliveries",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "deliveries",
+    },
+    {
+      name: "supplierOrders",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "supplier-orders",
+    },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "phone", type: "text" },
     { name: "phone2", type: "text" },
@@ -67,6 +77,7 @@ const Establishments: CollectionConfig = {
     { name: "bankAccount1", type: "text" },
     { name: "bankAccount2", type: "text" },
     { name: "bankAccount3", type: "text" },
+    { name: "extraFields", type: "json" },
     {
       name: "category",
       type: "select",
@@ -88,12 +99,28 @@ const Establishments: CollectionConfig = {
       hasMany: false,
       relationTo: "addresses",
     },
-    { name: "shelves", type: "relationship", hasMany: true, relationTo: "shelves" },
+    {
+      name: "shelves",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "shelves",
+    },
     { name: "logo", type: "relationship", hasMany: false, relationTo: "logos" },
     { name: "users", type: "relationship", hasMany: true, relationTo: "users" },
-    { name: "customers", type: "relationship", hasMany: true, relationTo: "users" },
+    {
+      name: "customers",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "users",
+    },
     // company relation is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    {
+      name: "company",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "companies",
+      required: true,
+    },
   ],
 };
 
