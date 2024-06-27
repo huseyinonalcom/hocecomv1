@@ -27,15 +27,19 @@ const Payments: CollectionConfig = {
             collection: "documents",
             id: documentID,
             depth: 5,
+            overrideAccess: true,
           });
+
+          console.log("document", document);
 
           const company = await payload.findByID({
             collection: "companies",
             id: (document.company as Company).id,
             depth: 3,
+            overrideAccess: true,
           });
 
-          console.log("company", company, "document", document);
+          console.log("company", company);
 
           const stripe = require("stripe")(company.stripeSecretKey);
 
