@@ -34,6 +34,7 @@ const Documents: CollectionConfig = {
         const documents = await payload.find({
           collection: "documents",
           depth: 2,
+          overrideAccess: true,
           where: {
             type: {
               equals: type,
