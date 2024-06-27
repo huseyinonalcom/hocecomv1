@@ -104,6 +104,10 @@ const DocumentProducts: CollectionConfig = {
       admin: {
         hidden: true,
       },
+      access: {
+        create: () => false,
+        update: () => false,
+      },
       hooks: {
         beforeChange: [
           ({ siblingData }) => {
@@ -121,6 +125,10 @@ const DocumentProducts: CollectionConfig = {
       name: "subTotalTax",
       type: "number",
       admin: { hidden: true },
+      access: {
+        create: () => false,
+        update: () => false,
+      },
       hooks: {
         beforeChange: [
           ({ siblingData }) => {
@@ -133,7 +141,7 @@ const DocumentProducts: CollectionConfig = {
               data.amount * (data.value * (1 - data.reduction / 100)) -
               (data.amount * (data.value * (1 - data.reduction / 100))) /
                 (data.tax / 100 + 1)
-            );
+            ).toFixed(2);
           },
         ],
       },
