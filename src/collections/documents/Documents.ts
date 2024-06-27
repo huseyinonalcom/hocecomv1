@@ -17,44 +17,43 @@ const Documents: CollectionConfig = {
       path: "/generate-number",
       method: "get",
       handler: async (req, res) => {
-        const { type } = req.query;
+        try {
+          const { type } = req.query;
 
-        if (!type) {
-          res.status(400).send({ error: "type required" });
-          return;
-        }
+          if (!type) {
+            res.status(400).send({ error: "type required" });
+            return;
+          }
 
-        let companyID;
-        if (typeof req.user.company === "number") {
-          companyID = req.user.company;
-        } else {
-          companyID = req.user.company.id;
-        }
-
-        const documents = await payload.find({
-          collection: "documents",
-          depth: 2,
-          overrideAccess: true,
-          where: {
-            type: {
-              equals: type,
+          const documents = await payload.find({
+            collection: "documents",
+            depth: 2,
+            overrideAccess: true,
+            where: {
+              type: {
+                equals: type,
+              },
+              company: {
+                equals: req.user.company,
+              },
             },
-            company: {
-              equals: companyID,
-            },
-          },
-          limit: 1,
-          sort: "-number",
-        });
+            limit: 1,
+            sort: "-number",
+          });
 
-        const lastDocument = documents.docs[0];
+          const lastDocument = documents.docs[0];
 
-        if (!lastDocument) {
-          res.send({ number: 1 });
-          return;
+          console.log("lastDocument", lastDocument);
+
+          if (!lastDocument) {
+            res.status(200).send({ number: 1 });
+            return;
+          }
+
+          res.status(200).send({ number: Number(lastDocument.number) + 1 });
+        } catch (error) {
+          res.status(500).send({ error });
         }
-
-        res.send({ number: Number(lastDocument.number) + 1 });
       },
     },
   ],
