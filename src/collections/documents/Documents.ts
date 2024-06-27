@@ -52,6 +52,7 @@ const Documents: CollectionConfig = {
 
           res.status(200).send({ number: Number(lastDocument.number) + 1 });
         } catch (error) {
+          console.error(error);
           res.status(500).send({ error });
         }
       },
