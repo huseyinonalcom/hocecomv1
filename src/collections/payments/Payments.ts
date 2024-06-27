@@ -62,6 +62,8 @@ const Payments: CollectionConfig = {
           // },
         });
 
+        console.log(paymentLink);
+
         res.status(200).send({ url: paymentLink.url });
       },
     },
