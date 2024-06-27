@@ -107,7 +107,7 @@ const DocumentProducts: CollectionConfig = {
       hooks: {
         beforeChange: [
           ({ siblingData }) => {
-            delete siblingData["total"];
+            delete siblingData["subTotal"];
           },
         ],
         afterRead: [
