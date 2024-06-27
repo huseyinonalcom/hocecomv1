@@ -17,7 +17,6 @@ const Payments: CollectionConfig = {
       path: "/stripe-payment-link",
       method: "post",
       handler: async (req, res, next) => {
-        console.log("stripe-payment-link");
         try {
           const documentID = req.params.document;
           if (!documentID) {
@@ -35,6 +34,8 @@ const Payments: CollectionConfig = {
             id: (document.company as Company).id,
             depth: 3,
           });
+
+          console.log("company", company, "document", document);
 
           const stripe = require("stripe")(company.stripeSecretKey);
 
