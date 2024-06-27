@@ -112,10 +112,6 @@ const DocumentProducts: CollectionConfig = {
         ],
         afterRead: [
           ({ data }) => {
-            console.log(
-              "subTotal",
-              data.amount * (data.value * (1 - data.reduction / 100))
-            );
             return data.amount * (data.value * (1 - data.reduction / 100));
           },
         ],
