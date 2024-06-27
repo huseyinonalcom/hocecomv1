@@ -34,7 +34,7 @@ const Documents: CollectionConfig = {
                 equals: type,
               },
               company: {
-                equals: req.user.company,
+                equals: req.user.company.id,
               },
             },
             limit: 1,
