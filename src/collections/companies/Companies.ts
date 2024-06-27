@@ -43,6 +43,7 @@ const Companies: CollectionConfig = {
     { name: "emailSec", type: "text" },
     { name: "stripeSecretKey", type: "text" },
     { name: "stripePublishableKey", type: "text" },
+    { name: "companyUUID", type: "text" },
   ],
 };
 
