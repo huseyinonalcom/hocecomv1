@@ -53,12 +53,11 @@ const Payments: CollectionConfig = {
             },
           });
 
-          console.log(price);
 
           const paymentLink = await stripe.paymentLinks.create({
             line_items: [
               {
-                price: "sd",
+                price: price.id,
                 quantity: 1,
               },
             ],
