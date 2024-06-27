@@ -114,9 +114,9 @@ const DocumentProducts: CollectionConfig = {
           ({ data }) => {
             console.log(
               "subTotal",
-              data.quantity * (data.value * (1 - data.reduction / 100))
+              data.amount * (data.value * (1 - data.reduction / 100))
             );
-            return data.quantity * (data.value * (1 - data.reduction / 100));
+            return data.amount * (data.value * (1 - data.reduction / 100));
           },
         ],
       },
