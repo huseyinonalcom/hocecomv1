@@ -23,6 +23,7 @@ const Payments: CollectionConfig = {
             res.status(400).send({ error: "document id is required" });
             return;
           }
+          const returnURL: string = req.query.return as string;
           const document = await payload.findByID({
             collection: "documents",
             id: documentID,
@@ -53,7 +54,6 @@ const Payments: CollectionConfig = {
             },
           });
 
-
           const paymentLink = await stripe.paymentLinks.create({
             line_items: [
               {
@@ -61,12 +61,12 @@ const Payments: CollectionConfig = {
                 quantity: 1,
               },
             ],
-            // after_completion: {
-            //   type: "redirect",
-            //   redirect: {
-            //     url: "your-app://payment-complete", // Deep link to your app
-            //   },
-            // },
+            after_completion: {
+              type: "redirect",
+              redirect: {
+                url: returnURL, // Deep link to your app
+              },
+            },
           });
 
           console.log(paymentLink);
