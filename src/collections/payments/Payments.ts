@@ -18,7 +18,7 @@ const Payments: CollectionConfig = {
       method: "post",
       handler: async (req, res, next) => {
         try {
-          console.log(req.params);
+          console.log(req.context.params);
           const documentID = req.params.document;
           if (!documentID) {
             res.status(400).send({ error: "document id is required" });
