@@ -111,6 +111,8 @@ export interface Company {
   emailHost?: string | null;
   emailPort?: number | null;
   emailSec?: string | null;
+  stripeSecretKey?: string | null;
+  stripePublishableKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }

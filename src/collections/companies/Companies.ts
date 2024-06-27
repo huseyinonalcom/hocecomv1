@@ -41,6 +41,8 @@ const Companies: CollectionConfig = {
     { name: "emailHost", type: "text" },
     { name: "emailPort", type: "number" },
     { name: "emailSec", type: "text" },
+    { name: "stripeSecretKey", type: "text" },
+    { name: "stripePublishableKey", type: "text" },
   ],
 };
 

@@ -2,6 +2,8 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
+import payload from "payload";
+import stripe from "stripe";
 
 const Payments: CollectionConfig = {
   slug: "payments",
@@ -12,6 +14,58 @@ const Payments: CollectionConfig = {
     beforeOperation: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
+  endpoints: [
+    {
+      path: "stripe-payment-link",
+      method: "post",
+      handler: async (req, res, next) => {
+        const documentID = req.params.document;
+        if (!documentID) {
+          res.status(400).send({ error: "document id is required" });
+          return;
+        }
+        const document = await payload.findByID({
+          collection: "documents",
+          id: documentID,
+          depth: 5,
+        });
+
+        const company = await payload.findByID({
+          collection: "companies",
+          id: document.company.id,
+          depth: 3,
+        });
+
+        const stripe = require("stripe")(company.stripeSecretKey);
+
+        const paymentLink = await stripe.paymentLinks.create({
+          line_items: [
+            {
+              price_data: {
+                currency: "eur",
+                product_data: {
+                  name: "Bestelling " + document.prefix + document.number,
+                },
+                unit_amount:
+                  document.documentProducts.reduce((accumulator, product) => {
+                    return accumulator + product.subTotal;
+                  }, 0) * 100,
+              },
+              quantity: 1,
+            },
+          ],
+          // after_completion: {
+          //   type: "redirect",
+          //   redirect: {
+          //     url: "your-app://payment-complete", // Deep link to your app
+          //   },
+          // },
+        });
+
+        res.status(200).send({ url: paymentLink.url });
+      },
+    },
+  ],
   access: {
     create: ({ req }) => {
       if (isSuperAdmin({ req })) {
@@ -89,11 +143,34 @@ const Payments: CollectionConfig = {
     { name: "isVerified", type: "checkbox", defaultValue: false },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     // relationships
-    { name: "document", type: "relationship", hasMany: false, relationTo: "documents", required: true },
-    { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
+    {
+      name: "document",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "documents",
+      required: true,
+    },
+    {
+      name: "creator",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "users",
+    },
+    {
+      name: "establishment",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "establishments",
+      required: true,
+    },
     // company relationship is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    {
+      name: "company",
+      type: "relationship",
+      hasMany: false,
+      relationTo: "companies",
+      required: true,
+    },
   ],
 };
 
