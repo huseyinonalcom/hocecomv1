@@ -1,19 +1,16 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 import payload from "payload";
-import stripe from "stripe";
 import { Company, DocumentProduct } from "payload/generated-types";
 
 const Payments: CollectionConfig = {
   slug: "payments",
   admin: {
-    useAsTitle: "category",
+    useAsTitle: "type",
   },
   hooks: {
     beforeOperation: [setCompanyHook],
-    // afterRead: [fieldSelectionHook],
   },
   endpoints: [
     {
