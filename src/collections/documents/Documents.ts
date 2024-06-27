@@ -43,7 +43,9 @@ const Documents: CollectionConfig = {
 
           const lastDocument = documents.docs[0];
 
-          console.log("lastDocument", lastDocument);
+          console.log("lastDocument.number", lastDocument.number);
+
+          console.log("lastDocument", Number(lastDocument.number) + 1);
 
           if (!lastDocument) {
             res.status(200).send({ number: 1 });
