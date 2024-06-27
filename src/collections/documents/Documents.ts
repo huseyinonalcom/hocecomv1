@@ -148,7 +148,6 @@ const Documents: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "users",
-      required: true, 
     },
     {
       name: "establishment",
