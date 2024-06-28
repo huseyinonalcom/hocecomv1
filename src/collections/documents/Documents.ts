@@ -135,6 +135,7 @@ const Documents: CollectionConfig = {
     { name: "managerNotes", type: "textarea" },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "decisionMaker", type: "text" },
+    { name: "time", type: "text" },
     // relations
     {
       name: "supplier",
