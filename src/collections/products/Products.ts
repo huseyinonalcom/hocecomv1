@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { hideDeletedHook } from "../hooks/hide-deleted";
+import { checkRole } from "../hooks/checkRole";
 
 const Products: CollectionConfig = {
   slug: "products",
@@ -64,6 +65,21 @@ const Products: CollectionConfig = {
       required: true,
       index: true,
     },
+    {
+      name: "buyPrice",
+      type: "number",
+      access: {
+        read: ({ req }) => {
+          if (isSuperAdmin({ req })) {
+            return true;
+          } else if (checkRole(["admin", "employee"], req.user)) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+    },
     { name: "extraFields", type: "json" },
     {
       name: "productImages",
@@ -86,7 +102,23 @@ const Products: CollectionConfig = {
       hasMany: false,
       required: false,
     },
-    { name: "discountRange", type: "number", required: true, defaultValue: 10 },
+    {
+      name: "discountRange",
+      type: "number",
+      required: true,
+      defaultValue: 10,
+      access: {
+        read: ({ req }) => {
+          if (isSuperAdmin({ req })) {
+            return true;
+          } else if (checkRole(["admin", "employee"], req.user)) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+    },
     { name: "isActive", type: "checkbox", defaultValue: false },
     // company relation is awlways required
     {
