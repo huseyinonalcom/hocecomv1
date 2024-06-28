@@ -161,7 +161,6 @@ const Documents: CollectionConfig = {
       type: "relationship",
       hasMany: true,
       relationTo: "document-products",
-      required: true,
     },
     {
       name: "payments",
