@@ -107,6 +107,7 @@ export default buildConfig({
     "https://api.hocecomv1.com",
     "https://istanbulfood.hocecomv1.com",
     "https://hocecomv1.com",
+    "https://barbardotantwerpen.com",
   ],
   cors: [
     "http://localhost:5173",
@@ -114,6 +115,7 @@ export default buildConfig({
     "https://api.hocecomv1.com",
     "https://istanbulfood.hocecomv1.com",
     "https://hocecomv1.com",
+    "https://barbardotantwerpen.com",
   ],
   plugins: [
     cloudStorage({
