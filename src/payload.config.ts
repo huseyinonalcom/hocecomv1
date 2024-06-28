@@ -109,6 +109,7 @@ export default buildConfig({
     "https://hocecomv1.com",
     "https://barbardotantwerpen.com",
     "https://menu.barbardotantwerpen.com",
+    "http://192.168.129.51:5173",
   ],
   cors: [
     "http://localhost:5173",
@@ -118,6 +119,7 @@ export default buildConfig({
     "https://hocecomv1.com",
     "https://barbardotantwerpen.com",
     "https://menu.barbardotantwerpen.com",
+    "http://192.168.129.51:5173",
   ],
   plugins: [
     cloudStorage({
