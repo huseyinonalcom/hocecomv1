@@ -19,6 +19,7 @@
 import { User } from "payload/generated-types";
 
 export const checkRole = (allRoles: User["role"][], user?: User): boolean => {
+  console.log(user);
   if (user) {
     try {
       return allRoles.some((role) => user.role === role);
