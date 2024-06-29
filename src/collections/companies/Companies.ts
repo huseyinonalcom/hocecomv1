@@ -23,7 +23,6 @@ const Companies: CollectionConfig = {
       path: "/pincheck",
       method: "get",
       handler: async (req, res) => {
-        console.log("pincheck");
         try {
           const { pin } = req.query;
 
@@ -49,9 +48,7 @@ const Companies: CollectionConfig = {
             return;
           }
 
-          console.log(company);
-
-          res.status(200).send({ company: company });
+          res.status(200).send({ company: company.docs[0].id });
         } catch (error) {
           console.error(error);
           res.status(500).send({ error });
