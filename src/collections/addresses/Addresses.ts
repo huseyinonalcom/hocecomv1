@@ -12,8 +12,6 @@ const Addresses: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [setCompanyHook],
-    beforeChange: [],
-    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({}) => true,
