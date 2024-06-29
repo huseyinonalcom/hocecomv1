@@ -50,7 +50,7 @@ const Companies: CollectionConfig = {
 
           console.log(company);
 
-          res.status(200).send({ companyID: company.id });
+          res.status(200).send({ company: company });
         } catch (error) {
           console.error(error);
           res.status(500).send({ error });
