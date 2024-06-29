@@ -23,7 +23,7 @@ const Addresses: CollectionConfig = {
       } else if (checkRole(["admin", "employee", "website"], req.user)) {
         return {
           company: {
-            equals: req.user.company.id,
+            equals: req.user.company,
           },
         };
       } else if (checkRole(["customer"], req.user)) {
