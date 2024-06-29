@@ -6,6 +6,9 @@ import { adminCheckForCompany } from "./access/adminCheck";
 import { customerCheckForCompany } from "./access/customerCheck";
 import { companyCheckForCompany } from "./access/companyCheck";
 import { websiteCheckForCompany } from "./access/websiteCheck";
+import payload from "payload";
+import e from "express";
+import errorHandler from "payload/dist/express/middleware/errorHandler";
 
 const Companies: CollectionConfig = {
   slug: "companies",
@@ -15,6 +18,46 @@ const Companies: CollectionConfig = {
   hooks: {
     beforeChange: [setCompanyHook],
   },
+  endpoints: [
+    {
+      path: "/pincheck",
+      method: "post",
+      handler: async (req, res) => {
+        try {
+          const { pin } = req.query;
+
+          if (!pin) {
+            res.status(400).send({ error: "pin is required" });
+            return;
+          }
+
+          const company = await payload.find({
+            collection: "companies",
+            depth: 2,
+            overrideAccess: true,
+            where: {
+              companyUUID: {
+                equals: pin,
+              },
+            },
+            limit: 1,
+          });
+
+          if (!company) {
+            res.status(404).send({ error: "company not found" });
+            return;
+          }
+
+          console.log(company);
+
+          res.status(200).send({ companyID: company.id });
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ error });
+        }
+      },
+    },
+  ],
   access: {
     create: isSuperAdmin,
     read:
