@@ -1,9 +1,7 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 import { checkRole } from "../hooks/checkRole";
-import { logBody } from "../hooks/log-body";
 
 const Addresses: CollectionConfig = {
   slug: "addresses",
@@ -67,24 +65,6 @@ const Addresses: CollectionConfig = {
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "isDefault", type: "checkbox", defaultValue: false },
     // relationships
-    {
-      name: "customer",
-      type: "relationship",
-      hasMany: false,
-      relationTo: "users",
-    },
-    {
-      name: "supplier",
-      type: "relationship",
-      hasMany: false,
-      relationTo: "suppliers",
-    },
-    {
-      name: "establishment",
-      type: "relationship",
-      hasMany: false,
-      relationTo: "establishments",
-    },
     {
       name: "creator",
       type: "relationship",
