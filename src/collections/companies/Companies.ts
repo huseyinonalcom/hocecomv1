@@ -21,7 +21,7 @@ const Companies: CollectionConfig = {
   endpoints: [
     {
       path: "/pincheck",
-      method: "post",
+      method: "get",
       handler: async (req, res) => {
         try {
           const { pin } = req.query;
