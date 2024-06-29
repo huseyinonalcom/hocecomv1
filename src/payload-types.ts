@@ -113,6 +113,7 @@ export interface Company {
   emailSec?: string | null;
   stripeSecretKey?: string | null;
   stripePublishableKey?: string | null;
+  companyUUID?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -152,6 +153,15 @@ export interface Establishment {
   bankAccount1?: string | null;
   bankAccount2?: string | null;
   bankAccount3?: string | null;
+  extraFields?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   category: 'storefront' | 'warehouse';
   address?: (number | null) | Address;
   shelves?: (number | Shelf)[] | null;
@@ -180,17 +190,18 @@ export interface Document {
   managerNotes?: string | null;
   isDeleted?: boolean | null;
   decisionMaker?: string | null;
+  time?: string | null;
   supplier?: (number | null) | Supplier;
-  customer: number | User;
+  customer?: (number | null) | User;
   establishment?: (number | null) | Establishment;
-  documentProducts: (number | DocumentProduct)[];
+  documentProducts?: (number | DocumentProduct)[] | null;
   payments?: (number | Payment)[] | null;
   supportTickets?: (number | SupportTicket)[] | null;
   tasks?: (number | Task)[] | null;
   toDocument?: (number | null) | Document;
   fromDocument?: (number | null) | Document;
-  docAddress: number | Address;
-  delAddress: number | Address;
+  docAddress?: (number | null) | Address;
+  delAddress?: (number | null) | Address;
   creator: number | User;
   company: number | Company;
   updatedAt: string;
@@ -287,6 +298,7 @@ export interface Product {
   value: number;
   tax: number;
   categories: (number | ProductCategory)[];
+  buyPrice?: number | null;
   extraFields?:
     | {
         [k: string]: unknown;
@@ -404,7 +416,7 @@ export interface DocumentProduct {
   amount: number;
   tax: number;
   product?: (number | null) | Product;
-  customer: number | User;
+  customer?: (number | null) | User;
   document?: (number | null) | Document;
   subTotal?: number | null;
   subTotalTax?: number | null;
