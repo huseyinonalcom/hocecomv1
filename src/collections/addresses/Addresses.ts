@@ -12,7 +12,7 @@ const Addresses: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [setCompanyHook],
-    beforeChange: [logBody],
+    beforeChange: [],
     // afterRead: [fieldSelectionHook],
   },
   access: {
