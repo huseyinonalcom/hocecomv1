@@ -23,6 +23,7 @@ const Companies: CollectionConfig = {
       path: "/pincheck",
       method: "get",
       handler: async (req, res) => {
+        console.log("pincheck");
         try {
           const { pin } = req.query;
 
