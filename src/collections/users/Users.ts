@@ -281,6 +281,12 @@ const Users: CollectionConfig = {
       relationTo: "tasks",
     },
     {
+      name: "issuedTasks",
+      type: "relationship",
+      hasMany: true,
+      relationTo: "tasks",
+    },
+    {
       name: "documents",
       type: "relationship",
       hasMany: true,
