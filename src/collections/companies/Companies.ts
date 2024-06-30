@@ -85,6 +85,10 @@ const Companies: CollectionConfig = {
     { name: "stripeSecretKey", type: "text" },
     { name: "stripePublishableKey", type: "text" },
     { name: "companyUUID", type: "text" },
+    { name: "bolClientID", type: "text" },
+    { name: "bolClientSecret", type: "text" },
+    { name: "amazonClientID", type: "text" },
+    { name: "amazonClientSecret", type: "text" },
   ],
 };
 
