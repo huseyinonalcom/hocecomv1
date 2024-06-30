@@ -26,7 +26,7 @@ const ProductCategories: CollectionConfig = {
       }
     },
     read: ({ req }) => {
-      if (adminCheck({ req })) {
+      if (isSuperAdmin({ req })) {
         return true;
       } else {
         return {
