@@ -1,14 +1,11 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import { adminCheck } from "../access/adminCheck";
 import { adminCheckForCompany } from "./access/adminCheck";
 import { customerCheckForCompany } from "./access/customerCheck";
 import { companyCheckForCompany } from "./access/companyCheck";
 import { websiteCheckForCompany } from "./access/websiteCheck";
 import payload from "payload";
-import e from "express";
-import errorHandler from "payload/dist/express/middleware/errorHandler";
 
 const Companies: CollectionConfig = {
   slug: "companies",
