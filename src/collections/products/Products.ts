@@ -55,6 +55,7 @@ const Products: CollectionConfig = {
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "EAN", type: "text" },
     { name: "internalCode", type: "text" },
+    { name: "priceBeforeDiscount", type: "number" },
     { name: "value", type: "number", required: true },
     { name: "tax", type: "number", required: true },
     {
