@@ -1,7 +1,7 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
-import { setCompanyHook } from "../hooks/setCompany";
 import { checkRole } from "../hooks/checkRole";
+import { setCompanyBeforeChange } from "../hooks/setCompanyBeforeChange";
 
 const Addresses: CollectionConfig = {
   slug: "addresses",
@@ -9,7 +9,7 @@ const Addresses: CollectionConfig = {
     useAsTitle: "street",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyBeforeChange],
   },
   access: {
     create: ({}) => true,
@@ -64,13 +64,6 @@ const Addresses: CollectionConfig = {
     { name: "name", type: "text" },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "isDefault", type: "checkbox", defaultValue: false },
-    // relationships
-    {
-      name: "creator",
-      type: "relationship",
-      hasMany: false,
-      relationTo: "users",
-    },
     // company relation is always required
     {
       name: "company",
