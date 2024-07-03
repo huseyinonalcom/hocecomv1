@@ -40,7 +40,7 @@ const DocumentProducts: CollectionConfig = {
           },
         };
       } else {
-        return false;
+        return true;
       }
     },
     update: ({ req }) => {
