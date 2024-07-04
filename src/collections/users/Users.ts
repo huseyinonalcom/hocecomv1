@@ -13,6 +13,7 @@ const tagMail: CollectionBeforeChangeHook = async ({ req, data }) => {
     let domainPart = parts[1];
     data.email = localPart + "+" + req.user.company.id + "@" + domainPart;
   }
+  data.company = req.user.company.id;
   return data;
 };
 
