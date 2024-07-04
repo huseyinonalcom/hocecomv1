@@ -7,7 +7,7 @@ import { checkRole } from "../hooks/checkRole";
 const Documents: CollectionConfig = {
   slug: "documents",
   admin: {
-    useAsTitle: "category",
+    useAsTitle: "type",
   },
   hooks: {
     beforeOperation: [setCompanyHook],
