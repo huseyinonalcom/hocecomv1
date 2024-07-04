@@ -33,6 +33,7 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
         }@${req.body.email.split("@")[1]}`;
       }
     }
+    console.log(req.body);
   } catch (e) {
     throw new APIError("No company could be determined for this user.", 403);
   }
