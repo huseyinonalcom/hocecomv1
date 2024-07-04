@@ -43,12 +43,11 @@ const Payments: CollectionConfig = {
           const price = await stripe.prices.create({
             currency: "eur",
             unit_amount:
-              document.documentProducts.reduce(
-                (accumulator: any, product: DocumentProduct) => {
+              document.documentProducts
+                .reduce((accumulator: any, product: DocumentProduct) => {
                   return accumulator + product.subTotal;
-                },
-                0
-              ) * 100,
+                }, 0)
+                .toFixed(2) * 100,
             product_data: {
               name: "Bestelling " + document.prefix + document.number,
             },
