@@ -6,10 +6,9 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
   args,
   operation,
   req,
-  
 }) => {
   console.log(args);
-  console.log(args.req);
+  console.log(args.req.body);
 
   try {
     if (isSuperAdmin({ req })) {
@@ -29,16 +28,16 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
       // if it isn't the case, not having a company query param will fail validation
     } else if (operation == "create" || operation == "update") {
       if (req.user) {
-        req.body.email = `${req.body.email.split("@")[0].split("+")[0]}+${
-          req.user.company.id
-        }@${req.body.email.split("@")[1]}`;
+        args.req.body.email = `${
+          args.req.body.email.split("@")[0].split("+")[0]
+        }+${req.user.company.id}@${args.req.body.email.split("@")[1]}`;
       } else if (req.query.company) {
         console.log("company query param detected");
-        req.body.email = `${req.body.email.split("@")[0].split("+")[0]}+${
-          req.query.company
-        }@${req.body.email.split("@")[1]}`;
+        args.req.body.email = `${
+          args.req.body.email.split("@")[0].split("+")[0]
+        }+${req.query.company}@${args.req.body.email.split("@")[1]}`;
       }
-      console.log(req.body);
+      console.log(args.req.body);
     }
   } catch (e) {
     throw new APIError("No company could be determined for this user.", 403);
