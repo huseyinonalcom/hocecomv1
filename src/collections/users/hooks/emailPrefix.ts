@@ -6,8 +6,10 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
   args,
   operation,
   req,
+  
 }) => {
   console.log(args);
+  console.log(args.data);
 
   try {
     if (isSuperAdmin({ req })) {
