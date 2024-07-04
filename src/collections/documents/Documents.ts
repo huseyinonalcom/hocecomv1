@@ -11,6 +11,43 @@ const Documents: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [setCompanyHook],
+    beforeChange: [
+      async ({ operation, data }) => {
+        if (operation == "create") {
+          const { type } = data;
+
+          if (!type) {
+            throw new Error("type required");
+          }
+
+          const documents = await payload.find({
+            collection: "documents",
+            depth: 2,
+            overrideAccess: true,
+            where: {
+              type: {
+                equals: type,
+              },
+              company: {
+                equals: data.company,
+              },
+            },
+            limit: 1,
+            sort: "-number",
+          });
+
+          const lastDocument = documents.docs[0];
+
+          if (!lastDocument) {
+            data.number = "00000001";
+          } else {
+            data.number = (Number(lastDocument.number) + 1)
+              .toString()
+              .padStart(8, "0");
+          }
+        }
+      },
+    ],
   },
   endpoints: [
     {
