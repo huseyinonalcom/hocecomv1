@@ -11,6 +11,6 @@ export const setCompanyBeforeChange: CollectionBeforeChangeHook = async ({
       }
     }
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 };

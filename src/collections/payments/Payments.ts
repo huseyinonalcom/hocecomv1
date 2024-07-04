@@ -69,7 +69,7 @@ const Payments: CollectionConfig = {
             },
           });
 
-          console.log(paymentLink);
+          // console.log(paymentLink);
 
           res.status(200).send({ url: paymentLink.url });
         } catch (error) {
