@@ -12,7 +12,7 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
       limit: 1,
     });
     if (users.totalDocs > 0) {
-      // console.log(req.body);
+      console.log(req.user);
       switch (req.user.role) {
         case "super_admin":
           break;
