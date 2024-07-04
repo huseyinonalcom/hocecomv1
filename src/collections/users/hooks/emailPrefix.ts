@@ -7,7 +7,6 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
   operation,
   req,
 }) => {
-  console.log(args);
   console.log(args.req.body);
 
   try {
