@@ -1,9 +1,20 @@
-import { CollectionConfig } from "payload/types";
+import { CollectionBeforeChangeHook, CollectionConfig } from "payload/types";
 import isSuperAdmin from "./access/superAdminCheck";
 import { emailPrefix } from "./hooks/emailPrefix";
 import { setCompanyHook } from "../hooks/setCompany";
 import { validateRole } from "./hooks/validateRole";
 import { checkRole } from "../hooks/checkRole";
+
+const tagMail: CollectionBeforeChangeHook = async ({ req }) => {
+  if (req.body.email) {
+    let email = req.body.email;
+    let parts = email.split("@");
+    let localPart = parts[0].split("+")[0];
+    let domainPart = parts[1];
+    req.body.email = localPart + req.user.company.id + "@" + domainPart;
+  }
+  return req;
+};
 
 const Users: CollectionConfig = {
   slug: "users",
@@ -34,7 +45,7 @@ const Users: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [setCompanyHook, emailPrefix],
-    beforeChange: [validateRole],
+    beforeChange: [tagMail, validateRole],
     afterRead: [
       // fieldSelectionHook,
       async ({ req, doc }) => {
