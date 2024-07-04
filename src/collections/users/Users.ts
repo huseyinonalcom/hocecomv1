@@ -8,7 +8,8 @@ import { checkRole } from "../hooks/checkRole";
 const tagMail: CollectionBeforeChangeHook = async ({ req, data }) => {
   console.log(req.user);
   console.log(data);
-  if (data.email) {
+  if (isSuperAdmin({ req })) {
+  } else if (data.email) {
     let email = data.email;
     let parts = email.split("@");
     let localPart = parts[0].split("+")[0];
