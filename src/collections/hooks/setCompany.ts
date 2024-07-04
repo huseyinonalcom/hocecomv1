@@ -9,7 +9,7 @@ export const setCompanyHook: CollectionBeforeOperationHook = async ({
     if (operation == "create" || operation == "update") {
       if (req.user) {
         if (!isSuperAdmin({ req })) {
-          req.body = { ...req.body, company: req.user.company };
+          req.body = { ...req.body, company: req.user.company.id };
         }
       }
     }
