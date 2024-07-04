@@ -56,10 +56,11 @@ const Companies: CollectionConfig = {
   access: {
     create: isSuperAdmin,
     read:
-      adminCheckForCompany ||
-      websiteCheckForCompany ||
-      companyCheckForCompany ||
-      customerCheckForCompany,
+      // adminCheckForCompany ||
+      // websiteCheckForCompany ||
+      // companyCheckForCompany ||
+      // customerCheckForCompany,
+      () => true,
     delete: () => false,
     update: adminCheckForCompany,
   },
