@@ -6,6 +6,7 @@ import { validateRole } from "./hooks/validateRole";
 import { checkRole } from "../hooks/checkRole";
 
 const tagMail: CollectionBeforeChangeHook = async ({ req, data }) => {
+  console.log(req.user);
   console.log(data);
   if (data.email) {
     let email = data.email;
