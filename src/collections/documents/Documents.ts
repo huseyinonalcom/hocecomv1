@@ -14,9 +14,8 @@ const Documents: CollectionConfig = {
     beforeChange: [
       async ({ operation, data }) => {
         if (operation == "create") {
-          const { type } = data;
 
-          if (!type) {
+          if (!data.type) {
             throw new Error("type required");
           }
 
@@ -26,7 +25,7 @@ const Documents: CollectionConfig = {
             overrideAccess: true,
             where: {
               type: {
-                equals: type,
+                equals: data.type,
               },
               company: {
                 equals: data.company,
