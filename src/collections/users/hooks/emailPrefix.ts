@@ -7,6 +7,8 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
   operation,
   req,
 }) => {
+  console.log(JSON.stringify(args));
+
   try {
     if (isSuperAdmin({ req })) {
       return args;
@@ -40,5 +42,5 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
     throw new APIError("No company could be determined for this user.", 403);
   }
 
-  return args;
+  return req;
 };
