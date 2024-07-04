@@ -7,15 +7,11 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
   operation,
   req,
 }) => {
-  console.log(args);
-  console.log(args.req);
-
   try {
     if (isSuperAdmin({ req })) {
       return args;
     } else if (operation == "login" || operation == "forgotPassword") {
       if (req.query.company) {
-        console.log("company query param detected");
         // company query param denotes which company the acoount belongs to
         // we add this to the email as a tag so we can differentiate between accounts with the same email
         req.body.email = `${req.body.email.split("@")[0]}+${
@@ -32,12 +28,10 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
           req.user.company.id
         }@${req.body.email.split("@")[1]}`;
       } else if (req.query.company) {
-        console.log("company query param detected");
         req.body.email = `${req.body.email.split("@")[0].split("+")[0]}+${
           req.query.company
         }@${req.body.email.split("@")[1]}`;
       }
-      console.log(req.body);
     }
   } catch (e) {
     throw new APIError("No company could be determined for this user.", 403);
