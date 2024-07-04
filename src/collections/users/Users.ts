@@ -5,15 +5,15 @@ import { setCompanyHook } from "../hooks/setCompany";
 import { validateRole } from "./hooks/validateRole";
 import { checkRole } from "../hooks/checkRole";
 
-const tagMail: CollectionBeforeChangeHook = async ({ req }) => {
-  if (req.body.email) {
-    let email = req.body.email;
+const tagMail: CollectionBeforeChangeHook = async ({ req, data }) => {
+  if (data.email) {
+    let email = data.email;
     let parts = email.split("@");
     let localPart = parts[0].split("+")[0];
     let domainPart = parts[1];
-    req.body.email = localPart + req.user.company.id + "@" + domainPart;
+    data.email = localPart + req.user.company.id + "@" + domainPart;
   }
-  return req;
+  return data;
 };
 
 const Users: CollectionConfig = {
