@@ -99,10 +99,9 @@ const Users: CollectionConfig = {
           },
         };
       } else {
-        console.log(req.user);
         return {
-          id: {
-            equals: req.user.id,
+          email: {
+            equals: req.user.email,
           },
         };
       }
