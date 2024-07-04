@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import payload from "payload";
+import { checkRole } from "../hooks/checkRole";
 
 const Documents: CollectionConfig = {
   slug: "documents",
@@ -72,27 +73,47 @@ const Documents: CollectionConfig = {
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
-      } else {
+      } else if (checkRole(["customer"], req.user)) {
+        return {
+          customer: {
+            equals: req.user.id,
+          },
+        };
+      } else if (checkRole(["admin", "employee"], req.user)) {
         return {
           company: {
             equals: req.user.company.id,
           },
         };
+      } else {
+        return false;
       }
     },
     update: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
-      } else {
+      } else if (checkRole(["customer"], req.user)) {
+        return {
+          customer: {
+            equals: req.user.id,
+          },
+        };
+      } else if (checkRole(["admin", "employee"], req.user)) {
         return {
           company: {
             equals: req.user.company.id,
           },
         };
+      } else {
+        return false;
       }
     },
-    delete: () => {
-      return false;
+    delete: ({ req }) => {
+      if (isSuperAdmin({ req })) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   fields: [
