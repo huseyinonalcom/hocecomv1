@@ -71,14 +71,14 @@ const Users: CollectionConfig = {
         return true;
       } else if (checkRole(["customer"], req.user)) {
         return {
-          id: {
-            equals: req.user.id,
+          email: {
+            equals: req.user.email,
           },
         };
       } else if (checkRole(["website"], req.user)) {
         return {
-          id: {
-            equals: req.user.id,
+          email: {
+            equals: req.user.email,
           },
         };
       } else {
