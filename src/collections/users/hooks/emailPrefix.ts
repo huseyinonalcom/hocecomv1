@@ -22,13 +22,13 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
       // probably won't succeed, but even if they succeed, they won't be able to do anything
       // they can't do with the API anyways
       // if it isn't the case, not having a company query param will fail validation
-    } else if (operation == "create") {
+    } else if (operation == "create" || operation == "update") {
       if (req.user) {
-        req.body.email = `${req.body.email.split("@")[0]}+${
+        req.body.email = `${req.body.email.split("@")[0].split("+")[0]}+${
           req.user.company.id
         }@${req.body.email.split("@")[1]}`;
       } else if (req.query.company) {
-        req.body.email = `${req.body.email.split("@")[0]}+${
+        req.body.email = `${req.body.email.split("@")[0].split("+")[0]}+${
           req.query.company
         }@${req.body.email.split("@")[1]}`;
       }
