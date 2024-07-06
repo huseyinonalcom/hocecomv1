@@ -95,6 +95,15 @@ const Documents: CollectionConfig = {
         }
       },
     },
+    {
+      path: "/boloffersub",
+      method: "post",
+      handler: async (req, res) => {
+        console.log("req.query", req.query);
+        console.log("req.body", req.body);
+        res.status(200).send({ status: "success" });
+      },
+    },
   ],
   access: {
     create: ({ req }) => {
