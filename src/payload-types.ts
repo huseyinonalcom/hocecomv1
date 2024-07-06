@@ -53,49 +53,9 @@ export interface Address {
   name?: string | null;
   isDeleted?: boolean | null;
   isDefault?: boolean | null;
-  customer?: (number | null) | User;
-  supplier?: (number | null) | Supplier;
-  establishment?: (number | null) | Establishment;
-  creator?: (number | null) | User;
   company: number | Company;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  role?: ('super_admin' | 'website' | 'admin' | 'employee' | 'customer') | null;
-  firstName: string;
-  lastName: string;
-  phone?: string | null;
-  isBlocked?: boolean | null;
-  company?: (number | null) | Company;
-  establishment?: (number | null) | Establishment;
-  payments?: (number | Payment)[] | null;
-  preferredLanguage?: string | null;
-  employeeRank?: ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9') | null;
-  customerCategory?: ('professional' | 'private') | null;
-  customerCompany?: string | null;
-  customerTaxNumber?: string | null;
-  receivedDeliveries?: (number | Delivery)[] | null;
-  documents?: (number | Document)[] | null;
-  customerAddresses?: (number | Address)[] | null;
-  updatedAt: string;
-  createdAt: string;
-  enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -114,6 +74,10 @@ export interface Company {
   stripeSecretKey?: string | null;
   stripePublishableKey?: string | null;
   companyUUID?: string | null;
+  bolClientID?: string | null;
+  bolClientSecret?: string | null;
+  amazonClientID?: string | null;
+  amazonClientSecret?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -124,6 +88,56 @@ export interface Company {
 export interface Logo {
   id: number;
   name?: string | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deliveries".
+ */
+export interface Delivery {
+  id: number;
+  date: string;
+  dateCreated: string;
+  timeStart?: string | null;
+  timeEnd?: string | null;
+  notes?: string | null;
+  deliveryTaker?: string | null;
+  deliveryTakerPhone?: string | null;
+  lift?: boolean | null;
+  liftPhone?: string | null;
+  isCompleted?: boolean | null;
+  isIncoming?: boolean | null;
+  isDeleted?: boolean | null;
+  files?: (number | File)[] | null;
+  establishment: number | Establishment;
+  documentProducts?: (number | DocumentProduct)[] | null;
+  address: number | Address;
+  supplierOrderProducts?: (number | SupplierOrderProduct)[] | null;
+  customer?: (number | null) | User;
+  creator?: (number | null) | User;
+  assignee?: (number | null) | User;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
+export interface File {
+  id: number;
+  name: string;
+  priority?: number | null;
   company: number | Company;
   updatedAt: string;
   createdAt: string;
@@ -209,26 +223,6 @@ export interface Document {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "files".
- */
-export interface File {
-  id: number;
-  name: string;
-  priority?: number | null;
-  company: number | Company;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "suppliers".
  */
 export interface Supplier {
@@ -269,6 +263,101 @@ export interface SupplierOrder {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  role?: ('super_admin' | 'website' | 'admin' | 'employee' | 'customer') | null;
+  firstName: string;
+  lastName: string;
+  phone?: string | null;
+  isBlocked?: boolean | null;
+  company?: (number | null) | Company;
+  establishment?: (number | null) | Establishment;
+  payments?: (number | Payment)[] | null;
+  preferredLanguage?: string | null;
+  employeeRank?: ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9') | null;
+  customerCategory?: ('professional' | 'private') | null;
+  customerCompany?: string | null;
+  customerTaxNumber?: string | null;
+  receivedDeliveries?: (number | Delivery)[] | null;
+  receivedTasks?: (number | Task)[] | null;
+  issuedTasks?: (number | Task)[] | null;
+  documents?: (number | Document)[] | null;
+  customerAddresses?: (number | Address)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: number;
+  value: number;
+  date: string;
+  type: 'cash' | 'debit_card' | 'credit_card' | 'online' | 'bank_transfer' | 'financing' | 'financing_unverified';
+  notes?: string | null;
+  reference?: string | null;
+  isVerified?: boolean | null;
+  isDeleted?: boolean | null;
+  document: number | Document;
+  creator?: (number | null) | User;
+  establishment: number | Establishment;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tasks".
+ */
+export interface Task {
+  id: number;
+  creator?: (number | null) | User;
+  assignee?: (number | null) | User;
+  category: string;
+  description?: string | null;
+  isCompleted?: boolean | null;
+  isDeleted?: boolean | null;
+  date: string;
+  dateCreated: string;
+  notes?: string | null;
+  document?: (number | null) | Document;
+  files?: (number | File)[] | null;
+  taskComments?: (number | TaskComment)[] | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "task-comments".
+ */
+export interface TaskComment {
+  id: number;
+  date: string;
+  comment?: string | null;
+  isDeleted?: boolean | null;
+  task?: (number | null) | Task;
+  creator: number | User;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "supplier-order-products".
  */
 export interface SupplierOrderProduct {
@@ -295,6 +384,7 @@ export interface Product {
   isDeleted?: boolean | null;
   EAN?: string | null;
   internalCode?: string | null;
+  priceBeforeDiscount?: number | null;
   value: number;
   tax: number;
   categories: (number | ProductCategory)[];
@@ -426,26 +516,6 @@ export interface DocumentProduct {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payments".
- */
-export interface Payment {
-  id: number;
-  value: number;
-  date: string;
-  type: 'cash' | 'debit_card' | 'credit_card' | 'online' | 'bank_transfer' | 'financing';
-  notes?: string | null;
-  reference?: string | null;
-  isVerified?: boolean | null;
-  isDeleted?: boolean | null;
-  document: number | Document;
-  creator?: (number | null) | User;
-  establishment: number | Establishment;
-  company: number | Company;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "support-tickets".
  */
 export interface SupportTicket {
@@ -455,73 +525,6 @@ export interface SupportTicket {
   closedDate?: string | null;
   document: number | Document;
   notes?: string | null;
-  company: number | Company;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tasks".
- */
-export interface Task {
-  id: number;
-  creator?: (number | null) | User;
-  assignee?: (number | null) | User;
-  category: string;
-  description?: string | null;
-  isCompleted?: boolean | null;
-  isDeleted?: boolean | null;
-  date: string;
-  dateCreated: string;
-  notes?: string | null;
-  document?: (number | null) | Document;
-  files?: (number | File)[] | null;
-  taskComments?: (number | TaskComment)[] | null;
-  company: number | Company;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "task-comments".
- */
-export interface TaskComment {
-  id: number;
-  date: string;
-  comment?: string | null;
-  isDeleted?: boolean | null;
-  task?: (number | null) | Task;
-  creator: number | User;
-  company: number | Company;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "deliveries".
- */
-export interface Delivery {
-  id: number;
-  date: string;
-  dateCreated: string;
-  timeStart?: string | null;
-  timeEnd?: string | null;
-  notes?: string | null;
-  deliveryTaker?: string | null;
-  deliveryTakerPhone?: string | null;
-  lift?: boolean | null;
-  liftPhone?: string | null;
-  isCompleted?: boolean | null;
-  isIncoming?: boolean | null;
-  isDeleted?: boolean | null;
-  files?: (number | File)[] | null;
-  establishment: number | Establishment;
-  documentProducts?: (number | DocumentProduct)[] | null;
-  address: number | Address;
-  supplierOrderProducts?: (number | SupplierOrderProduct)[] | null;
-  customer?: (number | null) | User;
-  creator?: (number | null) | User;
-  assignee?: (number | null) | User;
   company: number | Company;
   updatedAt: string;
   createdAt: string;

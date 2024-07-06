@@ -1,5 +1,6 @@
 import express from "express";
 import payload from "payload";
+import {  createDocumentsFromBolOrders } from "./jobs/bol-offer-sync";
 
 require("dotenv").config();
 const app = express();
@@ -23,19 +24,8 @@ const start = async () => {
 
   app.listen(3421);
 
-  cron.schedule("*/5 * * * *", () => {
-    console.log("bol offers check");
-    payload
-      .find({
-        collection: "companies",
-        depth: 1,
-        where: {
-          and: [{ bolClientID: { exists: true } }, { bolClientSecret: { exists: true } }],
-        },
-      })
-      .then((companies) => {
-        companies.docs.forEach((company) => console.log(company.name + " " + company.bolClientID + " " + company.bolClientSecret));
-      });
+  cron.schedule("*/10 * * * *", () => {
+    createDocumentsFromBolOrders();
   });
   // Add your own express routes here
 };
