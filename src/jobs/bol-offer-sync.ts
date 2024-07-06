@@ -62,8 +62,11 @@ async function authenticateBolCom(clientId, clientSecret) {
 async function getBolComOrders(bolClientID, bolClientSecret) {
   await authenticateBolCom(bolClientID, bolClientSecret);
 
+  let today = new Date();
+  let todayString = today.toISOString().split("T")[0];
+
   try {
-    const response = await fetch(`${bolApiUrl}/orders`, {
+    const response = await fetch(`${bolApiUrl}/orders?fulfilment-method=FBR&status=ALL&latest-change-date=${todayString}&page=1`, {
       method: "GET",
       headers: bolHeaders(BolHeadersType.JSON),
     });
