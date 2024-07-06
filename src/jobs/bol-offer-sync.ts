@@ -123,7 +123,7 @@ export const createDocumentsFromBolOrders = async () => {
         authenticateBolCom(currCompany.bolClientID, currCompany.bolClientSecret);
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then((orders) => {
           orders.orders.forEach((order) => {
-            getBolComOrder(order.id, currCompany.bolClientID, currCompany.bolClientSecret).then((orderDetails) => {
+            getBolComOrder(order.orderId, currCompany.bolClientID, currCompany.bolClientSecret).then((orderDetails) => {
               console.log(orderDetails);
               // Create documents from orderDetails
             });
