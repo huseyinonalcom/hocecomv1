@@ -6,7 +6,7 @@ const bolApiUrl = "https://api.bol.com/retailer";
 
 let bolToken;
 let bolTokenExpiration;
-let companiesToSync;
+let companiesToSync = [];
 
 const BolHeadersType = {
   JSON: "json",
