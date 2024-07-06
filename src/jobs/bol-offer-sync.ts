@@ -124,7 +124,7 @@ export const createDocumentsFromBolOrders = async () => {
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then((orders) => {
           orders.orders.forEach((order) => {
             getBolComOrder(order.orderId, currCompany.bolClientID, currCompany.bolClientSecret).then((orderDetails) => {
-              console.log(orderDetails);
+              console.log(JSON.stringify(orderDetails, null, 2));
               // Create documents from orderDetails
             });
           });
@@ -132,3 +132,27 @@ export const createDocumentsFromBolOrders = async () => {
       }
     });
 };
+
+// const saveDocument = async (bolDoc) => {
+//   try {
+//     await payload.create({
+//       collection: "users",
+//       data: {
+//         email: bolDoc.billingDetails.email,
+//         preferredLanguage: bolDoc.shippingDetails.language,
+//         phone: bolDoc.shippingDetails.phone,
+//       },
+//     });
+//     await payload.create({
+//       collection: "documents",
+//       data: {
+//         number: bolDoc.orderId,
+//         prefix: "BOL-",
+//         date: bolDoc.orderPlacedDateTime.split("T"),
+//         time: bolDoc.orderPlacedDateTime.split("T")[1].split("+")[0],
+//       },
+//     });
+//   } catch (error) {
+//     throw new Error("Failed to save document");
+//   }
+// };
