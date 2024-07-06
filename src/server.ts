@@ -22,9 +22,9 @@ const start = async () => {
   });
 
   app.listen(3421);
-  
-  cron.schedule("*/2 * * * *", () => {
-    console.log("running a task every two minutes");
+
+  cron.schedule("*/1 * * * *", () => {
+    console.log("running a task every minute?");
   });
   // Add your own express routes here
 };
