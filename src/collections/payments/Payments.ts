@@ -150,6 +150,10 @@ const Payments: CollectionConfig = {
           label: "Financing",
           value: "financing",
         },
+        {
+          label: "Financing Unverified",
+          value: "financing_unverified",
+        }
       ],
     },
     { name: "notes", type: "text" },

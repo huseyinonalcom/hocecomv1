@@ -14,35 +14,37 @@ const Documents: CollectionConfig = {
     beforeChange: [
       async ({ operation, data }) => {
         if (operation == "create") {
-
           if (!data.type) {
             throw new Error("type required");
           }
 
-          const documents = await payload.find({
-            collection: "documents",
-            depth: 2,
-            overrideAccess: true,
-            where: {
-              type: {
-                equals: data.type,
+          try {
+            const documents = await payload.find({
+              collection: "documents",
+              depth: 2,
+              overrideAccess: true,
+              where: {
+                type: {
+                  equals: data.type,
+                },
+                company: {
+                  equals: data.company,
+                },
               },
-              company: {
-                equals: data.company,
-              },
-            },
-            limit: 1,
-            sort: "-number",
-          });
+              limit: 1,
+              sort: "-number",
+            });
 
-          const lastDocument = documents.docs[0];
+            const lastDocument = documents.docs[0];
 
-          if (!lastDocument) {
+            if (!lastDocument) {
+              data.number = "00000001";
+            } else {
+              data.number = (Number(lastDocument.number) + 1).toString().padStart(8, "0");
+            }
+          } catch (error) {
+            console.error(error);
             data.number = "00000001";
-          } else {
-            data.number = (Number(lastDocument.number) + 1)
-              .toString()
-              .padStart(8, "0");
           }
         }
       },
