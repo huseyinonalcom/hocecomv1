@@ -4,6 +4,7 @@ import { setCompanyHook } from "../hooks/setCompany";
 import payload from "payload";
 import { checkRole } from "../hooks/checkRole";
 import APIError from "payload/dist/errors/APIError";
+import { Document } from "payload/generated-types";
 
 const Documents: CollectionConfig = {
   slug: "documents",
@@ -38,12 +39,12 @@ const Documents: CollectionConfig = {
               sort: "-number",
             });
 
-            const lastDocument = documents.docs[0];
+            const lastDocument: Document = documents.docs[0];
 
             if (!lastDocument) {
               data.number = (year + "00000001").toString().padStart(8, "0");
             } else {
-              data.number = (year + Number(lastDocument.number) + 1).toString().padStart(8, "0");
+              data.number = (year + Number(lastDocument.number.slice(3)) + 1).toString().padStart(8, "0");
             }
           } catch (error) {
             console.error(error);
