@@ -172,6 +172,7 @@ const saveDocument = async (bolDoc, company) => {
         company: company,
       },
     });
+    console.log("docAddress", docAddress);
     const delAddress = await payload.create({
       user: creator.docs[0],
       collection: "addresses",
