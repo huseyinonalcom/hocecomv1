@@ -2,7 +2,7 @@ import { CollectionBeforeChangeHook } from "payload/types";
 import APIError from "payload/dist/errors/APIError";
 import payload from "payload";
 
-export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
+export const validateRole: CollectionBeforeChangeHook = async ({ data, req }) => {
   try {
     const users = await payload.find({
       collection: "users",
@@ -16,39 +16,23 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
         case "super_admin":
           break;
         case "website":
-          if (req.body.role && req.body.role != "customer") {
-            throw new APIError(
-              "You do not have permission to create a user with this role.",
-              403
-            );
+          if (data.role && data.role != "customer") {
+            throw new APIError("You do not have permission to create a user with this role.", 403);
           }
           break;
         case "employee":
-          if (req.body.role && req.body.role != "customer") {
-            throw new APIError(
-              "You do not have permission to create a user with this role.",
-              403
-            );
+          if (data.role && data.role != "customer") {
+            throw new APIError("You do not have permission to create a user with this role.", 403);
           }
           break;
         case "admin":
-          if (
-            req.body.role &&
-            req.body.role != "customer" &&
-            req.body.role != "employee"
-          ) {
-            throw new APIError(
-              "You do not have permission to create a user with this role.",
-              403
-            );
+          if (data.role && data.role != "customer" && data.role != "employee") {
+            throw new APIError("You do not have permission to create a user with this role.", 403);
           }
           break;
         case "customer":
-          if (req.body.role && req.body.role != "customer") {
-            throw new APIError(
-              "You do not have permission to create a user with this role.",
-              403
-            );
+          if (data.role && data.role != "customer") {
+            throw new APIError("You do not have permission to create a user with this role.", 403);
           }
           break;
         default:
@@ -57,9 +41,6 @@ export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
     }
   } catch (e) {
     console.log(e);
-    throw new APIError(
-      "You do not have permission to create a user with this role.",
-      403
-    );
+    throw new APIError("Error validating user role. Please try again.", 403);
   }
 };

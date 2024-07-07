@@ -118,11 +118,11 @@ export const createDocumentsFromBolOrders = async () => {
     .then((companies) => {
       companies.docs.forEach((company) => companiesToSync.push(company));
     })
-    .then(() => {
+    .then(async () => {
       for (let i = 0; i < companiesToSync.length; i++) {
         console.log("syncing for: ", companiesToSync[i]);
         const currCompany = companiesToSync[i];
-        authenticateBolCom(currCompany.bolClientID, currCompany.bolClientSecret);
+        await authenticateBolCom(currCompany.bolClientID, currCompany.bolClientSecret);
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then((orders) => {
           orders.orders.forEach((order) => {
             getBolComOrder(order.orderId, currCompany.bolClientID, currCompany.bolClientSecret).then((orderDetails) => {

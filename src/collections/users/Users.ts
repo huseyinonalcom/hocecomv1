@@ -171,15 +171,6 @@ const Users: CollectionConfig = {
       hasMany: false,
       saveToJWT: true,
       relationTo: "companies",
-      access: {
-        update: ({ req }) => {
-          if (isSuperAdmin({ req })) {
-            return true;
-          } else {
-            return false;
-          }
-        },
-      },
     },
     {
       name: "establishment",
