@@ -152,7 +152,7 @@ const saveDocument = async (bolDoc, company) => {
       user: creator.docs[0],
       collection: "documents",
       where: {
-        number: {
+        references: {
           equals: bolDoc.orderId,
         },
       },
@@ -325,6 +325,7 @@ const saveDocument = async (bolDoc, company) => {
         documentProducts: documentProducts.map((dp) => dp.id),
         customer: user.id,
         company: company,
+        references: bolDoc.orderId,
         delAddress: delAddress.id,
         docAddress: docAddress.id,
         creator: creator.docs[0].id,
