@@ -174,6 +174,7 @@ const saveDocument = async (bolDoc, company) => {
         },
       },
     });
+    console.log(existingCustomer);
     let user;
     if (existingCustomer.docs.length > 0) {
       user = existingCustomer.docs[0];
