@@ -47,7 +47,7 @@ const Documents: CollectionConfig = {
               // we need to increment the number by 1
               // and make sure the first 4 digits are the current year
               // and the total length is 12
-              data.number = year + (Number(lastDocument.number.slice(3)) + 1).toString();
+              data.number = year + (Number(lastDocument.number.slice(4)) + 1).toString();
             }
           } catch (error) {
             console.error(error);
