@@ -125,7 +125,7 @@ export const createDocumentsFromBolOrders = async () => {
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then((orders) => {
           orders.orders.forEach((order) => {
             getBolComOrder(order.orderId, currCompany.bolClientID, currCompany.bolClientSecret).then((orderDetails) => {
-              saveDocument(orderDetails, currCompany);
+              saveDocument(orderDetails, currCompany.id);
             });
           });
         });
@@ -162,7 +162,7 @@ const saveDocument = async (bolDoc, company) => {
         door: bolDoc.shipmentDetails.houseNumber,
         zip: bolDoc.shipmentDetails.zipCode,
         city: bolDoc.shipmentDetails.city,
-        country: bolDoc.shipmentDetails.country,
+        country: bolDoc.shipmentDetails.countryCode,
         company: company,
       },
     });
@@ -174,7 +174,7 @@ const saveDocument = async (bolDoc, company) => {
         door: bolDoc.billingDetails.houseNumber,
         zip: bolDoc.billingDetails.zipCode,
         city: bolDoc.billingDetails.city,
-        country: bolDoc.billingDetails.country,
+        country: bolDoc.billingDetails.countryCode,
         company: company,
       },
     });
