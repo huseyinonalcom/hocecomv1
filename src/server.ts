@@ -1,6 +1,6 @@
 import express from "express";
 import payload from "payload";
-import {  createDocumentsFromBolOrders } from "./jobs/bol-offer-sync";
+import { createDocumentsFromBolOrders } from "./jobs/bol-offer-sync";
 
 require("dotenv").config();
 const app = express();
@@ -24,9 +24,15 @@ const start = async () => {
 
   app.listen(3421);
 
-  cron.schedule("*/10 * * * *", () => {
-   createDocumentsFromBolOrders();
- });
+  cron.schedule("*/10 * * * *", async () => {
+    try {
+      console.log("Cron job started");
+      await createDocumentsFromBolOrders();
+      console.log("Cron job completed successfully");
+    } catch (error) {
+      console.error("Error running cron job", error);
+    }
+  });
   // Add your own express routes here
 };
 
