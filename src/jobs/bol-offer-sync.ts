@@ -332,18 +332,38 @@ const saveDocument = async (bolDoc, company) => {
         type: "invoice",
       },
     });
-    console.log(JSON.stringify(document));
-    // const payment = await payload.create({
-    //   user: creator.docs[0],
-    //   collection: "payments",
-    //   data: {
-    //     value: document,
-    //     type: "online",
-    //     isVerified: true,
-    //     document: document.id,
-    //     company: company,
-    //   },
-    // });
+    const payment = await payload.create({
+      user: creator.docs[0],
+      collection: "payments",
+      data: {
+        value: document.documentProducts.reduce((acc, dp) => acc + dp.subTotal, 0),
+        type: "online",
+        isVerified: true,
+        document: document.id,
+        date: bolDoc.orderPlacedDateTime.split("T"),
+        creator: creator.docs[0].id,
+        company: company,
+        establishment: establishment.docs[0].id,
+      },
+    });
+
+    await payload.update({
+      user: creator.docs[0],
+      collection: "documents",
+      id: document.id,
+      data: {
+        payments: [payment.id],
+      },
+    });
+
+    await payload.update({
+      user: creator.docs[0],
+      collection: "users",
+      id: user.id,
+      data: {
+        documents: [document.id],
+      },
+    });
   } catch (error) {
     console.log(error);
   }
