@@ -13,7 +13,7 @@ const ProductImages: CollectionConfig = {
     mimeTypes: ["image/*"],
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
   access: {

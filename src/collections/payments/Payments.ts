@@ -10,7 +10,7 @@ const Payments: CollectionConfig = {
     useAsTitle: "type",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
   },
   endpoints: [
     {

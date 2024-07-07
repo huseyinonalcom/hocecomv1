@@ -10,8 +10,7 @@ const Documents: CollectionConfig = {
     useAsTitle: "type",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
-    beforeChange: [
+    beforeChange: [setCompanyHook,
       async ({ operation, data }) => {
         if (operation == "create") {
           if (!data.type) {

@@ -14,7 +14,7 @@ const Logos: CollectionConfig = {
     useAsTitle: "name",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
   access: {

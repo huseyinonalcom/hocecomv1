@@ -224,6 +224,7 @@ const saveDocument = async (bolDoc, company) => {
         prefix: "BOL-",
         date: bolDoc.orderPlacedDateTime.split("T"),
         time: bolDoc.orderPlacedDateTime.split("T")[1].split("+")[0],
+        documentProducts: documentProducts.map((dp) => dp.id),
         customer: user.id,
         company: company,
         creator: creator.docs[0].id,

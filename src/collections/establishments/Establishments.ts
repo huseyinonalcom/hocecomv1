@@ -8,7 +8,7 @@ const Establishments: CollectionConfig = {
     useAsTitle: "name",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
   },
   access: {
     create: ({ req }) => {

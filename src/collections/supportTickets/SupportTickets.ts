@@ -9,7 +9,7 @@ const SupportTickets: CollectionConfig = {
     useAsTitle: "document",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
   access: {

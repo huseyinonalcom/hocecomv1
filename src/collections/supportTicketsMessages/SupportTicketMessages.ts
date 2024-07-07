@@ -9,7 +9,7 @@ const SupportTicketMessages: CollectionConfig = {
     useAsTitle: "support-ticket",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
   access: {

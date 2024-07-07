@@ -11,7 +11,7 @@ const Files: CollectionConfig = {
     staticDir: "files",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
   access: {

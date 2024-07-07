@@ -8,7 +8,7 @@ const TaskComments: CollectionConfig = {
     useAsTitle: "comment",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
   access: {

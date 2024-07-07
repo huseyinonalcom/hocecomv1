@@ -10,8 +10,9 @@ const Products: CollectionConfig = {
     useAsTitle: "name",
   },
   hooks: {
-    beforeOperation: [hideDeletedHook, setCompanyHook],
+    beforeOperation: [hideDeletedHook],
     // afterRead: [fieldSelectionHook],
+    beforeChange: [setCompanyHook],
   },
   access: {
     create: ({ req }) => {

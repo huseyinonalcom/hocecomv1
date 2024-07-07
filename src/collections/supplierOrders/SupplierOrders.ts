@@ -9,7 +9,7 @@ const SupplierOrders: CollectionConfig = {
     useAsTitle: "category",
   },
   hooks: {
-    beforeOperation: [setCompanyHook],
+    beforeChange: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
   },
   access: {

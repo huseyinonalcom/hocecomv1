@@ -26,17 +26,9 @@ const Users: CollectionConfig = {
     tokenExpiration: 302400,
     useAPIKey: true,
     forgotPassword: {
-      generateEmailHTML: ({
-        token,
-        user,
-      }: {
-        token: string;
-        user: { company: { name } };
-      }) => {
+      generateEmailHTML: ({ token, user }: { token: string; user: { company: { name } } }) => {
         return `<div>
-          <h1>Seems like you've lost your password for ${JSON.stringify(
-            user.company.name
-          )}</h1>
+          <h1>Seems like you've lost your password for ${JSON.stringify(user.company.name)}</h1>
           <p>Click the link below to reset your password</p>
         <a href=" http://localhost:3000/admin/reset/${token}">Reset Password</a>
         </div>`;
@@ -47,8 +39,8 @@ const Users: CollectionConfig = {
     useAsTitle: "email",
   },
   hooks: {
-    beforeOperation: [setCompanyHook, emailPrefix],
-    beforeChange: [tagMail, validateRole],
+    beforeOperation: [emailPrefix],
+    beforeChange: [setCompanyHook, tagMail, validateRole],
     afterRead: [
       // fieldSelectionHook,
       async ({ req, doc }) => {
@@ -139,10 +131,7 @@ const Users: CollectionConfig = {
       ],
       access: {
         update: ({ req }) => {
-          if (
-            isSuperAdmin({ req }) ||
-            checkRole(["admin", "super_admin"], req.user)
-          ) {
+          if (isSuperAdmin({ req }) || checkRole(["admin", "super_admin"], req.user)) {
             return true;
           } else {
             return false;
@@ -170,10 +159,7 @@ const Users: CollectionConfig = {
       defaultValue: false,
       access: {
         update: ({ req }) => {
-          if (
-            isSuperAdmin({ req }) ||
-            checkRole(["admin", "super_admin"], req.user)
-          ) {
+          if (isSuperAdmin({ req }) || checkRole(["admin", "super_admin"], req.user)) {
             return true;
           } else {
             return false;

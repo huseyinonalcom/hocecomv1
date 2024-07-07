@@ -9,8 +9,9 @@ const Projects: CollectionConfig = {
     useAsTitle: "title",
   },
   hooks: {
-    beforeOperation: [hideDeletedHook, setCompanyHook],
+    beforeOperation: [hideDeletedHook],
     // afterRead: [fieldSelectionHook],
+    beforeChange: [setCompanyHook],
   },
   access: {
     create: ({ req }) => {
