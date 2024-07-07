@@ -10,26 +10,19 @@ let bolToken;
 let bolTokenExpiration;
 let companiesToSync: Company[] = [];
 
-const BolHeadersType = {
-  JSON: "json",
-  CSV: "csv",
-};
-
-function bolHeaders(headersType) {
-  if (headersType === BolHeadersType.JSON) {
+function bolHeaders(headersType: "csv" | "json") {
+  if (headersType === "json") {
     return {
       "Content-Type": "application/vnd.retailer.v9+json",
       Accept: "application/vnd.retailer.v9+json",
       Authorization: `Bearer ${bolToken}`,
     };
-  } else if (headersType === BolHeadersType.CSV) {
+  } else if (headersType === "csv") {
     return {
       "Content-Type": "application/vnd.retailer.v9+csv",
       Accept: "application/vnd.retailer.v9+csv",
       Authorization: `Bearer ${bolToken}`,
     };
-  } else {
-    throw new Error("Invalid headers type for bol request");
   }
 }
 
@@ -49,7 +42,8 @@ async function authenticateBolCom(clientId, clientSecret) {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to authenticate bol.com");
+      console.log("Failed to authenticate bol.com");
+      return false;
     }
 
     const data = await response.json();
@@ -57,7 +51,8 @@ async function authenticateBolCom(clientId, clientSecret) {
     bolTokenExpiration = new Date(new Date().getTime() + data["expires_in"] * 1000);
     return true;
   } catch (error) {
-    throw new Error("Failed to authenticate bol.com");
+    console.log(error);
+    return false;
   }
 }
 
@@ -70,17 +65,19 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
   try {
     const response = await fetch(`${bolApiUrl}/orders?fulfilment-method=FBR&status=ALL&latest-change-date=${todayString}&page=1`, {
       method: "GET",
-      headers: bolHeaders(BolHeadersType.JSON),
+      headers: bolHeaders("json"),
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch bol.com orders");
+      console.log("Failed to fetch bol.com orders");
+      return null;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error("Failed to fetch bol.com orders");
+    console.log(error);
+    return null;
   }
 }
 
@@ -90,17 +87,19 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
   try {
     const response = await fetch(`${bolApiUrl}/orders/${orderId}`, {
       method: "GET",
-      headers: bolHeaders(BolHeadersType.JSON),
+      headers: bolHeaders("json"),
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch bol.com order");
+      console.log("Failed to fetch bol.com order");
+      return null;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error("Failed to fetch bol.com order");
+    console.log(error);
+    return null;
   }
 }
 
@@ -124,10 +123,12 @@ export const createDocumentsFromBolOrders = async () => {
         const currCompany = companiesToSync[i];
         await authenticateBolCom(currCompany.bolClientID, currCompany.bolClientSecret);
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then(async (orders) => {
-          for (let i = 0; i < orders.orders.length; i++) {
-            await getBolComOrder(orders.orders[i].orderId, currCompany.bolClientID, currCompany.bolClientSecret).then(async (orderDetails) => {
-              await saveDocument(orderDetails, currCompany.id);
-            });
+          if (orders && orders.orders.length > 0) {
+            for (let i = 0; i < orders.orders.length; i++) {
+              await getBolComOrder(orders.orders[i].orderId, currCompany.bolClientID, currCompany.bolClientSecret).then(async (orderDetails) => {
+                orderDetails && (await saveDocument(orderDetails, currCompany.id));
+              });
+            }
           }
         });
       }
@@ -190,7 +191,6 @@ const saveDocument = async (bolDoc, company) => {
         },
       },
     });
-    console.log(existingCustomer);
     let user;
     if (existingCustomer.docs.length > 0) {
       user = existingCustomer.docs[0];
@@ -336,6 +336,5 @@ const saveDocument = async (bolDoc, company) => {
     console.log("Document saved");
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to save document");
   }
 };

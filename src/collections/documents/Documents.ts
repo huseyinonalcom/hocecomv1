@@ -3,6 +3,7 @@ import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import payload from "payload";
 import { checkRole } from "../hooks/checkRole";
+import APIError from "payload/dist/errors/APIError";
 
 const Documents: CollectionConfig = {
   slug: "documents",
@@ -10,11 +11,12 @@ const Documents: CollectionConfig = {
     useAsTitle: "type",
   },
   hooks: {
-    beforeChange: [setCompanyHook,
+    beforeChange: [
+      setCompanyHook,
       async ({ operation, data }) => {
         if (operation == "create") {
           if (!data.type) {
-            throw new Error("type required");
+            throw new APIError("type required", 400);
           }
 
           try {
