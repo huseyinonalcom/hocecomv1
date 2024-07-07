@@ -68,6 +68,42 @@ async function authenticateBolCom(clientId, clientSecret) {
   }
 }
 
+
+export const createDocumentsFromBolOrders = async () => {
+  companiesToSync = [];
+  payload
+    .find({
+      overrideAccess: true,
+      collection: "companies",
+      depth: 2,
+      limit: 1000,
+      where: {
+        and: [{ bolClientID: { exists: true } }, { bolClientSecret: { exists: true } }],
+      },
+    })
+    .then((companies) => {
+      companies.docs.forEach((company) => companiesToSync.push(company));
+    })
+    .then(async () => {
+      for (let i = 0; i < companiesToSync.length; i++) {
+        const currCompany = companiesToSync[i];
+        getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then(async (orders) => {
+          if (orders && orders.orders.length > 0) {
+            for (let i = 0; i < orders.orders.length; i++) {
+              await getBolComOrder(
+                orders.orders.sort((a, b) => new Date(a.orderPlacedDateTime).getTime() - new Date(b.orderPlacedDateTime).getTime())[i].orderId,
+                currCompany.bolClientID,
+                currCompany.bolClientSecret
+              ).then(async (orderDetails) => {
+                orderDetails && (await saveDocument(orderDetails, currCompany.id));
+              });
+            }
+          }
+        });
+      }
+    });
+};
+
 async function getBolComOrders(bolClientID, bolClientSecret) {
   await authenticateBolCom(bolClientID, bolClientSecret);
 
@@ -116,42 +152,6 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
     return null;
   }
 }
-
-export const createDocumentsFromBolOrders = async () => {
-  companiesToSync = [];
-  payload
-    .find({
-      overrideAccess: true,
-      collection: "companies",
-      depth: 2,
-      limit: 1000,
-      where: {
-        and: [{ bolClientID: { exists: true } }, { bolClientSecret: { exists: true } }],
-      },
-    })
-    .then((companies) => {
-      companies.docs.forEach((company) => companiesToSync.push(company));
-    })
-    .then(async () => {
-      for (let i = 0; i < companiesToSync.length; i++) {
-        const currCompany = companiesToSync[i];
-        await authenticateBolCom(currCompany.bolClientID, currCompany.bolClientSecret);
-        getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then(async (orders) => {
-          if (orders && orders.orders.length > 0) {
-            for (let i = 0; i < orders.orders.length; i++) {
-              await getBolComOrder(
-                orders.orders.sort((a, b) => new Date(a.orderPlacedDateTime).getTime() - new Date(b.orderPlacedDateTime).getTime())[i].orderId,
-                currCompany.bolClientID,
-                currCompany.bolClientSecret
-              ).then(async (orderDetails) => {
-                orderDetails && (await saveDocument(orderDetails, currCompany.id));
-              });
-            }
-          }
-        });
-      }
-    });
-};
 
 const saveDocument = async (bolDoc, company) => {
   try {
