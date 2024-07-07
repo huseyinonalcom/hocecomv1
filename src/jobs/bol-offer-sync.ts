@@ -160,6 +160,15 @@ const saveDocument = async (bolDoc, company) => {
     if (existingDoc.docs.length > 0) {
       return;
     }
+    const establishment = await payload.find({
+      user: creator.docs[0],
+      collection: "establishments",
+      where: {
+        company: {
+          equals: company,
+        },
+      },
+    });
 
     let docAddress = null;
     let delAddress = null;
@@ -319,6 +328,7 @@ const saveDocument = async (bolDoc, company) => {
         delAddress: delAddress.id,
         docAddress: docAddress.id,
         creator: creator.docs[0].id,
+        establishment: establishment.docs[0].id,
         type: "order",
       },
     });
