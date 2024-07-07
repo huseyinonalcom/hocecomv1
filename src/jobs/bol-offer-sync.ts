@@ -164,13 +164,20 @@ const saveDocument = async (bolDoc, company) => {
     let docAddress = null;
     let delAddress = null;
 
+    const tramsformEmail = (email) => {
+      let parts = email.split("@");
+      let localPart = parts[0].split("+")[0];
+      let domainPart = parts[1];
+      return localPart + "+" + company + "@" + domainPart;
+    };
+
     const existingCustomer = await payload.find({
       user: creator.docs[0],
       depth: 3,
       collection: "users",
       where: {
         email: {
-          equals: bolDoc.billingDetails.email,
+          equals: tramsformEmail(bolDoc.billingDetails.email),
         },
       },
     });
