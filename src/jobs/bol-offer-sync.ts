@@ -107,6 +107,7 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
 }
 
 export const createDocumentsFromBolOrders = async () => {
+  companiesToSync = [];
   payload
     .find({
       overrideAccess: true,
