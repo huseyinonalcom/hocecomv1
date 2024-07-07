@@ -136,7 +136,6 @@ export const createDocumentsFromBolOrders = async () => {
 
 const saveDocument = async (bolDoc, company) => {
   try {
-    console.log("looking for user");
     const creator = await payload.find({
       overrideAccess: true,
       collection: "users",
@@ -149,8 +148,6 @@ const saveDocument = async (bolDoc, company) => {
         },
       },
     });
-    console.log("creator: ", creator);
-    console.log("looking for document");
     const existingDoc = await payload.find({
       user: creator.docs[0],
       collection: "documents",
@@ -163,7 +160,6 @@ const saveDocument = async (bolDoc, company) => {
     if (existingDoc.docs.length > 0) {
       return;
     }
-    console.log("creating address doc");
     const docAddress = await payload.create({
       user: creator.docs[0],
       collection: "addresses",
@@ -176,7 +172,6 @@ const saveDocument = async (bolDoc, company) => {
         company: company,
       },
     });
-    console.log("creating address del");
     const delAddress = await payload.create({
       user: creator.docs[0],
       collection: "addresses",
@@ -189,7 +184,6 @@ const saveDocument = async (bolDoc, company) => {
         company: company,
       },
     });
-    console.log("creating user");
     const user = await payload.create({
       user: creator.docs[0],
       collection: "users",
@@ -205,7 +199,6 @@ const saveDocument = async (bolDoc, company) => {
         company: company,
       },
     });
-    console.log("creating document products");
     let documentProducts = [];
     for (let i = 0; i < bolDoc.orderItems.length; i++) {
       const products = await payload.find({
@@ -232,7 +225,6 @@ const saveDocument = async (bolDoc, company) => {
         })
       );
     }
-    console.log("creating document ");
     await payload.create({
       user: creator.docs[0],
       collection: "documents",
