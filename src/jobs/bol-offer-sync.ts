@@ -212,6 +212,7 @@ const saveDocument = async (bolDoc, company) => {
             product: products && products.docs.length > 0 ? products.docs[0].id : null,
             amount: bolDoc.orderItems[i].quantity,
             tax: 21,
+            name: products && products.docs.length > 0 ? products.docs[0].name : bolDoc.orderItems[i].product.title,
           },
         })
       );
