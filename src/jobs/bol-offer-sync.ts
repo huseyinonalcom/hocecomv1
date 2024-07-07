@@ -1,6 +1,7 @@
 import payload from "payload";
 import { generateRandomString } from "../utils/random";
 import { Company } from "payload/generated-types";
+import { sendMail } from "../utils/sendmail";
 
 const bolAuthUrl = "https://login.bol.com/token?grant_type=client_credentials";
 
@@ -235,18 +236,22 @@ const saveDocument = async (bolDoc, company) => {
           company: company,
         },
       });
-      docAddress = await payload.create({
-        user: creator.docs[0],
-        collection: "addresses",
-        data: {
-          street: bolDoc.billingDetails.streetName,
-          door: bolDoc.billingDetails.houseNumber,
-          zip: bolDoc.billingDetails.zipCode,
-          city: bolDoc.billingDetails.city,
-          country: bolDoc.billingDetails.countryCode,
-          company: company,
-        },
-      });
+      if (bolDoc.shipmentDetails.streetName !== bolDoc.billingDetails.streetName) {
+        docAddress = await payload.create({
+          user: creator.docs[0],
+          collection: "addresses",
+          data: {
+            street: bolDoc.billingDetails.streetName,
+            door: bolDoc.billingDetails.houseNumber,
+            zip: bolDoc.billingDetails.zipCode,
+            city: bolDoc.billingDetails.city,
+            country: bolDoc.billingDetails.countryCode,
+            company: company,
+          },
+        });
+      } else {
+        docAddress = delAddress;
+      }
       const newUser = await payload.create({
         user: creator.docs[0],
         collection: "users",
@@ -369,6 +374,13 @@ const saveDocument = async (bolDoc, company) => {
       data: {
         documents: [...user.documents.map((doc) => doc.id), document.id],
       },
+    });
+
+    await sendMail({
+      recipient: company.accountantEmail,
+      subject: `Order ${document.prefix}${document.number} confirmation`,
+      company: company,
+      document: document,
     });
   } catch (error) {
     console.log(error);

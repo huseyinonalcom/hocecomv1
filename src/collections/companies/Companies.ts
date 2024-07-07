@@ -55,11 +55,7 @@ const Companies: CollectionConfig = {
   ],
   access: {
     create: isSuperAdmin,
-    read:
-      adminCheckForCompany ||
-      websiteCheckForCompany ||
-      companyCheckForCompany ||
-      customerCheckForCompany,
+    read: adminCheckForCompany || websiteCheckForCompany || companyCheckForCompany || customerCheckForCompany,
     delete: () => false,
     update: adminCheckForCompany,
   },
@@ -86,6 +82,7 @@ const Companies: CollectionConfig = {
     { name: "bolClientSecret", type: "text" },
     { name: "amazonClientID", type: "text" },
     { name: "amazonClientSecret", type: "text" },
+    { name: "accountantEmail", type: "email" },
   ],
 };
 
