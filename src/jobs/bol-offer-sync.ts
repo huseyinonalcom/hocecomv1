@@ -92,6 +92,8 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
 
     if (!response.ok) {
       console.log("Failed to fetch bol.com order");
+      const answer = await response.text();
+      console.log(answer);
       return null;
     }
 
