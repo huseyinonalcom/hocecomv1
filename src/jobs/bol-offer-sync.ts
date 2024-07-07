@@ -1,4 +1,5 @@
 import payload from "payload";
+import { generateRandomString } from "../utils/random";
 
 const bolAuthUrl = "https://login.bol.com/token?grant_type=client_credentials";
 
@@ -133,26 +134,92 @@ export const createDocumentsFromBolOrders = async () => {
     });
 };
 
-// const saveDocument = async (bolDoc) => {
-//   try {
-//     await payload.create({
-//       collection: "users",
-//       data: {
-//         email: bolDoc.billingDetails.email,
-//         preferredLanguage: bolDoc.shippingDetails.language,
-//         phone: bolDoc.shippingDetails.phone,
-//       },
-//     });
-//     await payload.create({
-//       collection: "documents",
-//       data: {
-//         number: bolDoc.orderId,
-//         prefix: "BOL-",
-//         date: bolDoc.orderPlacedDateTime.split("T"),
-//         time: bolDoc.orderPlacedDateTime.split("T")[1].split("+")[0],
-//       },
-//     });
-//   } catch (error) {
-//     throw new Error("Failed to save document");
-//   }
-// };
+const saveDocument = async (bolDoc, company) => {
+  try {
+    const creator = await payload.find({
+      collection: "users",
+      where: {
+        company: {
+          equals: company.id,
+        },
+      },
+    });
+    const docAddress = await payload.create({
+      collection: "addresses",
+      data: {
+        id: 0,
+        street: bolDoc.shipmentDetails.streetName,
+        door: bolDoc.shipmentDetails.houseNumber,
+        zip: bolDoc.shipmentDetails.zipCode,
+        city: bolDoc.shipmentDetails.city,
+        country: bolDoc.shipmentDetails.country,
+        company: company,
+      },
+    });
+    const delAddress = await payload.create({
+      collection: "addresses",
+      data: {
+        id: 0,
+        street: bolDoc.billingDetails.streetName,
+        door: bolDoc.billingDetails.houseNumber,
+        zip: bolDoc.billingDetails.zipCode,
+        city: bolDoc.billingDetails.city,
+        country: bolDoc.billingDetails.country,
+        company: company,
+      },
+    });
+    const user = await payload.create({
+      collection: "users",
+      data: {
+        id: 0,
+        email: bolDoc.billingDetails.email,
+        preferredLanguage: bolDoc.shippingDetails.language,
+        phone: bolDoc.shippingDetails.phone,
+        customerAddresses: [docAddress.id, delAddress.id],
+        password: generateRandomString(24),
+        role: "customer",
+        firstName: bolDoc.billingDetails.firstName,
+        lastName: bolDoc.billingDetails.lastName,
+        company: company,
+      },
+    });
+    let documentProducts = [];
+    for (let i = 0; i < bolDoc.orderItems.length; i++) {
+      const products = await payload.find({
+        collection: "products",
+        where: {
+          EAN: {
+            equals: bolDoc.orderItems[i].product.ean,
+          },
+        },
+      });
+      documentProducts.push(
+        await payload.create({
+          collection: "document-products",
+          data: {
+            value: bolDoc.orderItems[i].unitPrice,
+            company: company,
+            product: products && products.docs.length > 0 ? products.docs[0].id : null,
+            amount: bolDoc.orderItems[i].quantity,
+            tax: 21,
+          },
+        })
+      );
+    }
+    await payload.create({
+      collection: "documents",
+      data: {
+        number: bolDoc.orderId,
+        prefix: "BOL-",
+        date: bolDoc.orderPlacedDateTime.split("T"),
+        time: bolDoc.orderPlacedDateTime.split("T")[1].split("+")[0],
+        customer: user.id,
+        company: company,
+        creator: creator.docs[0].id,
+        type: "order",
+      },
+    });
+  } catch (error) {
+    throw new Error("Failed to save document");
+  }
+};
