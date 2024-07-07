@@ -149,6 +149,7 @@ const saveDocument = async (bolDoc, company) => {
         },
       },
     });
+    console.log("creator: ", creator);
     console.log("looking for document");
     const existingDoc = await payload.find({
       user: creator.docs[0],
