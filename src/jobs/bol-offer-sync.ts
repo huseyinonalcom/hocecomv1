@@ -135,6 +135,17 @@ export const createDocumentsFromBolOrders = async () => {
 
 const saveDocument = async (bolDoc, company) => {
   try {
+    const existingDoc = await payload.find({
+      collection: "documents",
+      where: {
+        number: {
+          equals: bolDoc.orderId,
+        },
+      },
+    });
+    if (existingDoc.docs.length > 0) {
+      return;
+    }
     const creator = await payload.find({
       collection: "users",
       where: {
