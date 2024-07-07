@@ -135,8 +135,21 @@ export const createDocumentsFromBolOrders = async () => {
 
 const saveDocument = async (bolDoc, company) => {
   try {
+    console.log("looking for user");
+    const creator = await payload.find({
+      collection: "users",
+      where: {
+        company: {
+          equals: company,
+        },
+        role: {
+          equals: "admin",
+        },
+      },
+    });
     console.log("looking for document");
     const existingDoc = await payload.find({
+      user: creator.docs[0],
       collection: "documents",
       where: {
         number: {
@@ -147,17 +160,9 @@ const saveDocument = async (bolDoc, company) => {
     if (existingDoc.docs.length > 0) {
       return;
     }
-    console.log("looking for user");
-    const creator = await payload.find({
-      collection: "users",
-      where: {
-        company: {
-          equals: company,
-        },
-      },
-    });
     console.log("creating address doc");
     const docAddress = await payload.create({
+      user: creator.docs[0],
       collection: "addresses",
       data: {
         street: bolDoc.shipmentDetails.streetName,
@@ -170,6 +175,7 @@ const saveDocument = async (bolDoc, company) => {
     });
     console.log("creating address del");
     const delAddress = await payload.create({
+      user: creator.docs[0],
       collection: "addresses",
       data: {
         street: bolDoc.billingDetails.streetName,
@@ -182,6 +188,7 @@ const saveDocument = async (bolDoc, company) => {
     });
     console.log("creating user");
     const user = await payload.create({
+      user: creator.docs[0],
       collection: "users",
       data: {
         email: bolDoc.billingDetails.email,
@@ -199,6 +206,7 @@ const saveDocument = async (bolDoc, company) => {
     let documentProducts = [];
     for (let i = 0; i < bolDoc.orderItems.length; i++) {
       const products = await payload.find({
+        user: creator.docs[0],
         collection: "products",
         where: {
           EAN: {
@@ -208,6 +216,7 @@ const saveDocument = async (bolDoc, company) => {
       });
       documentProducts.push(
         await payload.create({
+          user: creator.docs[0],
           collection: "document-products",
           data: {
             value: bolDoc.orderItems[i].unitPrice,
@@ -222,6 +231,7 @@ const saveDocument = async (bolDoc, company) => {
     }
     console.log("creating document ");
     await payload.create({
+      user: creator.docs[0],
       collection: "documents",
       data: {
         number: bolDoc.orderId,
