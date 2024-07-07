@@ -16,9 +16,7 @@ const Addresses: CollectionConfig = {
     read: ({ req }) => {
       if (isSuperAdmin({ req })) {
         return true;
-      } else if (
-        checkRole(["admin", "employee", "website", "customer"], req.user)
-      ) {
+      } else if (checkRole(["admin", "employee", "website", "customer"], req.user)) {
         return {
           company: {
             equals: req.user.company.id,
@@ -28,8 +26,16 @@ const Addresses: CollectionConfig = {
         return false;
       }
     },
-    update: ({}) => false,
-    delete: ({}) => false,
+    update: ({ req }) => {
+      if (isSuperAdmin({ req })) {
+        return true;
+      }
+    },
+    delete: ({ req }) => {
+      if (isSuperAdmin({ req })) {
+        return true;
+      }
+    },
   },
   fields: [
     { name: "country", type: "text", required: true },
