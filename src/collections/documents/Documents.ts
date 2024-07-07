@@ -50,6 +50,7 @@ const Documents: CollectionConfig = {
               data.number = year + (Number(lastDocument.number.slice(4)) + 1).toString().padStart(8, "0");
             }
           } catch (error) {
+            const year = new Date().getFullYear().toString();
             console.error(error);
             data.number = year + "00000001";
           }
