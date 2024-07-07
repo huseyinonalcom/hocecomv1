@@ -333,6 +333,7 @@ const saveDocument = async (bolDoc, company) => {
         type: "order",
       },
     });
+    console.log("Document saved");
   } catch (error) {
     console.log(error);
     throw new Error("Failed to save document");
