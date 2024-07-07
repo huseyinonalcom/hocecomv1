@@ -188,8 +188,8 @@ const saveDocument = async (bolDoc, company) => {
       data: {
         id: 0,
         email: bolDoc.billingDetails.email,
-        preferredLanguage: bolDoc.shippingDetails.language,
-        phone: bolDoc.shippingDetails.phone,
+        preferredLanguage: bolDoc.shipmentDetails.language,
+        phone: bolDoc.shipmentDetails.phone,
         customerAddresses: [docAddress.id, delAddress.id],
         password: generateRandomString(24),
         role: "customer",
