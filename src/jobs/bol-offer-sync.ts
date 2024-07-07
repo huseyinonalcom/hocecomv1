@@ -68,7 +68,6 @@ async function authenticateBolCom(clientId, clientSecret) {
   }
 }
 
-
 export const createDocumentsFromBolOrders = async () => {
   companiesToSync = [];
   payload
@@ -390,9 +389,11 @@ const saveDocument = async (bolDoc, company) => {
 
     await sendMail({
       recipient: company.accountantEmail,
-      subject: `Order ${document.prefix}${document.number} confirmation`,
+      subject: `Bestelling ${document.prefix}${document.number}`,
       company: company,
-      document: document,
+      html: `<p>Beste ${
+        document.customer.firstName + " " + document.customer.lastName
+      },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${company.name}</p>`,
     });
   } catch (error) {
     console.log(error);
