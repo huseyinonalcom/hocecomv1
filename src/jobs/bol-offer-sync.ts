@@ -119,7 +119,6 @@ export const createDocumentsFromBolOrders = async () => {
     })
     .then(async () => {
       for (let i = 0; i < companiesToSync.length; i++) {
-        console.log("syncing for: ", companiesToSync[i]);
         const currCompany = companiesToSync[i];
         await authenticateBolCom(currCompany.bolClientID, currCompany.bolClientSecret);
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then(async (orders) => {
@@ -345,8 +344,6 @@ const saveDocument = async (bolDoc, company) => {
     //     company: company,
     //   },
     // });
-
-    console.log("Document saved");
   } catch (error) {
     console.log(error);
   }
