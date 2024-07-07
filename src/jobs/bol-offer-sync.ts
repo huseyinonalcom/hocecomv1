@@ -194,7 +194,7 @@ const saveDocument = async (bolDoc, company) => {
         password: generateRandomString(24),
         role: "customer",
         firstName: bolDoc.billingDetails.firstName,
-        lastName: bolDoc.billingDetails.lastName,
+        lastName: bolDoc.billingDetails.surname,
         company: company,
       },
     });
