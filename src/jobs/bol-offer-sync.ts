@@ -125,8 +125,7 @@ export const createDocumentsFromBolOrders = async () => {
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then((orders) => {
           orders.orders.forEach((order) => {
             getBolComOrder(order.orderId, currCompany.bolClientID, currCompany.bolClientSecret).then((orderDetails) => {
-              console.log(JSON.stringify(orderDetails, null, 2));
-              // Create documents from orderDetails
+              saveDocument(orderDetails, currCompany);
             });
           });
         });
