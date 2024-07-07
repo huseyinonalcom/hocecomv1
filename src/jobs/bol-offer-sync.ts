@@ -1,5 +1,6 @@
 import payload from "payload";
 import { generateRandomString } from "../utils/random";
+import { Company } from "payload/generated-types";
 
 const bolAuthUrl = "https://login.bol.com/token?grant_type=client_credentials";
 
@@ -7,7 +8,7 @@ const bolApiUrl = "https://api.bol.com/retailer";
 
 let bolToken;
 let bolTokenExpiration;
-let companiesToSync = [];
+let companiesToSync: Company[] = [];
 
 const BolHeadersType = {
   JSON: "json",
@@ -107,19 +108,18 @@ export const createDocumentsFromBolOrders = async () => {
   payload
     .find({
       collection: "companies",
-      depth: 1,
+      depth: 2,
       limit: 1000,
       where: {
         and: [{ bolClientID: { exists: true } }, { bolClientSecret: { exists: true } }],
       },
     })
     .then((companies) => {
-      companies.docs.forEach((company) =>
-        companiesToSync.push({ companyID: company.id, bolClientID: company.bolClientID, bolClientSecret: company.bolClientSecret })
-      );
+      companies.docs.forEach((company) => companiesToSync.push(company));
     })
     .then(() => {
       for (let i = 0; i < companiesToSync.length; i++) {
+        console.log("syncing for: ", companiesToSync[i]);
         const currCompany = companiesToSync[i];
         authenticateBolCom(currCompany.bolClientID, currCompany.bolClientSecret);
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then((orders) => {
@@ -135,6 +135,7 @@ export const createDocumentsFromBolOrders = async () => {
 
 const saveDocument = async (bolDoc, company) => {
   try {
+    console.log("looking for document");
     const existingDoc = await payload.find({
       collection: "documents",
       where: {
@@ -146,6 +147,7 @@ const saveDocument = async (bolDoc, company) => {
     if (existingDoc.docs.length > 0) {
       return;
     }
+    console.log("looking for user");
     const creator = await payload.find({
       collection: "users",
       where: {
@@ -154,6 +156,7 @@ const saveDocument = async (bolDoc, company) => {
         },
       },
     });
+    console.log("creating address doc");
     const docAddress = await payload.create({
       collection: "addresses",
       data: {
@@ -166,6 +169,7 @@ const saveDocument = async (bolDoc, company) => {
         company: company,
       },
     });
+    console.log("creating address del");
     const delAddress = await payload.create({
       collection: "addresses",
       data: {
@@ -178,6 +182,7 @@ const saveDocument = async (bolDoc, company) => {
         company: company,
       },
     });
+    console.log("creating user");
     const user = await payload.create({
       collection: "users",
       data: {
@@ -193,6 +198,7 @@ const saveDocument = async (bolDoc, company) => {
         company: company,
       },
     });
+    console.log("creating document products");
     let documentProducts = [];
     for (let i = 0; i < bolDoc.orderItems.length; i++) {
       const products = await payload.find({
@@ -217,6 +223,7 @@ const saveDocument = async (bolDoc, company) => {
         })
       );
     }
+    console.log("creating document ");
     await payload.create({
       collection: "documents",
       data: {
