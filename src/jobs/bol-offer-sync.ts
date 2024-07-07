@@ -201,6 +201,30 @@ const saveDocument = async (bolDoc, company) => {
         }
       }
     } else {
+      delAddress = await payload.create({
+        user: creator.docs[0],
+        collection: "addresses",
+        data: {
+          street: bolDoc.shipmentDetails.streetName,
+          door: bolDoc.shipmentDetails.houseNumber,
+          zip: bolDoc.shipmentDetails.zipCode,
+          city: bolDoc.shipmentDetails.city,
+          country: bolDoc.shipmentDetails.countryCode,
+          company: company,
+        },
+      });
+      docAddress = await payload.create({
+        user: creator.docs[0],
+        collection: "addresses",
+        data: {
+          street: bolDoc.billingDetails.streetName,
+          door: bolDoc.billingDetails.houseNumber,
+          zip: bolDoc.billingDetails.zipCode,
+          city: bolDoc.billingDetails.city,
+          country: bolDoc.billingDetails.countryCode,
+          company: company,
+        },
+      });
       const newUser = await payload.create({
         user: creator.docs[0],
         collection: "users",
