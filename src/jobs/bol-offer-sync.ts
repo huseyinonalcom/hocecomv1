@@ -123,12 +123,12 @@ export const createDocumentsFromBolOrders = async () => {
         console.log("syncing for: ", companiesToSync[i]);
         const currCompany = companiesToSync[i];
         await authenticateBolCom(currCompany.bolClientID, currCompany.bolClientSecret);
-        getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then((orders) => {
-          orders.orders.forEach((order) => {
-            getBolComOrder(order.orderId, currCompany.bolClientID, currCompany.bolClientSecret).then((orderDetails) => {
-              saveDocument(orderDetails, currCompany.id);
+        getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then(async (orders) => {
+          for (let i = 0; i < orders.orders.length; i++) {
+            await getBolComOrder(orders.orders[i].orderId, currCompany.bolClientID, currCompany.bolClientSecret).then(async (orderDetails) => {
+              await saveDocument(orderDetails, currCompany.id);
             });
-          });
+          }
         });
       }
     });
