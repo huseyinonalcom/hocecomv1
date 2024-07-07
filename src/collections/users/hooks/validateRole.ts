@@ -4,15 +4,15 @@ import payload from "payload";
 
 export const validateRole: CollectionBeforeChangeHook = async ({ req }) => {
   try {
-    const users = await payload.find({
-      collection: "users",
-      overrideAccess: true,
-      depth: 0,
-      page: 1,
-      limit: 1,
-    });
-    if (users.totalDocs > 0) {
-      if (req.body.role && req.body.role != "customer") {
+    if (req.body.role && req.body.role != "customer") {
+      const users = await payload.find({
+        collection: "users",
+        overrideAccess: true,
+        depth: 0,
+        page: 1,
+        limit: 1,
+      });
+      if (users.totalDocs > 0) {
         switch (req.user.role) {
           case "super_admin":
             break;
