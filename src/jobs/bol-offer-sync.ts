@@ -7,29 +7,28 @@ const bolAuthUrl = "https://login.bol.com/token?grant_type=client_credentials";
 
 const bolApiUrl = "https://api.bol.com/retailer";
 
-let bolToken;
-let bolTokenExpiration;
+let bolTokens = [];
 let companiesToSync: Company[] = [];
 
-function bolHeaders(headersType: "csv" | "json") {
+function bolHeaders(headersType: "csv" | "json", clientId) {
   if (headersType === "json") {
     return {
       "Content-Type": "application/vnd.retailer.v9+json",
       Accept: "application/vnd.retailer.v9+json",
-      Authorization: `Bearer ${bolToken}`,
+      Authorization: `Bearer ${bolTokens.find((t) => t.clientId == clientId).token}`,
     };
   } else if (headersType === "csv") {
     return {
       "Content-Type": "application/vnd.retailer.v9+csv",
       Accept: "application/vnd.retailer.v9+csv",
-      Authorization: `Bearer ${bolToken}`,
+      Authorization: `Bearer ${bolTokens.find((t) => t.clientId == clientId).token}`,
     };
   }
 }
 
 async function authenticateBolCom(clientId, clientSecret) {
-  if (bolTokenExpiration && bolTokenExpiration > new Date()) {
-    return true;
+  if (bolTokens.some((t) => t.clientId == clientId && new Date() < t.expiration)) {
+    return bolTokens.find((t) => t.clientId == clientId).token;
   }
 
   const authHeader = `Basic ${btoa(`${clientId}:${clientSecret}`)}`;
@@ -48,8 +47,8 @@ async function authenticateBolCom(clientId, clientSecret) {
     }
 
     const data = await response.json();
-    bolToken = data["access_token"];
-    bolTokenExpiration = new Date(new Date().getTime() + data["expires_in"] * 1000);
+    bolTokens.find((t) => t.clientId == clientId).token = data["access_token"];
+    bolTokens.find((t) => t.clientId == clientId).expiration = new Date(new Date().getTime() + data["expires_in"] * 1000);
     return true;
   } catch (error) {
     console.log(error);
@@ -66,7 +65,7 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
   try {
     const response = await fetch(`${bolApiUrl}/orders?fulfilment-method=FBR&status=ALL&latest-change-date=${todayString}&page=1`, {
       method: "GET",
-      headers: bolHeaders("json"),
+      headers: bolHeaders("json", bolClientID),
     });
 
     if (!response.ok) {
@@ -88,7 +87,7 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
   try {
     const response = await fetch(`${bolApiUrl}/orders/${orderId}`, {
       method: "GET",
-      headers: bolHeaders("json"),
+      headers: bolHeaders("json", bolClientID),
     });
 
     if (!response.ok) {
