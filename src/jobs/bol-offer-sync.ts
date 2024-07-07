@@ -160,46 +160,93 @@ const saveDocument = async (bolDoc, company) => {
     if (existingDoc.docs.length > 0) {
       return;
     }
-    const docAddress = await payload.create({
+
+    let docAddress = null;
+    let delAddress = null;
+
+    const existingCustomer = await payload.find({
       user: creator.docs[0],
-      collection: "addresses",
-      data: {
-        street: bolDoc.shipmentDetails.streetName,
-        door: bolDoc.shipmentDetails.houseNumber,
-        zip: bolDoc.shipmentDetails.zipCode,
-        city: bolDoc.shipmentDetails.city,
-        country: bolDoc.shipmentDetails.countryCode,
-        company: company,
-      },
-    });
-    console.log("docAddress", docAddress);
-    const delAddress = await payload.create({
-      user: creator.docs[0],
-      collection: "addresses",
-      data: {
-        street: bolDoc.billingDetails.streetName,
-        door: bolDoc.billingDetails.houseNumber,
-        zip: bolDoc.billingDetails.zipCode,
-        city: bolDoc.billingDetails.city,
-        country: bolDoc.billingDetails.countryCode,
-        company: company,
-      },
-    });
-    const user = await payload.create({
-      user: creator.docs[0],
+      depth: 3,
       collection: "users",
-      data: {
-        email: bolDoc.billingDetails.email,
-        preferredLanguage: bolDoc.shipmentDetails.language,
-        phone: bolDoc.shipmentDetails.phone,
-        customerAddresses: [docAddress.id, delAddress.id],
-        password: generateRandomString(24),
-        role: "customer",
-        firstName: bolDoc.billingDetails.firstName,
-        lastName: bolDoc.billingDetails.surname,
-        company: company,
+      where: {
+        email: {
+          equals: bolDoc.billingDetails.email,
+        },
       },
     });
+    let user;
+    if (existingCustomer.docs.length > 0) {
+      user = existingCustomer.docs[0];
+
+      if (user.customerAddresses && user.customerAddresses.length > 0) {
+        for (let i = 0; i < user.customerAddresses.length; i++) {
+          if (
+            user.customerAddresses[i].street === bolDoc.shipmentDetails.streetName &&
+            user.customerAddresses[i].door === bolDoc.shipmentDetails.houseNumber &&
+            user.customerAddresses[i].zip === bolDoc.shipmentDetails.zipCode &&
+            user.customerAddresses[i].city === bolDoc.shipmentDetails.city &&
+            user.customerAddresses[i].country === bolDoc.shipmentDetails.countryCode
+          ) {
+            delAddress = user.customerAddresses[i];
+          }
+          if (
+            user.customerAddresses[i].street === bolDoc.billingDetails.streetName &&
+            user.customerAddresses[i].door === bolDoc.billingDetails.houseNumber &&
+            user.customerAddresses[i].zip === bolDoc.billingDetails.zipCode &&
+            user.customerAddresses[i].city === bolDoc.billingDetails.city &&
+            user.customerAddresses[i].country === bolDoc.billingDetails.countryCode
+          ) {
+            docAddress = user.customerAddresses[i];
+          }
+        }
+      }
+    } else {
+      const newUser = await payload.create({
+        user: creator.docs[0],
+        collection: "users",
+        data: {
+          email: bolDoc.billingDetails.email,
+          preferredLanguage: bolDoc.shipmentDetails.language,
+          phone: bolDoc.shipmentDetails.phone,
+          customerAddresses: [docAddress.id, delAddress.id],
+          password: generateRandomString(24),
+          role: "customer",
+          firstName: bolDoc.billingDetails.firstName,
+          lastName: bolDoc.billingDetails.surname,
+          company: company,
+        },
+      });
+      user = newUser;
+    }
+    if (!delAddress) {
+      delAddress = await payload.create({
+        user: creator.docs[0],
+        collection: "addresses",
+        data: {
+          street: bolDoc.shipmentDetails.streetName,
+          door: bolDoc.shipmentDetails.houseNumber,
+          zip: bolDoc.shipmentDetails.zipCode,
+          city: bolDoc.shipmentDetails.city,
+          country: bolDoc.shipmentDetails.countryCode,
+          company: company,
+        },
+      });
+    }
+    if (!docAddress) {
+      docAddress = await payload.create({
+        user: creator.docs[0],
+        collection: "addresses",
+        data: {
+          street: bolDoc.billingDetails.streetName,
+          door: bolDoc.billingDetails.houseNumber,
+          zip: bolDoc.billingDetails.zipCode,
+          city: bolDoc.billingDetails.city,
+          country: bolDoc.billingDetails.countryCode,
+          company: company,
+        },
+      });
+    }
+
     let documentProducts = [];
     for (let i = 0; i < bolDoc.orderItems.length; i++) {
       const products = await payload.find({
