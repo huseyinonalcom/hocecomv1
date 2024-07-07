@@ -25,7 +25,7 @@ const start = async () => {
   app.listen(3421);
   console.log("Server started on http://localhost:3421");
 
-  cron.schedule("*/1 * * * *", async () => {
+  cron.schedule("*/2 * * * *", async () => {
     try {
       console.log("Cron job started");
       await createDocumentsFromBolOrders();
