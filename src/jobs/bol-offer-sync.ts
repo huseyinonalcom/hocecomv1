@@ -10,25 +10,26 @@ const bolApiUrl = "https://api.bol.com/retailer";
 let bolTokens = [];
 let companiesToSync: Company[] = [];
 
-function bolHeaders(headersType: "csv" | "json", clientId) {
-  if (headersType === "json") {
-    return {
-      "Content-Type": "application/vnd.retailer.v9+json",
-      Accept: "application/vnd.retailer.v9+json",
-      Authorization: `Bearer ${bolTokens.find((t) => t.clientId == clientId).token}`,
-    };
-  } else if (headersType === "csv") {
-    return {
-      "Content-Type": "application/vnd.retailer.v9+csv",
-      Accept: "application/vnd.retailer.v9+csv",
-      Authorization: `Bearer ${bolTokens.find((t) => t.clientId == clientId).token}`,
-    };
+function bolHeaders(headersType, clientId) {
+  const tokenEntry = bolTokens.find((t) => t.clientId === clientId);
+  if (!tokenEntry) {
+    console.log("Token not found for clientId:", clientId);
+    return;
   }
+
+  const contentType = headersType === "json" ? "application/vnd.retailer.v9+json" : "application/vnd.retailer.v9+csv";
+  return {
+    "Content-Type": contentType,
+    Accept: contentType,
+    Authorization: `Bearer ${tokenEntry.token}`,
+  };
 }
 
 async function authenticateBolCom(clientId, clientSecret) {
-  if (bolTokens.some((t) => t.clientId == clientId && new Date() < t.expiration)) {
-    return bolTokens.find((t) => t.clientId == clientId).token;
+  const existingTokenEntry = bolTokens.find((t) => t.clientId === clientId);
+
+  if (existingTokenEntry && new Date() < existingTokenEntry.expiration) {
+    return existingTokenEntry.token;
   }
 
   const authHeader = `Basic ${btoa(`${clientId}:${clientSecret}`)}`;
@@ -47,9 +48,20 @@ async function authenticateBolCom(clientId, clientSecret) {
     }
 
     const data = await response.json();
-    bolTokens.find((t) => t.clientId == clientId).token = data["access_token"];
-    bolTokens.find((t) => t.clientId == clientId).expiration = new Date(new Date().getTime() + data["expires_in"] * 1000);
-    return true;
+    const newToken = {
+      clientId,
+      token: data["access_token"],
+      expiration: new Date(new Date().getTime() + data["expires_in"] * 1000),
+    };
+
+    if (existingTokenEntry) {
+      existingTokenEntry.token = newToken.token;
+      existingTokenEntry.expiration = newToken.expiration;
+    } else {
+      bolTokens.push(newToken);
+    }
+
+    return newToken.token;
   } catch (error) {
     console.log(error);
     return false;
