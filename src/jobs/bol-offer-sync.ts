@@ -332,7 +332,7 @@ const saveDocument = async (bolDoc, company) => {
         type: "invoice",
       },
     });
-    console.log({ document });
+    console.log(JSON.stringify(document));
     // const payment = await payload.create({
     //   user: creator.docs[0],
     //   collection: "payments",
