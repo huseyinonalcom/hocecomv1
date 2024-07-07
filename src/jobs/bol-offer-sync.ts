@@ -314,7 +314,7 @@ const saveDocument = async (bolDoc, company) => {
         })
       );
     }
-    await payload.create({
+    const document = await payload.create({
       user: creator.docs[0],
       collection: "documents",
       data: {
@@ -330,9 +330,22 @@ const saveDocument = async (bolDoc, company) => {
         docAddress: docAddress.id,
         creator: creator.docs[0].id,
         establishment: establishment.docs[0].id,
-        type: "order",
+        type: "invoice",
       },
     });
+    console.log({ document });
+    // const payment = await payload.create({
+    //   user: creator.docs[0],
+    //   collection: "payments",
+    //   data: {
+    //     value: document,
+    //     type: "online",
+    //     isVerified: true,
+    //     document: document.id,
+    //     company: company,
+    //   },
+    // });
+
     console.log("Document saved");
   } catch (error) {
     console.log(error);
