@@ -365,7 +365,7 @@ const saveDocument = async (bolDoc, company) => {
       collection: "users",
       id: user.id,
       data: {
-        documents: [document.id],
+        documents: [...user.documents.map((doc) => doc.id), document.id],
       },
     });
   } catch (error) {
