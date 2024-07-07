@@ -160,7 +160,6 @@ const saveDocument = async (bolDoc, company) => {
     const docAddress = await payload.create({
       collection: "addresses",
       data: {
-        id: 0,
         street: bolDoc.shipmentDetails.streetName,
         door: bolDoc.shipmentDetails.houseNumber,
         zip: bolDoc.shipmentDetails.zipCode,
@@ -173,7 +172,6 @@ const saveDocument = async (bolDoc, company) => {
     const delAddress = await payload.create({
       collection: "addresses",
       data: {
-        id: 0,
         street: bolDoc.billingDetails.streetName,
         door: bolDoc.billingDetails.houseNumber,
         zip: bolDoc.billingDetails.zipCode,
@@ -186,7 +184,6 @@ const saveDocument = async (bolDoc, company) => {
     const user = await payload.create({
       collection: "users",
       data: {
-        id: 0,
         email: bolDoc.billingDetails.email,
         preferredLanguage: bolDoc.shipmentDetails.language,
         phone: bolDoc.shipmentDetails.phone,
