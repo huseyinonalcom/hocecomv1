@@ -15,7 +15,6 @@ const Documents: CollectionConfig = {
     beforeChange: [
       setCompanyHook,
       async ({ operation, data }) => {
-        const year = new Date().getFullYear().toString();
         if (operation == "create") {
           if (!data.type) {
             throw new APIError("type required", 400);
@@ -40,14 +39,19 @@ const Documents: CollectionConfig = {
 
             const lastDocument: Document = documents.docs[0];
 
+            const year = new Date().getFullYear().toString();
             if (!lastDocument) {
-              data.number = (year + "00000001").toString().padStart(8, "0");
+              data.number = year + "00000001";
             } else {
-              data.number = (year + Number(lastDocument.number.slice(3)) + 1).toString().padStart(8, "0");
+              // numner looks like 202400000001
+              // we need to increment the number by 1
+              // and make sure the first 4 digits are the current year
+              // and the total length is 12
+              data.number = year + (Number(lastDocument.number.slice(3)) + 1).toString();
             }
           } catch (error) {
             console.error(error);
-            data.number = (year + "00000001").toString().padStart(8, "0");
+            data.number = year + "00000001";
           }
         }
       },
