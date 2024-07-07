@@ -16,7 +16,6 @@ const Documents: CollectionConfig = {
       setCompanyHook,
       async ({ operation, data }) => {
         const year = new Date().getFullYear().toString();
-        console.log("year", year);
         if (operation == "create") {
           if (!data.type) {
             throw new APIError("type required", 400);
