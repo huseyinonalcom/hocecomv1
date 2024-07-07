@@ -137,6 +137,7 @@ const saveDocument = async (bolDoc, company) => {
   try {
     console.log("looking for user");
     const creator = await payload.find({
+      overrideAccess: true,
       collection: "users",
       where: {
         company: {
