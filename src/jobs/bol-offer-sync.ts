@@ -150,7 +150,7 @@ const saveDocument = async (bolDoc, company) => {
       collection: "users",
       where: {
         company: {
-          equals: company.id,
+          equals: company,
         },
       },
     });
