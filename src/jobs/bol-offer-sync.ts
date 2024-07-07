@@ -95,7 +95,7 @@ export const createDocumentsFromBolOrders = async () => {
                 currCompany.bolClientID,
                 currCompany.bolClientSecret
               ).then(async (orderDetails) => {
-                orderDetails && (await saveDocument(orderDetails, currCompany.id));
+                orderDetails && (await saveDocument(orderDetails, currCompany));
               });
             }
           }
@@ -160,7 +160,7 @@ const saveDocument = async (bolDoc, company) => {
       collection: "users",
       where: {
         company: {
-          equals: company,
+          equals: company.id,
         },
         role: {
           equals: "admin",
@@ -184,7 +184,7 @@ const saveDocument = async (bolDoc, company) => {
       collection: "establishments",
       where: {
         company: {
-          equals: company,
+          equals: company.id,
         },
       },
     });
@@ -196,7 +196,7 @@ const saveDocument = async (bolDoc, company) => {
       let parts = email.split("@");
       let localPart = parts[0].split("+")[0];
       let domainPart = parts[1];
-      return localPart + "+" + company + "@" + domainPart;
+      return localPart + "+" + company.id + "@" + domainPart;
     };
 
     const existingCustomer = await payload.find({
@@ -245,7 +245,7 @@ const saveDocument = async (bolDoc, company) => {
           zip: bolDoc.shipmentDetails.zipCode,
           city: bolDoc.shipmentDetails.city,
           country: bolDoc.shipmentDetails.countryCode,
-          company: company,
+          company: company.id,
         },
       });
       if (bolDoc.shipmentDetails.streetName !== bolDoc.billingDetails.streetName) {
@@ -258,7 +258,7 @@ const saveDocument = async (bolDoc, company) => {
             zip: bolDoc.billingDetails.zipCode,
             city: bolDoc.billingDetails.city,
             country: bolDoc.billingDetails.countryCode,
-            company: company,
+            company: company.id,
           },
         });
       } else {
@@ -276,7 +276,7 @@ const saveDocument = async (bolDoc, company) => {
           role: "customer",
           firstName: bolDoc.billingDetails.firstName,
           lastName: bolDoc.billingDetails.surname,
-          company: company,
+          company: company.id,
         },
       });
       user = newUser;
@@ -291,7 +291,7 @@ const saveDocument = async (bolDoc, company) => {
           zip: bolDoc.shipmentDetails.zipCode,
           city: bolDoc.shipmentDetails.city,
           country: bolDoc.shipmentDetails.countryCode,
-          company: company,
+          company: company.id,
         },
       });
     }
@@ -305,7 +305,7 @@ const saveDocument = async (bolDoc, company) => {
           zip: bolDoc.billingDetails.zipCode,
           city: bolDoc.billingDetails.city,
           country: bolDoc.billingDetails.countryCode,
-          company: company,
+          company: company.id,
         },
       });
     }
@@ -327,7 +327,7 @@ const saveDocument = async (bolDoc, company) => {
           collection: "document-products",
           data: {
             value: bolDoc.orderItems[i].unitPrice,
-            company: company,
+            company: company.id,
             product: products && products.docs.length > 0 ? products.docs[0].id : null,
             amount: bolDoc.orderItems[i].quantity,
             tax: 21,
@@ -346,7 +346,7 @@ const saveDocument = async (bolDoc, company) => {
         time: bolDoc.orderPlacedDateTime.split("T")[1].split("+")[0],
         documentProducts: documentProducts.map((dp) => dp.id),
         customer: user.id,
-        company: company,
+        company: company.id,
         references: bolDoc.orderId,
         delAddress: delAddress.id,
         docAddress: docAddress.id,
@@ -365,7 +365,7 @@ const saveDocument = async (bolDoc, company) => {
         document: document.id,
         date: bolDoc.orderPlacedDateTime.split("T"),
         creator: creator.docs[0].id,
-        company: company,
+        company: company.id,
         establishment: establishment.docs[0].id,
       },
     });
