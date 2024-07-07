@@ -236,6 +236,8 @@ const saveDocument = async (bolDoc, company) => {
         documentProducts: documentProducts.map((dp) => dp.id),
         customer: user.id,
         company: company,
+        delAddress: delAddress.id,
+        docAddress: docAddress.id,
         creator: creator.docs[0].id,
         type: "order",
       },
