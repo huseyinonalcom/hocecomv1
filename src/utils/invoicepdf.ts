@@ -2,8 +2,6 @@ import { Address, Document, DocumentProduct, Establishment, Logo, Payment, User 
 import { dateFormatBe } from "./formatters/dateformatters";
 import { addDaysToDate } from "./addtodate";
 import PDFDocument from "pdfkit";
-import fetch from "node-fetch";
-import { Buffer } from "buffer";
 
 export async function generateInvoice({ document, establishment }: { document: Document; establishment: Establishment }): Promise<Buffer> {
   return new Promise(async (resolve, reject) => {
