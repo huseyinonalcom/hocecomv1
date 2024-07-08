@@ -2,6 +2,7 @@ import payload from "payload";
 import { generateRandomString } from "../utils/random";
 import { Company } from "payload/generated-types";
 import { sendMail } from "../utils/sendmail";
+import { generateInvoice } from "../utils/invoicepdf";
 
 const bolAuthUrl = "https://login.bol.com/token?grant_type=client_credentials";
 
@@ -87,7 +88,7 @@ export const createDocumentsFromBolOrders = async () => {
       for (let i = 0; i < companiesToSync.length; i++) {
         const currCompany = companiesToSync[i];
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then(async (orders) => {
-          if (orders && orders.orders.length > 0) {
+          if (orders && orders.orders && orders.orders.length > 0) {
             for (let i = 0; i < orders.orders.length; i++) {
               await getBolComOrder(
                 orders.orders.sort((a, b) => new Date(a.orderPlacedDateTime).getTime() - new Date(b.orderPlacedDateTime).getTime())[i].orderId,
@@ -391,6 +392,7 @@ const saveDocument = async (bolDoc, company) => {
       recipient: company.accountantEmail,
       subject: `Bestelling ${document.prefix}${document.number}`,
       company: company,
+      attachments: [await generateInvoice({ document, establishment })],
       html: `<p>Beste ${
         document.customer.firstName + " " + document.customer.lastName
       },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${company.name}</p>`,

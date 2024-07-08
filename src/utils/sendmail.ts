@@ -1,4 +1,4 @@
-import { Company } from "payload/generated-types";
+import { Company, Logo } from "payload/generated-types";
 
 export const sendMail = async ({
   recipient,
@@ -6,12 +6,14 @@ export const sendMail = async ({
   company,
   subject,
   html,
+  attachments,
 }: {
   recipient: string;
   bcc?: string;
   company: Company;
   subject: string;
   html: string;
+  attachments?: any;
 }) => {
   const nodemailer = require("nodemailer");
 
@@ -29,8 +31,9 @@ export const sendMail = async ({
     from: `"${company.emailUser}" <${company.emailUser}>`,
     to: recipient,
     bcc: bcc,
+    attachments: attachments,
     subject: subject,
-    html: templatedMail({ content: html, img64: company.logo?.url }),
+    html: templatedMail({ content: html, img64: (company.logo! as Logo).url }),
   };
 
   transporter.sendMail(mailOptionsClient, (error, info) => {

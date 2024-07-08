@@ -78,6 +78,7 @@ export interface Company {
   bolClientSecret?: string | null;
   amazonClientID?: string | null;
   amazonClientSecret?: string | null;
+  accountantEmail?: string | null;
   updatedAt: string;
   createdAt: string;
 }

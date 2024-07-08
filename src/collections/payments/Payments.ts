@@ -44,7 +44,7 @@ const Payments: CollectionConfig = {
             currency: "eur",
             unit_amount:
               Number(
-                document.documentProducts
+                (document.documentProducts as DocumentProduct[])
                   .reduce((accumulator: any, product: DocumentProduct) => {
                     return accumulator + product.subTotal;
                   }, 0)
@@ -153,7 +153,7 @@ const Payments: CollectionConfig = {
         {
           label: "Financing Unverified",
           value: "financing_unverified",
-        }
+        },
       ],
     },
     { name: "notes", type: "text" },
