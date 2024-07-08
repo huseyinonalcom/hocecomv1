@@ -15,34 +15,39 @@ export const sendMail = async ({
   html: string;
   attachments?: any;
 }) => {
-  const nodemailer = require("nodemailer");
+  try {
+    const nodemailer = require("nodemailer");
 
-  let transporter = nodemailer.createTransport({
-    host: company.emailHost,
-    port: company.emailPort,
-    secure: false,
-    auth: {
-      user: company.emailUser,
-      pass: company.emailPassword,
-    },
-  });
+    let transporter = nodemailer.createTransport({
+      host: company.emailHost,
+      port: company.emailPort,
+      secure: false,
+      auth: {
+        user: company.emailUser,
+        pass: company.emailPassword,
+      },
+    });
 
-  let mailOptionsClient = {
-    from: `"${company.emailUser}" <${company.emailUser}>`,
-    to: recipient,
-    bcc: bcc,
-    attachments: attachments,
-    subject: subject,
-    html: templatedMail({ content: html, img64: (company.logo! as Logo).url }),
-  };
+    let mailOptionsClient = {
+      from: `"${company.emailUser}" <${company.emailUser}>`,
+      to: recipient,
+      bcc: bcc,
+      attachments: attachments,
+      subject: subject,
+      html: templatedMail({ content: html, img64: (company.logo! as Logo).url }),
+    };
 
-  transporter.sendMail(mailOptionsClient, (error, info) => {
-    if (error) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+    transporter.sendMail(mailOptionsClient, (error, info) => {
+      if (error) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
 };
 
 function templatedMail({ content, img64 }: { content: string; img64: string }) {
