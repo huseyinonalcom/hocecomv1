@@ -1,4 +1,5 @@
 import { Company, Logo } from "payload/generated-types";
+import * as nodemailer from "nodemailer";
 
 export const sendMail = async ({
   recipient,
@@ -15,7 +16,7 @@ export const sendMail = async ({
   html: string;
   attachments?: any;
 }) => {
-  const nodemailer = require("nodemailer");
+//   const nodemailer = require("nodemailer");
 
   let transporter = nodemailer.createTransport({
     host: company.emailHost,
