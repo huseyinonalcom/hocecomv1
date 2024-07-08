@@ -30,7 +30,7 @@ import SupplierOrderProducts from "./collections/supplierOrderProducts/SupplierO
 import Files from "./collections/files/Files";
 import Projects from "./collections/projects/Projects";
 import TaskComments from "./collections/taskComments/TaskComments";
-import FlutterVersion from "./collections/globals/Flutterversion";
+import FlutterVersion from "./collections/Flutterversion";
 
 const s3ad = s3Adapter({
   config: {

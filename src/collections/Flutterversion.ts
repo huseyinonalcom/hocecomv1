@@ -1,5 +1,5 @@
 import { GlobalConfig } from "payload/types";
-import isSuperAdmin from "../users/access/superAdminCheck";
+import isSuperAdmin from "./users/access/superAdminCheck";
 
 const FlutterVersion: GlobalConfig = {
   slug: "flutterversion",
