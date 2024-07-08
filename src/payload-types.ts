@@ -35,7 +35,9 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  globals: {};
+  globals: {
+    flutterversion: Flutterversion;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -610,6 +612,17 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flutterversion".
+ */
+export interface Flutterversion {
+  id: number;
+  version?: number | null;
+  url?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 
 

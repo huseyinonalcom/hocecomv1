@@ -30,6 +30,7 @@ import SupplierOrderProducts from "./collections/supplierOrderProducts/SupplierO
 import Files from "./collections/files/Files";
 import Projects from "./collections/projects/Projects";
 import TaskComments from "./collections/taskComments/TaskComments";
+import FlutterVersion from "./collections/globals/flutterversion";
 
 const s3ad = s3Adapter({
   config: {
@@ -95,6 +96,7 @@ export default buildConfig({
     TaskComments,
     Files,
   ],
+  globals: [FlutterVersion],
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },
