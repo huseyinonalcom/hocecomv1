@@ -31,6 +31,8 @@ import Files from "./collections/files/Files";
 import Projects from "./collections/projects/Projects";
 import TaskComments from "./collections/taskComments/TaskComments";
 import FlutterVersion from "./collections/Flutterversion";
+import DriveFiles from "./collections/drive/DriveFile";
+import DriveFolders from "./collections/drive/DriveFolder";
 
 const s3ad = s3Adapter({
   config: {
@@ -95,6 +97,8 @@ export default buildConfig({
     Users,
     TaskComments,
     Files,
+    DriveFiles,
+    DriveFolders,
   ],
   globals: [FlutterVersion],
   typescript: {
