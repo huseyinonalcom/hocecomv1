@@ -1,15 +1,9 @@
 import { CollectionConfig } from "payload/types";
 import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
 const DriveFolders: CollectionConfig = {
   slug: "drive-folders",
-  upload: {
-    disableLocalStorage: true,
-    staticURL: "https://d3bocqotv3jto7.cloudfront.net",
-    staticDir: "name",
-  },
   hooks: {
     beforeChange: [setCompanyHook],
     // afterRead: [fieldSelectionHook],
