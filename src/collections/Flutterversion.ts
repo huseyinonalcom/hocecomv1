@@ -15,7 +15,12 @@ const FlutterVersion: GlobalConfig = {
       defaultValue: 1,
     },
     {
-      name: "url",
+      name: "urlW",
+      type: "text",
+      required: false,
+    },
+    {
+      name: "urlM",
       type: "text",
       required: false,
     },
