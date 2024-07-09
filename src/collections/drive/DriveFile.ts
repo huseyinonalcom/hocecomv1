@@ -55,7 +55,7 @@ const DriveFiles: CollectionConfig = {
     { name: "name", type: "text", required: true },
     { name: "priority", type: "number", defaultValue: 0 },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
-    { name: "folder", type: "relationship", relationTo: "drive-folders", hasMany: false, required: false },
+    { name: "folder", type: "number", required: false },
     // company relationship is always required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
   ],
