@@ -6,7 +6,6 @@ const DriveFolders: CollectionConfig = {
   slug: "drive-folders",
   hooks: {
     beforeChange: [setCompanyHook],
-    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {
