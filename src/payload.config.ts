@@ -140,6 +140,9 @@ export default buildConfig({
         files: {
           adapter: s3ad,
         },
+        "drive-files": {
+          adapter: s3ad,
+        },
       },
     }),
   ],
