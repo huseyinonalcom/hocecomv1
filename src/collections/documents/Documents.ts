@@ -41,18 +41,18 @@ const Documents: CollectionConfig = {
 
             const year = new Date().getFullYear().toString();
             if (!lastDocument) {
-              data.number = year + "00000001";
+              data.number = year + "0000001";
             } else {
               // numner looks like 202400000001
               // we need to increment the number by 1
               // and make sure the first 4 digits are the current year
               // and the total length is 12
-              data.number = year + (Number(lastDocument.number.slice(4)) + 1).toString().padStart(8, "0");
+              data.number = year + (Number(lastDocument.number.slice(4)) + 1).toString().padStart(7, "0");
             }
           } catch (error) {
             const year = new Date().getFullYear().toString();
             console.error(error);
-            data.number = year + "00000001";
+            data.number = year + "0000001";
           }
         }
       },
