@@ -341,7 +341,7 @@ const saveDocument = async (bolDoc, company) => {
       collection: "documents",
       data: {
         number: bolDoc.orderId,
-        prefix: "BOL-",
+        prefix: "",
         date: bolDoc.orderPlacedDateTime.split("T"),
         time: bolDoc.orderPlacedDateTime.split("T")[1].split("+")[0],
         documentProducts: documentProducts.map((dp) => dp.id),
