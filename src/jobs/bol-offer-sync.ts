@@ -341,7 +341,6 @@ const saveDocument = async (bolDoc, company) => {
       collection: "documents",
       data: {
         number: bolDoc.orderId,
-        prefix: "",
         date: bolDoc.orderPlacedDateTime.split("T"),
         time: bolDoc.orderPlacedDateTime.split("T")[1].split("+")[0],
         documentProducts: documentProducts.map((dp) => dp.id),
@@ -390,7 +389,7 @@ const saveDocument = async (bolDoc, company) => {
 
     await sendMail({
       recipient: company.accountantEmail,
-      subject: `Bestelling ${document.prefix}${document.number}`,
+      subject: `Bestelling ${document.prefix ?? ""}${document.number}`,
       company: company,
       attachments: [await generateInvoice({ document, establishment })],
       html: `<p>Beste ${
