@@ -3,6 +3,7 @@ import { generateRandomString } from "../utils/random";
 import { Company } from "payload/generated-types";
 import { sendMail } from "../utils/sendmail";
 import { generateInvoice } from "../utils/invoicepdf";
+import { eutaxes } from "../utils/eutaxes";
 
 const bolAuthUrl = "https://login.bol.com/token?grant_type=client_credentials";
 
@@ -330,7 +331,7 @@ const saveDocument = async (bolDoc, company) => {
             company: company.id,
             product: products && products.docs.length > 0 ? products.docs[0].id : null,
             amount: bolDoc.orderItems[i].quantity,
-            tax: 21,
+            tax: eutaxes.find((t) => t.code == docAddress.country).standard,
             name: products && products.docs.length > 0 ? products.docs[0].name : bolDoc.orderItems[i].product.title,
           },
         })
