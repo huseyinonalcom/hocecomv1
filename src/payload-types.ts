@@ -32,6 +32,8 @@ export interface Config {
     users: User;
     'task-comments': TaskComment;
     files: File;
+    'drive-files': DriveFile;
+    'drive-folders': DriveFolder;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -197,7 +199,7 @@ export interface Document {
   id: number;
   number: string;
   type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note';
-  prefix: string;
+  prefix?: string | null;
   date: string;
   phase?: number | null;
   files?: (number | File)[] | null;
@@ -271,9 +273,10 @@ export interface SupplierOrder {
 export interface User {
   id: number;
   role?: ('super_admin' | 'website' | 'admin' | 'employee' | 'customer') | null;
-  firstName: string;
-  lastName: string;
+  firstName?: string | null;
+  lastName?: string | null;
   phone?: string | null;
+  email2?: string | null;
   isBlocked?: boolean | null;
   company?: (number | null) | Company;
   establishment?: (number | null) | Establishment;
@@ -581,6 +584,43 @@ export interface SupportTicketMessage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "drive-files".
+ */
+export interface DriveFile {
+  id: number;
+  name: string;
+  priority?: number | null;
+  isDeleted?: boolean | null;
+  folder?: number | null;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "drive-folders".
+ */
+export interface DriveFolder {
+  id: number;
+  name: string;
+  priority?: number | null;
+  isDeleted?: boolean | null;
+  files?: (number | null) | DriveFile;
+  parentFolder?: (number | null) | DriveFolder;
+  company: number | Company;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
@@ -620,7 +660,8 @@ export interface PayloadMigration {
 export interface Flutterversion {
   id: number;
   version?: number | null;
-  url?: string | null;
+  urlW?: string | null;
+  urlM?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

@@ -149,6 +149,7 @@ const Users: CollectionConfig = {
       name: "phone",
       type: "text",
     },
+    { name: "email2", type: "email" },
     {
       name: "isBlocked",
       type: "checkbox",
