@@ -32,6 +32,9 @@ const Documents: CollectionConfig = {
                 company: {
                   equals: data.company,
                 },
+                isDeleted: {
+                  equals: false,
+                },
               },
               limit: 1,
               sort: "-number",
