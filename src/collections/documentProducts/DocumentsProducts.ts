@@ -116,7 +116,7 @@ const DocumentProducts: CollectionConfig = {
         afterRead: [
           ({ data }) => {
             const document = data.document;
-            if (document.taxInluded) {
+            if (document.taxIncluded) {
               return (
                 data.amount *
                 (data.value * (1 - data.reduction / 100))
@@ -150,7 +150,7 @@ const DocumentProducts: CollectionConfig = {
         afterRead: [
           ({ data }) => {
             const document = data.document;
-            if (document.taxInluded) {
+            if (document.taxIncluded) {
               return (
                 data.amount * (data.value * (1 - data.reduction / 100)) -
                 (data.amount * (data.value * (1 - data.reduction / 100))) /
