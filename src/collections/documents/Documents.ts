@@ -286,6 +286,15 @@ const Documents: CollectionConfig = {
       relationTo: "users",
       required: true,
     },
+    {
+      name: "taxIncluded",
+      type: "checkbox",
+      defaultValue: true,
+    },
+    {
+      name: "extraFields",
+      type: "json",
+    },
     // company relation is always required
     {
       name: "company",

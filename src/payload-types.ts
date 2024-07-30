@@ -222,6 +222,16 @@ export interface Document {
   docAddress?: (number | null) | Address;
   delAddress?: (number | null) | Address;
   creator: number | User;
+  taxIncluded?: boolean | null;
+  extraFields?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   company: number | Company;
   updatedAt: string;
   createdAt: string;
