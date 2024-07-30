@@ -97,6 +97,11 @@ const DocumentProducts: CollectionConfig = {
       hasMany: false,
       relationTo: "documents",
     },
+    {
+      name: "taxIncluded",
+      type: "checkbox",
+      defaultValue: true,
+    },
     // calculated fields
     {
       name: "subTotal",
@@ -117,16 +122,7 @@ const DocumentProducts: CollectionConfig = {
         afterRead: [
           async ({ data }) => {
             try {
-              const document = await payload.find({
-                collection: "documents",
-                where: {
-                  documentProducts: {
-                    contains: data.id,
-                  },
-                },
-              });
-
-              if (document.docs.at(0).taxIncluded) {
+              if (data.taxIncluded) {
                 return (
                   data.amount *
                   (data.value * (1 - data.reduction / 100))
@@ -165,18 +161,9 @@ const DocumentProducts: CollectionConfig = {
           },
         ],
         afterRead: [
-          async ({ data }) => {
+          ({ data }) => {
             try {
-              const document = await payload.find({
-                collection: "documents",
-                where: {
-                  documentProducts: {
-                    contains: data.id,
-                  },
-                },
-              });
-
-              if (document.docs.at(0).taxIncluded) {
+              if (data.taxIncluded) {
                 return (
                   data.amount * (data.value * (1 - data.reduction / 100)) -
                   (data.amount * (data.value * (1 - data.reduction / 100))) /
