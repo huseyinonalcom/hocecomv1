@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import { fieldSelectionHook } from "../hooks/field-selection-hook";
+import payload from "payload";
 
 const DocumentProducts: CollectionConfig = {
   slug: "document-products",
@@ -114,9 +115,17 @@ const DocumentProducts: CollectionConfig = {
           },
         ],
         afterRead: [
-          ({ data }) => {
-            const document = data.document;
-            if (document.taxIncluded) {
+          async ({ data }) => {
+            const document = await payload.find({
+              collection: "documents",
+              where: {
+                documentProducts: {
+                  contains: data.id,
+                },
+              },
+            });
+
+            if (document.docs.at(0).taxIncluded) {
               return (
                 data.amount *
                 (data.value * (1 - data.reduction / 100))
@@ -148,9 +157,17 @@ const DocumentProducts: CollectionConfig = {
           },
         ],
         afterRead: [
-          ({ data }) => {
-            const document = data.document;
-            if (document.taxIncluded) {
+          async ({ data }) => {
+            const document = await payload.find({
+              collection: "documents",
+              where: {
+                documentProducts: {
+                  contains: data.id,
+                },
+              },
+            });
+
+            if (document.docs.at(0).taxIncluded) {
               return (
                 data.amount * (data.value * (1 - data.reduction / 100)) -
                 (data.amount * (data.value * (1 - data.reduction / 100))) /
