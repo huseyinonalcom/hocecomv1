@@ -116,26 +116,34 @@ const DocumentProducts: CollectionConfig = {
         ],
         afterRead: [
           async ({ data }) => {
-            const document = await payload.find({
-              collection: "documents",
-              where: {
-                documentProducts: {
-                  contains: data.id,
+            try {
+              const document = await payload.find({
+                collection: "documents",
+                where: {
+                  documentProducts: {
+                    contains: data.id,
+                  },
                 },
-              },
-            });
+              });
 
-            if (document.docs.at(0).taxIncluded) {
+              if (document.docs.at(0).taxIncluded) {
+                return (
+                  data.amount *
+                  (data.value * (1 - data.reduction / 100))
+                ).toFixed(2);
+              } else {
+                return (
+                  data.amount * (data.value * (1 - data.reduction / 100)) +
+                  data.amount *
+                    (data.value * (1 - data.reduction / 100)) *
+                    (data.tax / 100)
+                ).toFixed(2);
+              }
+            } catch (error) {
+              console.error(error);
               return (
                 data.amount *
                 (data.value * (1 - data.reduction / 100))
-              ).toFixed(2);
-            } else {
-              return (
-                data.amount * (data.value * (1 - data.reduction / 100)) +
-                data.amount *
-                  (data.value * (1 - data.reduction / 100)) *
-                  (data.tax / 100)
               ).toFixed(2);
             }
           },
@@ -158,26 +166,35 @@ const DocumentProducts: CollectionConfig = {
         ],
         afterRead: [
           async ({ data }) => {
-            const document = await payload.find({
-              collection: "documents",
-              where: {
-                documentProducts: {
-                  contains: data.id,
+            try {
+              const document = await payload.find({
+                collection: "documents",
+                where: {
+                  documentProducts: {
+                    contains: data.id,
+                  },
                 },
-              },
-            });
+              });
 
-            if (document.docs.at(0).taxIncluded) {
+              if (document.docs.at(0).taxIncluded) {
+                return (
+                  data.amount * (data.value * (1 - data.reduction / 100)) -
+                  (data.amount * (data.value * (1 - data.reduction / 100))) /
+                    (data.tax / 100 + 1)
+                ).toFixed(2);
+              } else {
+                return (
+                  data.amount *
+                  (data.value * (1 - data.reduction / 100)) *
+                  (data.tax / 100)
+                ).toFixed(2);
+              }
+            } catch (error) {
+              console.error(error);
               return (
                 data.amount * (data.value * (1 - data.reduction / 100)) -
                 (data.amount * (data.value * (1 - data.reduction / 100))) /
                   (data.tax / 100 + 1)
-              ).toFixed(2);
-            } else {
-              return (
-                data.amount *
-                (data.value * (1 - data.reduction / 100)) *
-                (data.tax / 100)
               ).toFixed(2);
             }
           },
