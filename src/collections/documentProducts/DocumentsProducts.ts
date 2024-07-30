@@ -115,7 +115,20 @@ const DocumentProducts: CollectionConfig = {
         ],
         afterRead: [
           ({ data }) => {
-            return data.amount * (data.value * (1 - data.reduction / 100));
+            const document = data.document;
+            if (document.taxInluded) {
+              return (
+                data.amount *
+                (data.value * (1 - data.reduction / 100))
+              ).toFixed(2);
+            } else {
+              return (
+                data.amount * (data.value * (1 - data.reduction / 100)) +
+                data.amount *
+                  (data.value * (1 - data.reduction / 100)) *
+                  (data.tax / 100)
+              ).toFixed(2);
+            }
           },
         ],
       },
@@ -136,11 +149,20 @@ const DocumentProducts: CollectionConfig = {
         ],
         afterRead: [
           ({ data }) => {
-            return (
-              data.amount * (data.value * (1 - data.reduction / 100)) -
-              (data.amount * (data.value * (1 - data.reduction / 100))) /
-                (data.tax / 100 + 1)
-            ).toFixed(2);
+            const document = data.document;
+            if (document.taxInluded) {
+              return (
+                data.amount * (data.value * (1 - data.reduction / 100)) -
+                (data.amount * (data.value * (1 - data.reduction / 100))) /
+                  (data.tax / 100 + 1)
+              ).toFixed(2);
+            } else {
+              return (
+                data.amount *
+                (data.value * (1 - data.reduction / 100)) *
+                (data.tax / 100)
+              ).toFixed(2);
+            }
           },
         ],
       },
