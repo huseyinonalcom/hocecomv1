@@ -524,6 +524,7 @@ export interface DocumentProduct {
   product?: (number | null) | Product;
   customer?: (number | null) | User;
   document?: (number | null) | Document;
+  taxIncluded?: boolean | null;
   subTotal?: number | null;
   subTotalTax?: number | null;
   company: number | Company;
