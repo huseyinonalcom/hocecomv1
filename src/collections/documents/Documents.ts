@@ -205,6 +205,7 @@ const Documents: CollectionConfig = {
     },
     { name: "prefix", type: "text" },
     { name: "date", type: "date", required: true },
+    { name: "deliveryDate", type: "date", required: false },
     { name: "phase", type: "number", defaultValue: 0 },
     { name: "files", type: "relationship", hasMany: true, relationTo: "files" },
     { name: "comments", type: "textarea" },
