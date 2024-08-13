@@ -106,7 +106,6 @@ export default buildConfig({
   },
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
-    disable: true,
   },
   csrf: [
     "http://localhost:5173",
