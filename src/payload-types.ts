@@ -201,6 +201,7 @@ export interface Document {
   type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note';
   prefix?: string | null;
   date: string;
+  deliveryDate?: string | null;
   phase?: number | null;
   files?: (number | File)[] | null;
   comments?: string | null;
