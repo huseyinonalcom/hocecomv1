@@ -5,8 +5,7 @@ import payload from "payload";
 import { checkRole } from "../hooks/checkRole";
 import APIError from "payload/dist/errors/APIError";
 import { Document } from "payload/generated-types";
-import { sendMail } from "../../utils/sendmail";
-import { generateInvoice } from "../../utils/invoicepdf";
+import sendDocumentMail from "../../hooks/senddocumentmail";
 
 const Documents: CollectionConfig = {
   slug: "documents",
@@ -52,11 +51,7 @@ const Documents: CollectionConfig = {
               // we need to increment the number by 1
               // and make sure the first 4 digits are the current year
               // and the total length is 12
-              data.number =
-                year +
-                (Number(lastDocument.number.slice(4)) + 1)
-                  .toString()
-                  .padStart(7, "0");
+              data.number = year + (Number(lastDocument.number.slice(4)) + 1).toString().padStart(7, "0");
             }
           } catch (error) {
             const year = new Date().getFullYear().toString();
@@ -66,32 +61,7 @@ const Documents: CollectionConfig = {
         }
       },
     ],
-    afterChange: [
-      async ({ operation, doc }) => {
-        try {
-          // doc doesn't have the populated data yet
-          // so we need to populate it
-          await sendMail({
-            recipient: "huseyin-_-onal@hotmail.com",
-            subject: `Bestelling ${doc.prefix ?? ""}${doc.number}`,
-            company: doc.company,
-            attachments: [
-              await generateInvoice({
-                document: doc,
-                establishment: doc.establishment,
-              }),
-            ],
-            html: `<p>Beste ${
-              doc.customer.firstName + " " + doc.customer.lastName
-            },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${
-              doc.company.name
-            }</p>`,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    ],
+    afterChange: [sendDocumentMail],
   },
   endpoints: [
     {

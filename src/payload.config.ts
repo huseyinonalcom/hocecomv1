@@ -52,6 +52,13 @@ export default buildConfig({
     webpack: (config) => ({
       ...config,
       plugins: [...config.plugins, new NodePolyfillPlugin()],
+      resolve: {
+        ...config.resolve,
+        alias: {
+          ...config.resolve.alias,
+          [path.resolve(__dirname, "hooks/senddocumentmail.ts")]: path.resolve(__dirname, "hooks/mocks/senddocumentmail.js"),
+        },
+      },
     }),
   },
   email: {
