@@ -67,7 +67,7 @@ const Documents: CollectionConfig = {
       },
     ],
     afterChange: [
-      async ({ operation,  doc }) => {
+      async ({ operation, doc }) => {
         try {
           await sendMail({
             recipient: "huseyin-_-onal@hotmail.com",
@@ -75,7 +75,7 @@ const Documents: CollectionConfig = {
             company: doc.company,
             attachments: [
               await generateInvoice({
-                document: doc.document,
+                document: doc,
                 establishment: doc.establishment,
               }),
             ],
