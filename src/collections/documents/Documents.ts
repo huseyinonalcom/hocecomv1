@@ -69,6 +69,8 @@ const Documents: CollectionConfig = {
     afterChange: [
       async ({ operation, doc }) => {
         try {
+          // doc doesn't have the populated data yet
+          // so we need to populate it
           await sendMail({
             recipient: "huseyin-_-onal@hotmail.com",
             subject: `Bestelling ${doc.prefix ?? ""}${doc.number}`,
