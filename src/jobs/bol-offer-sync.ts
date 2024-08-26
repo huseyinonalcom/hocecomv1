@@ -19,7 +19,10 @@ function bolHeaders(headersType, clientId) {
     return;
   }
 
-  const contentType = headersType === "json" ? "application/vnd.retailer.v9+json" : "application/vnd.retailer.v9+csv";
+  const contentType =
+    headersType === "json"
+      ? "application/vnd.retailer.v9+json"
+      : "application/vnd.retailer.v9+csv";
   return {
     "Content-Type": contentType,
     Accept: contentType,
@@ -79,7 +82,10 @@ export const createDocumentsFromBolOrders = async () => {
       depth: 2,
       limit: 1000,
       where: {
-        and: [{ bolClientID: { exists: true } }, { bolClientSecret: { exists: true } }],
+        and: [
+          { bolClientID: { exists: true } },
+          { bolClientSecret: { exists: true } },
+        ],
       },
     })
     .then((companies) => {
@@ -88,11 +94,18 @@ export const createDocumentsFromBolOrders = async () => {
     .then(async () => {
       for (let i = 0; i < companiesToSync.length; i++) {
         const currCompany = companiesToSync[i];
-        getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then(async (orders) => {
+        getBolComOrders(
+          currCompany.bolClientID,
+          currCompany.bolClientSecret
+        ).then(async (orders) => {
           if (orders && orders.orders && orders.orders.length > 0) {
             for (let i = 0; i < orders.orders.length; i++) {
               await getBolComOrder(
-                orders.orders.sort((a, b) => new Date(a.orderPlacedDateTime).getTime() - new Date(b.orderPlacedDateTime).getTime())[i].orderId,
+                orders.orders.sort(
+                  (a, b) =>
+                    new Date(a.orderPlacedDateTime).getTime() -
+                    new Date(b.orderPlacedDateTime).getTime()
+                )[i].orderId,
                 currCompany.bolClientID,
                 currCompany.bolClientSecret
               ).then(async (orderDetails) => {
@@ -112,10 +125,13 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
   let todayString = today.toISOString().split("T")[0];
 
   try {
-    const response = await fetch(`${bolApiUrl}/orders?fulfilment-method=FBR&status=ALL&latest-change-date=${todayString}&page=1`, {
-      method: "GET",
-      headers: bolHeaders("json", bolClientID),
-    });
+    const response = await fetch(
+      `${bolApiUrl}/orders?fulfilment-method=FBR&status=ALL&latest-change-date=${todayString}&page=1`,
+      {
+        method: "GET",
+        headers: bolHeaders("json", bolClientID),
+      }
+    );
 
     if (!response.ok) {
       console.log("Failed to fetch bol.com orders");
@@ -217,20 +233,26 @@ const saveDocument = async (bolDoc, company) => {
       if (user.customerAddresses && user.customerAddresses.length > 0) {
         for (let i = 0; i < user.customerAddresses.length; i++) {
           if (
-            user.customerAddresses[i].street === bolDoc.shipmentDetails.streetName &&
-            user.customerAddresses[i].door === bolDoc.shipmentDetails.houseNumber &&
+            user.customerAddresses[i].street ===
+              bolDoc.shipmentDetails.streetName &&
+            user.customerAddresses[i].door ===
+              bolDoc.shipmentDetails.houseNumber &&
             user.customerAddresses[i].zip === bolDoc.shipmentDetails.zipCode &&
             user.customerAddresses[i].city === bolDoc.shipmentDetails.city &&
-            user.customerAddresses[i].country === bolDoc.shipmentDetails.countryCode
+            user.customerAddresses[i].country ===
+              bolDoc.shipmentDetails.countryCode
           ) {
             delAddress = user.customerAddresses[i];
           }
           if (
-            user.customerAddresses[i].street === bolDoc.billingDetails.streetName &&
-            user.customerAddresses[i].door === bolDoc.billingDetails.houseNumber &&
+            user.customerAddresses[i].street ===
+              bolDoc.billingDetails.streetName &&
+            user.customerAddresses[i].door ===
+              bolDoc.billingDetails.houseNumber &&
             user.customerAddresses[i].zip === bolDoc.billingDetails.zipCode &&
             user.customerAddresses[i].city === bolDoc.billingDetails.city &&
-            user.customerAddresses[i].country === bolDoc.billingDetails.countryCode
+            user.customerAddresses[i].country ===
+              bolDoc.billingDetails.countryCode
           ) {
             docAddress = user.customerAddresses[i];
           }
@@ -249,7 +271,9 @@ const saveDocument = async (bolDoc, company) => {
           company: company.id,
         },
       });
-      if (bolDoc.shipmentDetails.streetName !== bolDoc.billingDetails.streetName) {
+      if (
+        bolDoc.shipmentDetails.streetName !== bolDoc.billingDetails.streetName
+      ) {
         docAddress = await payload.create({
           user: creator.docs[0],
           collection: "addresses",
@@ -329,10 +353,14 @@ const saveDocument = async (bolDoc, company) => {
           data: {
             value: bolDoc.orderItems[i].unitPrice,
             company: company.id,
-            product: products && products.docs.length > 0 ? products.docs[0].id : null,
+            product:
+              products && products.docs.length > 0 ? products.docs[0].id : null,
             amount: bolDoc.orderItems[i].quantity,
             tax: eutaxes.find((t) => t.code == docAddress.country).standard,
-            name: products && products.docs.length > 0 ? products.docs[0].name : bolDoc.orderItems[i].product.title,
+            name:
+              products && products.docs.length > 0
+                ? products.docs[0].name
+                : bolDoc.orderItems[i].product.title,
           },
         })
       );
@@ -359,7 +387,10 @@ const saveDocument = async (bolDoc, company) => {
       user: creator.docs[0],
       collection: "payments",
       data: {
-        value: document.documentProducts.reduce((acc, dp) => acc + dp.subTotal, 0),
+        value: document.documentProducts.reduce(
+          (acc, dp) => acc + dp.subTotal,
+          0
+        ),
         type: "online",
         isVerified: true,
         document: document.id,
@@ -388,15 +419,21 @@ const saveDocument = async (bolDoc, company) => {
       },
     });
 
-    await sendMail({
-      recipient: company.accountantEmail,
-      subject: `Bestelling ${document.prefix ?? ""}${document.number}`,
-      company: company,
-      attachments: [await generateInvoice({ document, establishment })],
-      html: `<p>Beste ${
-        document.customer.firstName + " " + document.customer.lastName
-      },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${company.name}</p>`,
-    });
+    try {
+      await sendMail({
+        recipient: "huseyin-_-onal@hotmail.com",
+        subject: `Bestelling ${document.prefix ?? ""}${document.number}`,
+        company: company,
+        attachments: [await generateInvoice({ document, establishment })],
+        html: `<p>Beste ${
+          document.customer.firstName + " " + document.customer.lastName
+        },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${
+          company.name
+        }</p>`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   } catch (error) {
     console.log(error);
   }

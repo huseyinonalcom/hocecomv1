@@ -34,7 +34,10 @@ export const sendMail = async ({
       bcc: bcc,
       attachments: attachments,
       subject: subject,
-      html: templatedMail({ content: html, img64: (company.logo! as Logo).url }),
+      html: templatedMail({
+        content: html,
+        img64: (company.logo! as Logo).url,
+      }),
     };
 
     transporter.sendMail(mailOptionsClient, (error, info) => {
