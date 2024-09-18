@@ -56,7 +56,10 @@ export default buildConfig({
         ...config.resolve,
         alias: {
           ...config.resolve.alias,
-          [path.resolve(__dirname, "hooks/senddocumentmail.ts")]: path.resolve(__dirname, "hooks/mocks/senddocumentmail.js"),
+          [path.resolve(__dirname, "hooks/senddocumentmail.ts")]: path.resolve(
+            __dirname,
+            "hooks/mocks/senddocumentmail.js"
+          ),
         },
       },
     }),
@@ -113,6 +116,7 @@ export default buildConfig({
   },
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
+    disablePlaygroundInProduction: false,
   },
   csrf: [
     "http://localhost:5173",
