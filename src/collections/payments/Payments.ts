@@ -44,7 +44,7 @@ const Payments: CollectionConfig = {
 
           for (let i = 0; i < document.documentProducts.length; i++) {
             console.log(document.documentProducts[i].subTotal);
-            unitAmount += document.documentProducts[i].subTotal;
+            unitAmount += parseFloat(document.documentProducts[i].subTotal);
           }
 
           console.log(unitAmount);
