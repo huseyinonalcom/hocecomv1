@@ -40,15 +40,15 @@ const Payments: CollectionConfig = {
 
           const stripe = require("stripe")(company.stripeSecretKey);
 
-          console.log(document.documentProducts);
-
           let unitAmount = 0;
 
           for (let i = 0; i < document.documentProducts.length; i++) {
             unitAmount += document.documentProducts[i].subTotal;
           }
 
-          unitAmount = Number(unitAmount.toFixed(2)) * 100;
+          console.log(unitAmount);
+
+          unitAmount = unitAmount * 100;
 
           const price = await stripe.prices.create({
             currency: "eur",
