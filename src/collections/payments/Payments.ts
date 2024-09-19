@@ -43,11 +43,8 @@ const Payments: CollectionConfig = {
           let unitAmount = 0;
 
           for (let i = 0; i < document.documentProducts.length; i++) {
-            console.log(document.documentProducts[i].subTotal);
             unitAmount += parseFloat(document.documentProducts[i].subTotal);
           }
-
-          console.log(unitAmount);
 
           unitAmount = unitAmount * 100;
 
@@ -74,11 +71,11 @@ const Payments: CollectionConfig = {
             },
           });
 
-          // console.log(paymentLink);
+          console.log(paymentLink);
 
           res.status(200).send({ url: paymentLink.url });
         } catch (error) {
-          // console.log(error);
+          console.log(error);
           res.status(500).send({ error: "An error occurred" });
         }
       },
