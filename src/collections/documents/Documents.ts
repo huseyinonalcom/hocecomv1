@@ -55,7 +55,6 @@ const Documents: CollectionConfig = {
             }
           } catch (error) {
             const year = new Date().getFullYear().toString();
-            console.error(error);
             data.number = year + "0000001";
           }
         }
@@ -103,7 +102,6 @@ const Documents: CollectionConfig = {
 
           res.status(200).send({ number: number });
         } catch (error) {
-          console.error(error);
           res.status(500).send({ error });
         }
       },
@@ -112,8 +110,6 @@ const Documents: CollectionConfig = {
       path: "/boloffersub",
       method: "post",
       handler: async (req, res) => {
-        console.log("req.query", req.query);
-        console.log("req.body", req.body);
         res.status(200).send({ status: "success" });
       },
     },

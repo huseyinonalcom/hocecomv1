@@ -47,7 +47,6 @@ const Companies: CollectionConfig = {
 
           res.status(200).send({ company: company.docs[0].id });
         } catch (error) {
-          console.error(error);
           res.status(500).send({ error });
         }
       },

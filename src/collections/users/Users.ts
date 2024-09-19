@@ -51,7 +51,6 @@ const Users: CollectionConfig = {
             doc.email = localPart + "@" + domainPart;
           }
         } catch (e) {
-          console.log(e);
         }
       },
     ],

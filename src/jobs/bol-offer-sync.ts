@@ -15,7 +15,6 @@ let companiesToSync: Company[] = [];
 function bolHeaders(headersType, clientId) {
   const tokenEntry = bolTokens.find((t) => t.clientId === clientId);
   if (!tokenEntry) {
-    console.log("Token not found for clientId:", clientId);
     return;
   }
 
@@ -48,7 +47,6 @@ async function authenticateBolCom(clientId, clientSecret) {
     });
 
     if (!response.ok) {
-      console.log("Failed to authenticate bol.com");
       return false;
     }
 
@@ -68,7 +66,6 @@ async function authenticateBolCom(clientId, clientSecret) {
 
     return newToken.token;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
@@ -134,14 +131,12 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
     );
 
     if (!response.ok) {
-      console.log("Failed to fetch bol.com orders");
       return null;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }
@@ -156,16 +151,12 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
     });
 
     if (!response.ok) {
-      console.log("Failed to fetch bol.com order");
-      const answer = await response.text();
-      console.log(answer);
       return null;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }
@@ -432,9 +423,7 @@ const saveDocument = async (bolDoc, company) => {
         }</p>`,
       });
     } catch (error) {
-      console.log(error);
     }
   } catch (error) {
-    console.log(error);
   }
 };

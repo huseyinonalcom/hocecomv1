@@ -40,7 +40,6 @@ export const validateRole: CollectionBeforeChangeHook = async ({ data, req }) =>
       }
     }
   } catch (e) {
-    console.log(e);
     throw new APIError("Error validating user role. Please try again.", 403);
   }
 };

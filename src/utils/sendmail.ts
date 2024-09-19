@@ -48,7 +48,6 @@ export const sendMail = async ({
       }
     });
   } catch (e) {
-    console.log(e);
     return false;
   }
 };

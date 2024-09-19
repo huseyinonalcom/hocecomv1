@@ -208,7 +208,6 @@ export async function generateInvoice({
 
       doc.end();
     } catch (error) {
-      console.log(error);
       reject(`Error generating invoice: ${error.message}`);
     }
   });

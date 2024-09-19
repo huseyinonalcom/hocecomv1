@@ -123,24 +123,15 @@ const DocumentProducts: CollectionConfig = {
           async ({ data }) => {
             try {
               if (data.taxIncluded) {
-                return (
-                  data.amount *
-                  (data.value * (1 - data.reduction / 100))
-                ).toFixed(2);
+                return (data.amount * (data.value * (1 - data.reduction / 100))).toFixed(2);
               } else {
                 return (
                   data.amount * (data.value * (1 - data.reduction / 100)) +
-                  data.amount *
-                    (data.value * (1 - data.reduction / 100)) *
-                    (data.tax / 100)
+                  data.amount * (data.value * (1 - data.reduction / 100)) * (data.tax / 100)
                 ).toFixed(2);
               }
             } catch (error) {
-              console.error(error);
-              return (
-                data.amount *
-                (data.value * (1 - data.reduction / 100))
-              ).toFixed(2);
+              return (data.amount * (data.value * (1 - data.reduction / 100))).toFixed(2);
             }
           },
         ],
@@ -166,22 +157,15 @@ const DocumentProducts: CollectionConfig = {
               if (data.taxIncluded) {
                 return (
                   data.amount * (data.value * (1 - data.reduction / 100)) -
-                  (data.amount * (data.value * (1 - data.reduction / 100))) /
-                    (data.tax / 100 + 1)
+                  (data.amount * (data.value * (1 - data.reduction / 100))) / (data.tax / 100 + 1)
                 ).toFixed(2);
               } else {
-                return (
-                  data.amount *
-                  (data.value * (1 - data.reduction / 100)) *
-                  (data.tax / 100)
-                ).toFixed(2);
+                return (data.amount * (data.value * (1 - data.reduction / 100)) * (data.tax / 100)).toFixed(2);
               }
             } catch (error) {
-              console.error(error);
               return (
                 data.amount * (data.value * (1 - data.reduction / 100)) -
-                (data.amount * (data.value * (1 - data.reduction / 100))) /
-                  (data.tax / 100 + 1)
+                (data.amount * (data.value * (1 - data.reduction / 100))) / (data.tax / 100 + 1)
               ).toFixed(2);
             }
           },
