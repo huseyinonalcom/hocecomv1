@@ -2,12 +2,12 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import payload from "payload";
-import { Company, DocumentProduct } from "payload/generated-types";
+import { Company } from "payload/generated-types";
 
 const Payments: CollectionConfig = {
   slug: "payments",
   admin: {
-    useAsTitle: "type",
+    useAsTitle: "type", 
   },
   hooks: {
     beforeChange: [setCompanyHook],
