@@ -40,7 +40,7 @@ const Payments: CollectionConfig = {
 
           const stripe = require("stripe")(company.stripeSecretKey);
 
-          console.log(document);
+          console.log(document.documentProducts);
 
           const price = await stripe.prices.create({
             currency: "eur",
