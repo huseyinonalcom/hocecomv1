@@ -50,7 +50,7 @@ const Payments: CollectionConfig = {
 
           const price = await stripe.prices.create({
             currency: "eur",
-            unit_amount: unitAmount,
+            unit_amount: unitAmount.toFixed(0),
             product_data: {
               name: "Bestelling " + document.prefix + document.number,
             },
