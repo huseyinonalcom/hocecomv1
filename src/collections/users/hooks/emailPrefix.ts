@@ -25,7 +25,7 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
     }
   } catch (e) {
     console.log(e);
-    console.log(req.query);
+    console.log(req.body);
     throw new APIError("No company could be determined for this user.", 403);
   }
 
