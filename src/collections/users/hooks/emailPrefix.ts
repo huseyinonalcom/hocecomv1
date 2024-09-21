@@ -26,11 +26,9 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
           console.log("graphql request");
           req.body.variables.email = `${req.body.variables.email.split("@")[0]}+${company}@${req.body.variables.email.split("@")[1]}`;
         }
-        console.log(req.body);
       }
     }
   } catch (e) {
-    console.log(e);
     throw new APIError("No company could be determined for this user.", 403);
   }
 
