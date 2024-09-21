@@ -19,6 +19,7 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
           console.log('graphql request');
           req.body.variables.email = `${req.body.variables.email.split("@")[0]}+${company}@${req.body.variables.email.split("@")[1]}`;
         }
+        console.log(req.body);
       }
       // no company query means the user might be trying to login from the admin panel
       // probably won't succeed, but even if they succeed, they won't be able to do anything
@@ -26,7 +27,6 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
       // if it isn't the case, not having a company query param will fail validation
     }
   } catch (e) {
-    console.log(req.body);
     console.log(e);
     throw new APIError("No company could be determined for this user.", 403);
   }
