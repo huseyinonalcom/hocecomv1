@@ -1,8 +1,6 @@
 import { CollectionConfig } from "payload/types";
 import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
-import { makeFileNameUniqueHook } from "../hooks/filename";
 
 const ProductImages: CollectionConfig = {
   slug: "product-images",
@@ -14,7 +12,6 @@ const ProductImages: CollectionConfig = {
   },
   hooks: {
     beforeChange: [setCompanyHook],
-    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {

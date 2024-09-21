@@ -10,7 +10,6 @@ const Projects: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [hideDeletedHook],
-    // afterRead: [fieldSelectionHook],
     beforeChange: [setCompanyHook],
   },
   access: {

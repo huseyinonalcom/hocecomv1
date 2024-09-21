@@ -15,7 +15,6 @@ const Logos: CollectionConfig = {
   },
   hooks: {
     beforeChange: [setCompanyHook],
-    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {

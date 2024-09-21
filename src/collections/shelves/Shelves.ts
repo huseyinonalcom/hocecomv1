@@ -1,6 +1,5 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 import { setCompanyHook } from "../hooks/setCompany";
 
 const Shelves: CollectionConfig = {
@@ -10,7 +9,6 @@ const Shelves: CollectionConfig = {
   },
   hooks: {
     beforeChange: [setCompanyHook],
-    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {

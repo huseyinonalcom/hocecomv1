@@ -1,7 +1,6 @@
 import { CollectionConfig } from "payload/types";
 import { setCompanyHook } from "../hooks/setCompany";
 import isSuperAdmin from "../users/access/superAdminCheck";
-import { fieldSelectionHook } from "../hooks/field-selection-hook";
 
 const ProductPromos: CollectionConfig = {
   slug: "product-promos",
@@ -10,7 +9,6 @@ const ProductPromos: CollectionConfig = {
   },
   hooks: {
     beforeChange: [setCompanyHook],
-    // afterRead: [fieldSelectionHook],
   },
   access: {
     create: ({ req }) => {

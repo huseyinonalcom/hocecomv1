@@ -40,7 +40,6 @@ const Users: CollectionConfig = {
     beforeOperation: [emailPrefix],
     beforeChange: [setCompanyHook, tagMail, validateRole],
     afterRead: [
-      // fieldSelectionHook,
       async ({ req, doc }) => {
         try {
           if (doc.company && req.user && req.user.role != "super_admin") {

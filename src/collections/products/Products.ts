@@ -11,7 +11,6 @@ const Products: CollectionConfig = {
   },
   hooks: {
     beforeOperation: [hideDeletedHook],
-    // afterRead: [fieldSelectionHook],
     beforeChange: [setCompanyHook],
   },
   access: {
