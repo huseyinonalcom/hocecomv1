@@ -24,6 +24,7 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({
       // if it isn't the case, not having a company query param will fail validation
     }
   } catch (e) {
+    console.log(req.query);
     throw new APIError("No company could be determined for this user.", 403);
   }
 
