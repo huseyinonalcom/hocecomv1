@@ -11,8 +11,6 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
         const company = req.query.company;
         // company query param denotes which company the acoount belongs to
         // we add this to the email as a tag so we can differentiate between accounts for different companies (tenants) with the same email
-        req.body.email = `${req.body.email.split("@")[0]}+${req.query.company}@${req.body.email.split("@")[1]}`;
-
         if (req.body?.email) {
           console.log('rest api request');
           req.body.email = `${req.body.email.split("@")[0]}+${company}@${req.body.email.split("@")[1]}`;
