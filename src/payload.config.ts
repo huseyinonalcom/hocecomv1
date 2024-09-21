@@ -56,10 +56,7 @@ export default buildConfig({
         ...config.resolve,
         alias: {
           ...config.resolve.alias,
-          [path.resolve(__dirname, "hooks/senddocumentmail.ts")]: path.resolve(
-            __dirname,
-            "hooks/mocks/senddocumentmail.js"
-          ),
+          [path.resolve(__dirname, "hooks/senddocumentmail.ts")]: path.resolve(__dirname, "hooks/mocks/senddocumentmail.js"),
         },
       },
     }),
@@ -127,6 +124,7 @@ export default buildConfig({
     "https://barbardotantwerpen.com",
     "https://menu.barbardotantwerpen.com",
     "http://192.168.129.51:5173",
+    "https://studio.apollographql.com",
   ],
   cors: [
     "http://localhost:5173",
@@ -137,6 +135,7 @@ export default buildConfig({
     "https://barbardotantwerpen.com",
     "https://menu.barbardotantwerpen.com",
     "http://192.168.129.51:5173",
+    "https://studio.apollographql.com",
   ],
   plugins: [
     cloudStorage({
