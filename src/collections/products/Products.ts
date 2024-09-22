@@ -23,7 +23,8 @@ const Products: CollectionConfig = {
         };
       }
     },
-    read: ({ req }) => {
+    read: ({ req, data }) => {
+      console.log("data", data);
       if (isSuperAdmin({ req })) {
         return true;
       } else {
