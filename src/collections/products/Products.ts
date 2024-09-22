@@ -10,7 +10,7 @@ const Products: CollectionConfig = {
     useAsTitle: "name",
   },
   hooks: {
-    beforeRead: [hideDeletedHook],
+    beforeOperation: [hideDeletedHook],
     beforeChange: [setCompanyHook],
   },
   access: {
@@ -26,6 +26,7 @@ const Products: CollectionConfig = {
       }
     },
     read: ({ req }) => {
+      console.log(req.user);
       if (isSuperAdmin({ req })) {
         return true;
       } else {
