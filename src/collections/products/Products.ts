@@ -30,18 +30,9 @@ const Products: CollectionConfig = {
       } else {
         console.log("req.user", req.user);
         return {
-          and: [
-            {
-              company: {
-                equals: req.user.company.id,
-              },
-            },
-            {
-              isDeleted: {
-                equals: false,
-              },
-            },
-          ],
+          company: {
+            equals: req.user.company.id,
+          },
         };
       }
     },
