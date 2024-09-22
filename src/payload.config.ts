@@ -61,6 +61,7 @@ export default buildConfig({
       },
     }),
   },
+  maxDepth: 10,
   email: {
     fromName: "Admin",
     fromAddress: process.env.SMTP_USER,
@@ -114,6 +115,7 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
     disablePlaygroundInProduction: false,
+    maxComplexity: 1000,
   },
   csrf: [
     "http://localhost:5173",
