@@ -9,6 +9,9 @@ import { checkRole } from "../../hooks/checkRole";
 
 export const customerCheckForCompany: Access = ({ req }) => {
   if (checkRole(["customer"], req.user)) {
+    console.log("customerCheckForCompany");
+    console.log(req.user.company?.id);
+    console.log(req.user.company);
     return {
       id: {
         equals: req.user.company?.id ?? req.user.company,
