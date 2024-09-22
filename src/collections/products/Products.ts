@@ -27,6 +27,7 @@ const Products: CollectionConfig = {
       if (isSuperAdmin({ req })) {
         return true;
       } else {
+        console.log("req.user", req.user);
         return {
           and: [
             {
