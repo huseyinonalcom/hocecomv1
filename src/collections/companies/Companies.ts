@@ -6,6 +6,7 @@ import { customerCheckForCompany } from "./access/customerCheck";
 import { companyCheckForCompany } from "./access/companyCheck";
 import { websiteCheckForCompany } from "./access/websiteCheck";
 import payload from "payload";
+import { checkRole } from "../hooks/checkRole";
 
 const Companies: CollectionConfig = {
   slug: "companies",
@@ -54,7 +55,17 @@ const Companies: CollectionConfig = {
   ],
   access: {
     create: isSuperAdmin,
-    read: adminCheckForCompany || websiteCheckForCompany || companyCheckForCompany || customerCheckForCompany,
+    read: ({ req }) => {
+      if (isSuperAdmin({ req })) {
+        return true;
+      } else {
+        return {
+          id: {
+            equals: req.user.company?.id ?? req.user.company,
+          },
+        };
+      }
+    },
     delete: () => false,
     update: adminCheckForCompany,
   },
