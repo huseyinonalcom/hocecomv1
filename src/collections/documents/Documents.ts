@@ -120,8 +120,8 @@ const Documents: CollectionConfig = {
         return true;
       } else {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       }
@@ -137,8 +137,8 @@ const Documents: CollectionConfig = {
         };
       } else if (checkRole(["admin", "employee"], req.user)) {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       } else {
@@ -156,8 +156,8 @@ const Documents: CollectionConfig = {
         };
       } else if (checkRole(["admin", "employee"], req.user)) {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       } else {

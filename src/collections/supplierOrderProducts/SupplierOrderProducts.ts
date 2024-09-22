@@ -16,8 +16,8 @@ const SupplierOrderProducts: CollectionConfig = {
         return true;
       } else {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       }
@@ -27,8 +27,8 @@ const SupplierOrderProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       } else if (req.user.role === "customer") {
@@ -46,8 +46,8 @@ const SupplierOrderProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       } else {
@@ -59,8 +59,8 @@ const SupplierOrderProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       } else {

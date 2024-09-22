@@ -73,8 +73,8 @@ const Users: CollectionConfig = {
         };
       } else {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       }
@@ -84,8 +84,8 @@ const Users: CollectionConfig = {
         return true;
       } else if (checkRole(["admin"], req.user)) {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       } else {

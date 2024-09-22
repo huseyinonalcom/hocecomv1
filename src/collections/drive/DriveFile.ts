@@ -18,8 +18,8 @@ const DriveFiles: CollectionConfig = {
         return true;
       } else {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       }
@@ -29,8 +29,8 @@ const DriveFiles: CollectionConfig = {
         return true;
       } else {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       }
@@ -40,8 +40,8 @@ const DriveFiles: CollectionConfig = {
         return true;
       } else {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       }

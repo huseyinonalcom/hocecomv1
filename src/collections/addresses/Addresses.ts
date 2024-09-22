@@ -18,8 +18,8 @@ const Addresses: CollectionConfig = {
         return true;
       } else if (checkRole(["admin", "employee", "website", "customer"], req.user)) {
         return {
-          company: {
-            equals: req.user.company.id,
+           company: {
+            equals: req.user.company?.id ?? req.user.company,
           },
         };
       } else {
