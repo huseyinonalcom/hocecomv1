@@ -10,7 +10,7 @@ const Products: CollectionConfig = {
     useAsTitle: "name",
   },
   hooks: {
-    beforeOperation: [hideDeletedHook],
+    beforeRead: [hideDeletedHook],
     beforeChange: [setCompanyHook],
   },
   access: {
