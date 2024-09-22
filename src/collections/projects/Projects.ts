@@ -1,7 +1,6 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import { hideDeletedHook } from "../hooks/hide-deleted";
 
 const Projects: CollectionConfig = {
   slug: "projects",
@@ -9,7 +8,6 @@ const Projects: CollectionConfig = {
     useAsTitle: "title",
   },
   hooks: {
-    beforeOperation: [hideDeletedHook],
     beforeChange: [setCompanyHook],
   },
   access: {

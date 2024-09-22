@@ -1,7 +1,6 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import { hideDeletedHook } from "../hooks/hide-deleted";
 import { checkRole } from "../hooks/checkRole";
 
 const Products: CollectionConfig = {
@@ -10,7 +9,6 @@ const Products: CollectionConfig = {
     useAsTitle: "name",
   },
   hooks: {
-    beforeOperation: [hideDeletedHook],
     beforeChange: [setCompanyHook],
   },
   access: {
@@ -30,9 +28,18 @@ const Products: CollectionConfig = {
         return true;
       } else {
         return {
-          company: {
-            equals: req.user.company.id,
-          },
+          and: [
+            {
+              company: {
+                equals: req.user.company.id,
+              },
+            },
+            {
+              isDeleted: {
+                equals: false,
+              },
+            },
+          ],
         };
       }
     },
