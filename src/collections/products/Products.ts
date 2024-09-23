@@ -57,6 +57,8 @@ const Products: CollectionConfig = {
     { name: "priceBeforeDiscount", type: "number" },
     { name: "value", type: "number", required: true },
     { name: "tax", type: "number", required: true },
+    { name: "dymamicPrice", type: "number" },
+    { name: "unit", type: "text" },
     {
       name: "categories",
       type: "relationship",
