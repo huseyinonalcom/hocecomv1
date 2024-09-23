@@ -404,6 +404,8 @@ export interface Product {
   priceBeforeDiscount?: number | null;
   value: number;
   tax: number;
+  dymamicPrice?: number | null;
+  unit?: string | null;
   categories: (number | ProductCategory)[];
   buyPrice?: number | null;
   extraFields?:
