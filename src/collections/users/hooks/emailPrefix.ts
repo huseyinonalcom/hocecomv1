@@ -25,6 +25,7 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
           // Handling GraphQL requests (email in req.body.variables)
           console.log("graphql request");
           req.body.variables.email = `${req.body.variables.email.split("@")[0]}+${company}@${req.body.variables.email.split("@")[1]}`;
+          console.log(req.body.variables.email);
         }
       }
     }

@@ -6,7 +6,6 @@ import { validateRole } from "./hooks/validateRole";
 import { checkRole } from "../hooks/checkRole";
 
 const tagMail: CollectionBeforeChangeHook = async ({ req, data }) => {
-  console.log(data);
   if (isSuperAdmin({ req })) {
   } else if (data.email) {
     let email = data.email;
