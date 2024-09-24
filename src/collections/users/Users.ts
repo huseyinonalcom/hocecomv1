@@ -6,6 +6,7 @@ import { validateRole } from "./hooks/validateRole";
 import { checkRole } from "../hooks/checkRole";
 
 const tagMail: CollectionBeforeChangeHook = async ({ req, data }) => {
+  console.log(data);
   if (isSuperAdmin({ req })) {
   } else if (data.email) {
     let email = data.email;
@@ -49,8 +50,7 @@ const Users: CollectionConfig = {
             let domainPart = parts[1];
             doc.email = localPart + "@" + domainPart;
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       },
     ],
   },
@@ -73,7 +73,7 @@ const Users: CollectionConfig = {
         };
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -84,7 +84,7 @@ const Users: CollectionConfig = {
         return true;
       } else if (checkRole(["admin"], req.user)) {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
