@@ -28,7 +28,7 @@ const Users: CollectionConfig = {
         return `<div>
           <h1>Seems like you've lost your password for ${JSON.stringify(user.company.name)}</h1>
           <p>Click the link below to reset your password</p>
-        <a href="http://localhost:3000/admin/reset/${token}">Reset Password</a>
+        <a href="https://hocecomv1.com/password-reset/${token}">Reset Password</a>
         </div>`;
       },
     },
