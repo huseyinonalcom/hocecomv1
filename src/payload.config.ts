@@ -127,6 +127,7 @@ export default buildConfig({
     "https://menu.barbardotantwerpen.com",
     "http://192.168.129.51:5173",
     "https://studio.apollographql.com",
+    "http://192.168.1.121:3421",
   ],
   cors: [
     "http://localhost:5173",
@@ -138,6 +139,7 @@ export default buildConfig({
     "https://menu.barbardotantwerpen.com",
     "http://192.168.129.51:5173",
     "https://studio.apollographql.com",
+    "http://192.168.1.121:3421",
   ],
   plugins: [
     cloudStorage({
