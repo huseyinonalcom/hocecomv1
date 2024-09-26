@@ -254,6 +254,10 @@ const Users: CollectionConfig = {
       type: "text",
     },
     {
+      name: "customerTaxCenter",
+      type: "text",
+    },
+    {
       name: "receivedDeliveries",
       type: "relationship",
       hasMany: true,

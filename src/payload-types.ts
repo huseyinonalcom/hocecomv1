@@ -297,6 +297,7 @@ export interface User {
   customerCategory?: ('professional' | 'private') | null;
   customerCompany?: string | null;
   customerTaxNumber?: string | null;
+  customerTaxCenter?: string | null;
   receivedDeliveries?: (number | Delivery)[] | null;
   receivedTasks?: (number | Task)[] | null;
   issuedTasks?: (number | Task)[] | null;
