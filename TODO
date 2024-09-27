@@ -1,3 +1,1 @@
-how to allow the same email to be used with multiple tenants
-                1   add a suffix to the email address to make it unique (company-id)
-                    this will require adding some hooks to user operations to automatically add this suffix for incoming requests and remove it for outgoing requests and automated emails
+afterCreate/afterUpdate hooks for relations
