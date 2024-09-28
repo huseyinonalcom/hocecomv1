@@ -27,18 +27,22 @@ const DocumentProducts: CollectionConfig = {
         }
         console.log("docToUpdate", docToUpdate);
         console.log("allDocProdIds", allDocProdIds);
-        await payload
-          .update({
-            overrideAccess: true,
-            collection: "documents",
-            id: doc.document,
-            data: {
-              documentProducts: allDocProdIds,
-            },
-          })
-          .catch((error) => {
-            console.error("error", error);
-          });
+        try {
+          await payload
+            .update({
+              overrideAccess: true,
+              collection: "documents",
+              id: doc.document,
+              data: {
+                documentProducts: allDocProdIds,
+              },
+            })
+            .catch((error) => {
+              console.error("error", error);
+            });
+        } catch (error) {
+          console.error("error", error);
+        }
       },
     ],
   },
