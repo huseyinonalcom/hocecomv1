@@ -141,6 +141,7 @@ export default buildConfig({
     "https://studio.apollographql.com",
     "http://192.168.1.121:3421",
   ],
+  debug: true,
   plugins: [
     cloudStorage({
       collections: {
