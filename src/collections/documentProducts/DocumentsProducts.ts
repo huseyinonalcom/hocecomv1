@@ -16,20 +16,28 @@ const DocumentProducts: CollectionConfig = {
         const docToUpdate = await payload.findByID({
           collection: "documents",
           id: doc.document,
+          depth: 3,
         });
-        let allDocProdIds: number[] = [doc.id];
+        let allDocProdIds: number[] = [];
         if (docToUpdate.documentProducts && docToUpdate.documentProducts.length > 0) {
           allDocProdIds.push(...docToUpdate.documentProducts.map((docProd) => docProd.id));
         }
+        if (!allDocProdIds.includes(doc.id)) {
+          allDocProdIds.push(doc.id);
+        }
         console.log("docToUpdate", docToUpdate);
         console.log("allDocProdIds", allDocProdIds);
-        await payload.update({
-          collection: "documents",
-          id: doc.document,
-          data: {
-            documentProducts: allDocProdIds,
-          },
-        });
+        await payload
+          .update({
+            collection: "documents",
+            id: doc.document,
+            data: {
+              documentProducts: allDocProdIds,
+            },
+          })
+          .catch((error) => {
+            console.error("error", error);
+          });
       },
     ],
   },
