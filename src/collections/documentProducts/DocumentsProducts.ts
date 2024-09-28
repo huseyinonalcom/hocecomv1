@@ -1,6 +1,7 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
+import payload from "payload";
 
 const DocumentProducts: CollectionConfig = {
   slug: "document-products",
@@ -9,6 +10,26 @@ const DocumentProducts: CollectionConfig = {
   },
   hooks: {
     beforeChange: [setCompanyHook],
+    afterChange: [
+      async ({ doc }) => {
+        console.log("doc", doc);
+        // const docToUpdate = await payload.findByID({
+        //   collection: "documents",
+        //   id: doc.document,
+        // });
+        // let allDocProdIds: number[] = [doc.id];
+        // if (docToUpdate.documentProducts && docToUpdate.documentProducts.length > 0) {
+        //   allDocProdIds.push(...docToUpdate.documentProducts.map((docProd) => docProd.id));
+        // }
+        // await payload.update({
+        //   collection: "documents",
+        //   id: doc.document,
+        //   data: {
+        //     documentProducts: allDocProdIds,
+        //   },
+        // });
+      },
+    ],
   },
   access: {
     create: ({ req }) => {
