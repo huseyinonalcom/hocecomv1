@@ -57,7 +57,7 @@ export interface Address {
   name?: string | null;
   isDeleted?: boolean | null;
   isDefault?: boolean | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -93,7 +93,7 @@ export interface Company {
 export interface Logo {
   id: number;
   name?: string | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -124,14 +124,14 @@ export interface Delivery {
   isIncoming?: boolean | null;
   isDeleted?: boolean | null;
   files?: (number | File)[] | null;
-  establishment: number | Establishment;
+  establishment?: (number | null) | Establishment;
   documentProducts?: (number | DocumentProduct)[] | null;
-  address: number | Address;
+  address?: (number | null) | Address;
   supplierOrderProducts?: (number | SupplierOrderProduct)[] | null;
   customer?: (number | null) | User;
   creator?: (number | null) | User;
   assignee?: (number | null) | User;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -143,7 +143,7 @@ export interface File {
   id: number;
   name: string;
   priority?: number | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -187,7 +187,7 @@ export interface Establishment {
   logo?: (number | null) | Logo;
   users?: (number | User)[] | null;
   customers?: (number | User)[] | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -222,7 +222,7 @@ export interface Document {
   fromDocument?: (number | null) | Document;
   docAddress?: (number | null) | Address;
   delAddress?: (number | null) | Address;
-  creator: number | User;
+  creator?: (number | null) | User;
   taxIncluded?: boolean | null;
   extraFields?:
     | {
@@ -233,7 +233,7 @@ export interface Document {
     | number
     | boolean
     | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -254,7 +254,7 @@ export interface Supplier {
   orderMail?: string | null;
   contactMail?: string | null;
   orderTime?: number | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -264,16 +264,16 @@ export interface Supplier {
  */
 export interface SupplierOrder {
   id: number;
-  establishment: number | Establishment;
-  creator: number | User;
+  establishment?: (number | null) | Establishment;
+  creator?: (number | null) | User;
   supplierOrderProducts?: (number | SupplierOrderProduct)[] | null;
-  supplier: number | Supplier;
+  supplier?: (number | null) | Supplier;
   isDeleted?: boolean | null;
   isCompleted?: boolean | null;
   date: string;
   notes?: string | null;
   reference?: string | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -330,10 +330,10 @@ export interface Payment {
   reference?: string | null;
   isVerified?: boolean | null;
   isDeleted?: boolean | null;
-  document: number | Document;
+  document?: (number | null) | Document;
   creator?: (number | null) | User;
-  establishment: number | Establishment;
-  company: number | Company;
+  establishment?: (number | null) | Establishment;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -355,7 +355,7 @@ export interface Task {
   document?: (number | null) | Document;
   files?: (number | File)[] | null;
   taskComments?: (number | TaskComment)[] | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -369,8 +369,8 @@ export interface TaskComment {
   comment?: string | null;
   isDeleted?: boolean | null;
   task?: (number | null) | Task;
-  creator: number | User;
-  company: number | Company;
+  creator?: (number | null) | User;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -384,10 +384,10 @@ export interface SupplierOrderProduct {
   quantity: number;
   name: string;
   description?: string | null;
-  creator: number | User;
-  establishment: number | Establishment;
-  supplierOrder: number | SupplierOrder;
-  company: number | Company;
+  creator?: (number | null) | User;
+  establishment?: (number | null) | Establishment;
+  supplierOrder?: (number | null) | SupplierOrder;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -407,7 +407,7 @@ export interface Product {
   tax: number;
   dymamicPrice?: number | null;
   unit?: string | null;
-  categories: (number | ProductCategory)[];
+  categories?: (number | ProductCategory)[] | null;
   buyPrice?: number | null;
   extraFields?:
     | {
@@ -425,7 +425,7 @@ export interface Product {
   supplier?: (number | null) | Supplier;
   discountRange: number;
   isActive?: boolean | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -443,7 +443,7 @@ export interface ProductCategory {
   categoryImage?: (number | null) | ProductImage;
   promos?: (number | ProductPromo)[] | null;
   products?: (number | Product)[] | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -455,7 +455,7 @@ export interface ProductImage {
   id: number;
   name: string;
   priority?: number | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -491,8 +491,8 @@ export interface ProductPromo {
   startDate: string;
   endDate: string;
   customers?: (number | User)[] | null;
-  creator: number | User;
-  company: number | Company;
+  creator?: (number | null) | User;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -502,14 +502,14 @@ export interface ProductPromo {
  */
 export interface Shelf {
   id: number;
-  establishment: number | Establishment;
+  establishment?: (number | null) | Establishment;
   isDeleted?: boolean | null;
-  product: number | Product;
+  product?: (number | null) | Product;
   stock?: number | null;
   region?: string | null;
   stack?: string | null;
   level?: string | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -531,7 +531,7 @@ export interface DocumentProduct {
   taxIncluded?: boolean | null;
   subTotal?: number | null;
   subTotalTax?: number | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -544,9 +544,9 @@ export interface SupportTicket {
   isDeleted?: boolean | null;
   openDate: string;
   closedDate?: string | null;
-  document: number | Document;
+  document?: (number | null) | Document;
   notes?: string | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -563,7 +563,7 @@ export interface ProductCollection {
   isDeleted?: boolean | null;
   isFeatured?: boolean | null;
   tags?: string | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -578,7 +578,7 @@ export interface Project {
   featured?: boolean | null;
   files?: (number | File)[] | null;
   cover?: (number | null) | File;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -588,12 +588,12 @@ export interface Project {
  */
 export interface SupportTicketMessage {
   id: number;
-  supportTicket: number | SupportTicket;
+  supportTicket?: (number | null) | SupportTicket;
   isDeleted?: boolean | null;
   date: string;
   message?: string | null;
-  creator: number | User;
-  company: number | Company;
+  creator?: (number | null) | User;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
 }
@@ -607,7 +607,7 @@ export interface DriveFile {
   priority?: number | null;
   isDeleted?: boolean | null;
   folder?: number | null;
-  company: number | Company;
+  company?: (number | null) | Company;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
