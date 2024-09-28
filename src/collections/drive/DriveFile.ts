@@ -18,7 +18,7 @@ const DriveFiles: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -29,7 +29,7 @@ const DriveFiles: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -40,7 +40,7 @@ const DriveFiles: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -57,7 +57,7 @@ const DriveFiles: CollectionConfig = {
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "folder", type: "number", required: false },
     // company relationship is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };
 

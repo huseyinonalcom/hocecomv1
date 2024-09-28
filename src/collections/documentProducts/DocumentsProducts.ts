@@ -16,7 +16,7 @@ const DocumentProducts: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -27,7 +27,7 @@ const DocumentProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -46,7 +46,7 @@ const DocumentProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -59,7 +59,7 @@ const DocumentProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -175,7 +175,6 @@ const DocumentProducts: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "companies",
-      required: true,
     },
   ],
 };

@@ -16,7 +16,7 @@ const SupplierOrderProducts: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -27,7 +27,7 @@ const SupplierOrderProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -46,7 +46,7 @@ const SupplierOrderProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -59,7 +59,7 @@ const SupplierOrderProducts: CollectionConfig = {
         return true;
       } else if (req.user.role === "admin" || req.user.role === "employee") {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -73,11 +73,11 @@ const SupplierOrderProducts: CollectionConfig = {
     { name: "quantity", type: "number", required: true },
     { name: "name", type: "text", required: true },
     { name: "description", type: "text" },
-    { name: "creator", type: "relationship", relationTo: "users", hasMany: false, required: true },
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
-    { name: "supplierOrder", type: "relationship", hasMany: false, relationTo: "supplier-orders", required: true },
+    { name: "creator", type: "relationship", relationTo: "users", hasMany: false },
+    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
+    { name: "supplierOrder", type: "relationship", hasMany: false, relationTo: "supplier-orders" },
     // company relation is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };
 

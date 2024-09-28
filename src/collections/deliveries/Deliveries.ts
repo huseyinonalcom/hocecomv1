@@ -16,7 +16,7 @@ const Deliveries: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -27,7 +27,7 @@ const Deliveries: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -38,7 +38,7 @@ const Deliveries: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -63,15 +63,15 @@ const Deliveries: CollectionConfig = {
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     // relations
     { name: "files", type: "relationship", relationTo: "files", hasMany: true },
-    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments", required: true },
+    { name: "establishment", type: "relationship", hasMany: false, relationTo: "establishments" },
     { name: "documentProducts", type: "relationship", hasMany: true, relationTo: "document-products" },
-    { name: "address", type: "relationship", hasMany: false, relationTo: "addresses", required: true },
+    { name: "address", type: "relationship", hasMany: false, relationTo: "addresses" },
     { name: "supplierOrderProducts", type: "relationship", hasMany: true, relationTo: "supplier-order-products" },
     { name: "customer", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
     { name: "assignee", type: "relationship", hasMany: false, relationTo: "users" },
     // company relationship is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };
 

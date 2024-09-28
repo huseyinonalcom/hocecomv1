@@ -116,8 +116,7 @@ const Establishments: CollectionConfig = {
       name: "company",
       type: "relationship",
       hasMany: false,
-      relationTo: "companies",
-      required: true,
+     relationTo: "companies",
     },
   ],
 };

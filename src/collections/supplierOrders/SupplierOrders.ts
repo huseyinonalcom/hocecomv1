@@ -16,7 +16,7 @@ const SupplierOrders: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -27,7 +27,7 @@ const SupplierOrders: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -38,7 +38,7 @@ const SupplierOrders: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -54,14 +54,12 @@ const SupplierOrders: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "establishments",
-      required: true,
     },
     {
       name: "creator",
       type: "relationship",
       hasMany: false,
       relationTo: "users",
-      required: true,
     },
     {
       name: "supplierOrderProducts",
@@ -74,7 +72,6 @@ const SupplierOrders: CollectionConfig = {
       type: "relationship",
       relationTo: "suppliers",
       hasMany: false,
-      required: true,
     },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "isCompleted", type: "checkbox", defaultValue: false },
@@ -87,7 +84,6 @@ const SupplierOrders: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "companies",
-      required: true,
     },
   ],
 };

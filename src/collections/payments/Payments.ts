@@ -7,7 +7,7 @@ import { Company } from "payload/generated-types";
 const Payments: CollectionConfig = {
   slug: "payments",
   admin: {
-    useAsTitle: "type", 
+    useAsTitle: "type",
   },
   hooks: {
     beforeChange: [setCompanyHook],
@@ -87,7 +87,7 @@ const Payments: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -98,7 +98,7 @@ const Payments: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -109,7 +109,7 @@ const Payments: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -167,7 +167,6 @@ const Payments: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "documents",
-      required: true,
     },
     {
       name: "creator",
@@ -180,7 +179,6 @@ const Payments: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "establishments",
-      required: true,
     },
     // company relationship is always required
     {
@@ -188,7 +186,6 @@ const Payments: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "companies",
-      required: true,
     },
   ],
 };

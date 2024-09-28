@@ -16,7 +16,7 @@ const TaskComments: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -27,7 +27,7 @@ const TaskComments: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -38,7 +38,7 @@ const TaskComments: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -59,7 +59,6 @@ const TaskComments: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "users",
-      required: true,
     },
     // company relation is always required
     {
@@ -67,7 +66,6 @@ const TaskComments: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "companies",
-      required: true,
     },
   ],
 };

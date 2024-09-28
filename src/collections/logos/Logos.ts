@@ -22,7 +22,7 @@ const Logos: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -33,7 +33,7 @@ const Logos: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -44,7 +44,7 @@ const Logos: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -58,7 +58,7 @@ const Logos: CollectionConfig = {
       type: "text",
     },
     // company relationship is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };
 

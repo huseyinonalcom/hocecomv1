@@ -16,7 +16,7 @@ const SupportTickets: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -27,7 +27,7 @@ const SupportTickets: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -38,7 +38,7 @@ const SupportTickets: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -57,7 +57,6 @@ const SupportTickets: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "documents",
-      required: true,
     },
     { name: "notes", type: "textarea" },
     // company relation is always required
@@ -66,7 +65,6 @@ const SupportTickets: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "companies",
-      required: true,
     },
   ],
 };

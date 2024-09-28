@@ -18,7 +18,7 @@ const Files: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -29,7 +29,7 @@ const Files: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -40,7 +40,7 @@ const Files: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -55,7 +55,7 @@ const Files: CollectionConfig = {
     { name: "name", type: "text", required: true },
     { name: "priority", type: "number", defaultValue: 0 },
     // company relationship is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };
 

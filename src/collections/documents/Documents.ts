@@ -219,7 +219,6 @@ const Documents: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "suppliers",
-      required: false,
     },
     {
       name: "customer",
@@ -269,21 +268,18 @@ const Documents: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "addresses",
-      required: false,
     },
     {
       name: "delAddress",
       type: "relationship",
       hasMany: false,
       relationTo: "addresses",
-      required: false,
     },
     {
       name: "creator",
       type: "relationship",
       hasMany: false,
       relationTo: "users",
-      required: true,
     },
     {
       name: "taxIncluded",
@@ -299,8 +295,7 @@ const Documents: CollectionConfig = {
       name: "company",
       type: "relationship",
       hasMany: false,
-      relationTo: "companies",
-      required: true,
+     relationTo: "companies",
     },
   ],
 };

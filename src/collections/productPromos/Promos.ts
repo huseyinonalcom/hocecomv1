@@ -16,7 +16,7 @@ const ProductPromos: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -27,7 +27,7 @@ const ProductPromos: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -38,7 +38,7 @@ const ProductPromos: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -59,9 +59,9 @@ const ProductPromos: CollectionConfig = {
     { name: "startDate", type: "date", required: true },
     { name: "endDate", type: "date", required: true },
     { name: "customers", type: "relationship", relationTo: "users", hasMany: true },
-    { name: "creator", type: "relationship", relationTo: "users", hasMany: false, required: true },
+    { name: "creator", type: "relationship", relationTo: "users", hasMany: false },
     // company relation is awlways required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };
 

@@ -64,7 +64,6 @@ const Products: CollectionConfig = {
       type: "relationship",
       relationTo: "product-categories",
       hasMany: true,
-      required: true,
       index: true,
     },
     {
@@ -102,7 +101,6 @@ const Products: CollectionConfig = {
       type: "relationship",
       relationTo: "suppliers",
       hasMany: false,
-      required: false,
     },
     {
       name: "discountRange",
@@ -128,7 +126,6 @@ const Products: CollectionConfig = {
       type: "relationship",
       hasMany: false,
       relationTo: "companies",
-      required: true,
     },
   ],
 };

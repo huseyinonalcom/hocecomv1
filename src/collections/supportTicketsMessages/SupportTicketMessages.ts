@@ -16,7 +16,7 @@ const SupportTicketMessages: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -27,7 +27,7 @@ const SupportTicketMessages: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -38,7 +38,7 @@ const SupportTicketMessages: CollectionConfig = {
         return true;
       } else {
         return {
-           company: {
+          company: {
             equals: req.user.company?.id ?? req.user.company,
           },
         };
@@ -49,13 +49,13 @@ const SupportTicketMessages: CollectionConfig = {
     },
   },
   fields: [
-    { name: "supportTicket", type: "relationship", hasMany: false, relationTo: "support-tickets", required: true },
+    { name: "supportTicket", type: "relationship", hasMany: false, relationTo: "support-tickets" },
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "date", type: "date", required: true },
     { name: "message", type: "textarea" },
-    { name: "creator", type: "relationship", hasMany: false, relationTo: "users", required: true },
+    { name: "creator", type: "relationship", hasMany: false, relationTo: "users" },
     // company relation is always required
-    { name: "company", type: "relationship", hasMany: false, relationTo: "companies", required: true },
+    { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };
 
