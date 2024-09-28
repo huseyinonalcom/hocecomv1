@@ -1,7 +1,6 @@
 import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
-import payload from "payload";
 
 const DocumentProducts: CollectionConfig = {
   slug: "document-products",
@@ -10,41 +9,6 @@ const DocumentProducts: CollectionConfig = {
   },
   hooks: {
     beforeChange: [setCompanyHook],
-    // afterChange: [
-    //   async ({ doc }) => {
-    //     console.log("doc", doc);
-    //     const docToUpdate = await payload.findByID({
-    //       collection: "documents",
-    //       id: doc.document,
-    //       depth: 3,
-    //     });
-    //     let allDocProdIds: number[] = [];
-    //     if (docToUpdate.documentProducts && docToUpdate.documentProducts.length > 0) {
-    //       allDocProdIds.push(...docToUpdate.documentProducts.map((docProd) => docProd.id));
-    //     }
-    //     if (!allDocProdIds.includes(doc.id)) {
-    //       allDocProdIds.push(doc.id);
-    //     }
-    //     console.log("docToUpdate", docToUpdate);
-    //     console.log("allDocProdIds", allDocProdIds);
-    //     try {
-    //       await payload
-    //         .update({
-    //           overrideAccess: true,
-    //           collection: "documents",
-    //           id: doc.document,
-    //           data: {
-    //             documentProducts: allDocProdIds,
-    //           },
-    //         })
-    //         .catch((error) => {
-    //           console.error("error", error);
-    //         });
-    //     } catch (error) {
-    //       console.error("error", error);
-    //     }
-    //   },
-    // ],
   },
   access: {
     create: ({ req }) => {
