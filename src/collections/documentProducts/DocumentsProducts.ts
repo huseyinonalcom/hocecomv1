@@ -23,13 +23,13 @@ const DocumentProducts: CollectionConfig = {
         }
         console.log("docToUpdate", docToUpdate);
         console.log("allDocProdIds", allDocProdIds);
-        // await payload.update({
-        //   collection: "documents",
-        //   id: doc.document,
-        //   data: {
-        //     documentProducts: allDocProdIds,
-        //   },
-        // });
+        await payload.update({
+          collection: "documents",
+          id: doc.document,
+          data: {
+            documentProducts: allDocProdIds,
+          },
+        });
       },
     ],
   },
