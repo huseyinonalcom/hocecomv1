@@ -13,14 +13,16 @@ const DocumentProducts: CollectionConfig = {
     afterChange: [
       async ({ doc }) => {
         console.log("doc", doc);
-        // const docToUpdate = await payload.findByID({
-        //   collection: "documents",
-        //   id: doc.document,
-        // });
-        // let allDocProdIds: number[] = [doc.id];
-        // if (docToUpdate.documentProducts && docToUpdate.documentProducts.length > 0) {
-        //   allDocProdIds.push(...docToUpdate.documentProducts.map((docProd) => docProd.id));
-        // }
+        const docToUpdate = await payload.findByID({
+          collection: "documents",
+          id: doc.document,
+        });
+        let allDocProdIds: number[] = [doc.id];
+        if (docToUpdate.documentProducts && docToUpdate.documentProducts.length > 0) {
+          allDocProdIds.push(...docToUpdate.documentProducts.map((docProd) => docProd.id));
+        }
+        console.log("docToUpdate", docToUpdate);
+        console.log("allDocProdIds", allDocProdIds);
         // await payload.update({
         //   collection: "documents",
         //   id: doc.document,
