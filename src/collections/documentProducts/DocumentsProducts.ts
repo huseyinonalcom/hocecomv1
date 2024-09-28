@@ -29,6 +29,7 @@ const DocumentProducts: CollectionConfig = {
         console.log("allDocProdIds", allDocProdIds);
         await payload
           .update({
+            overrideAccess: true,
             collection: "documents",
             id: doc.document,
             data: {
