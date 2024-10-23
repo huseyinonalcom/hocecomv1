@@ -1,8 +1,9 @@
 import payload from "payload";
 import { generateInvoice } from "../utils/invoicepdf";
 import { sendMail } from "../utils/sendmail";
+import { CollectionAfterChangeHook } from "payload/types";
 
-const sendDocumentMail = async ({ operation, doc }) => {
+const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) => {
   try {
     console.log(doc);
     doc.establishment = await payload.findByID({

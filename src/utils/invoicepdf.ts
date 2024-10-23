@@ -4,6 +4,7 @@ import { addDaysToDate } from "./addtodate";
 
 export async function generateInvoice({ document }: { document: Document }): Promise<Buffer> {
   const establishment = document.establishment as Establishment;
+  const establishmentAddress = establishment.address as Address;
   return new Promise(async (resolve, reject) => {
     try {
       const PDFDocument = require("pdfkit");
@@ -36,8 +37,8 @@ export async function generateInvoice({ document }: { document: Document }): Pro
 
       // Establishment Details
       doc.text(establishment.name, 50, 130);
-      doc.text(establishment.address[0].street + " " + establishment.address[0].door, 50, 145);
-      doc.text(establishment.address[0].zip + " " + establishment.address[0].city + " " + establishment.address[0].country, 50, 160);
+      doc.text(establishmentAddress.street + " " + establishmentAddress.door, 50, 145);
+      doc.text(establishmentAddress.zip + " " + establishmentAddress.city + " " + establishmentAddress.country, 50, 160);
 
       // Customer Details
       doc.text("Invoicing:", 300, 130);
