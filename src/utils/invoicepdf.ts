@@ -52,7 +52,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
   return new Promise(async (resolve, reject) => {
     try {
       const PDFDocument = require("pdfkit");
-      const doc = new PDFDocument({ size: "A4" });
+      const doc = new PDFDocument({ size: "A4", margin: 20 });
       const buffers: Uint8Array[] = [];
 
       doc.on("data", buffers.push.bind(buffers));
