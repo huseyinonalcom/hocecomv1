@@ -28,7 +28,13 @@ const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) =
       recipient: "huseyin-_-onal@hotmail.com",
       subject: `Bestelling ${doc.prefix ?? ""}${doc.number}`,
       company: doc.company,
-      attachments: [pdf],
+      attachments: [
+        {
+          filename: pdf.filename,
+          content: pdf.content,
+          contentType: pdf.contentType,
+        },
+      ],
       html: `<p>Beste ${
         doc.customer.firstName + " " + doc.customer.lastName
       },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${doc.company.name}</p>`,

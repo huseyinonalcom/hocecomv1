@@ -1,10 +1,13 @@
 import { Address, Document, DocumentProduct, Establishment, Logo, Payment, User } from "payload/generated-types";
 import { dateFormatBe } from "./formatters/dateformatters";
 import { addDaysToDate } from "./addtodate";
+import { Buffer } from "buffer";
+import fetch from "node-fetch"; // Import node-fetch if not already
 
-export async function generateInvoice({ document }: { document: Document }): Promise<Buffer> {
+export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
   const establishment = document.establishment as Establishment;
   const establishmentAddress = establishment.address as Address;
+
   return new Promise(async (resolve, reject) => {
     try {
       const PDFDocument = require("pdfkit");
@@ -135,7 +138,11 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       doc.end();
       doc.on("end", () => {
         const pdfData = Buffer.concat(buffers);
-        resolve(pdfData);
+        resolve({
+          filename: `invoice_${document.number}.pdf`,
+          content: pdfData,
+          contentType: "application/pdf",
+        });
       });
     } catch (error) {
       reject(`Error generating invoice: ${error.message}`);
