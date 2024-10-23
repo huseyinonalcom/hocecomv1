@@ -21,9 +21,6 @@ const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) =
       pdf = null;
       throw new Error(error);
     }
-    console.log("pdf:\n", pdf);
-    // doc doesn't have the populated data yet
-    // so we need to populate it
     await sendMail({
       recipient: "huseyin-_-onal@hotmail.com",
       subject: `Bestelling ${doc.prefix ?? ""}${doc.number}`,
