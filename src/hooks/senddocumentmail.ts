@@ -5,7 +5,7 @@ import { CollectionAfterChangeHook } from "payload/types";
 
 const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) => {
   try {
-    console.log(doc);
+    console.log("sendDocumentMail hook");
     doc.establishment = await payload.findByID({
       collection: "establishments",
       id: doc.establishment.id,
@@ -21,6 +21,7 @@ const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) =
       pdf = null;
       throw new Error(error);
     }
+    console.log("pdf:\n", pdf);
     // doc doesn't have the populated data yet
     // so we need to populate it
     await sendMail({
