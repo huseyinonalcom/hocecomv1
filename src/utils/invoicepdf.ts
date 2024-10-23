@@ -8,13 +8,12 @@ export async function generateInvoice({ document }: { document: Document }): Pro
   return new Promise(async (resolve, reject) => {
     try {
       const PDFDocument = require("pdfkit");
+      const blobStream = require("blob-stream");
       const doc = new PDFDocument();
-      const buffers: Uint8Array[] = [];
+      var stream = doc.pipe(blobStream("application/pdf"));
 
-      doc.on("data", buffers.push.bind(buffers));
-      doc.on("end", () => {
-        const pdfData = Buffer.concat(buffers);
-        resolve(pdfData);
+      stream.on("finish", function () {
+        resolve(stream.toBlob());
       });
 
       // Fetch logo image from the URL
