@@ -2,7 +2,6 @@ import { Address, Document, DocumentProduct, Establishment, Logo, Payment, User 
 import { dateFormatBe } from "./formatters/dateformatters";
 import { addDaysToDate } from "./addtodate";
 import { Buffer } from "buffer";
-import fetch from "node-fetch"; // Import node-fetch if not already
 
 export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
   const establishment = document.establishment as Establishment;
