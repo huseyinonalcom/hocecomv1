@@ -7,7 +7,7 @@ const sendDocumentMail = async ({ operation, doc }) => {
     console.log(doc);
     doc.establishment = await payload.findByID({
       collection: "establishments",
-      id: doc.establishment,
+      id: doc.establishment.id,
       depth: 2,
     });
     let pdf = null;
