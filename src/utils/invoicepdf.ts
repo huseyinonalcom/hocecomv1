@@ -12,10 +12,6 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       const buffers: Uint8Array[] = [];
 
       doc.on("data", buffers.push.bind(buffers));
-      doc.on("end", () => {
-        const pdfData = Buffer.concat(buffers);
-        resolve(pdfData);
-      });
 
       // Fetch logo image from the URL
       const response = await fetch((establishment.logo as Logo).url);
@@ -137,6 +133,10 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       );
 
       doc.end();
+      doc.on("end", () => {
+        const pdfData = Buffer.concat(buffers);
+        resolve(pdfData);
+      });
     } catch (error) {
       reject(`Error generating invoice: ${error.message}`);
     }
