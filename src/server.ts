@@ -26,9 +26,7 @@ const start = async () => {
 
   cron.schedule("*/5 * * * *", async () => {
     try {
-      console.log("Cron job started");
       await createDocumentsFromBolOrders();
-      console.log("Cron job completed successfully");
     } catch (error) {
       console.error("Error running cron job", error);
     }

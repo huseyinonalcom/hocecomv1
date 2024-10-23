@@ -27,7 +27,6 @@ const Products: CollectionConfig = {
       if (isSuperAdmin({ req })) {
         return true;
       } else {
-        console.log("req.user", req.user);
         return {
           company: {
             equals: req.user.company?.id ?? req.user.company,

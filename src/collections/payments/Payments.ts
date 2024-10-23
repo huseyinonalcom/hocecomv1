@@ -71,11 +71,10 @@ const Payments: CollectionConfig = {
             },
           });
 
-          console.log(paymentLink);
 
           res.status(200).send({ url: paymentLink.url });
         } catch (error) {
-          console.log(error);
+          console.error(error);
           res.status(500).send({ error: "An error occurred" });
         }
       },

@@ -19,13 +19,9 @@ export const emailPrefix: CollectionBeforeOperationHook = async ({ args, operati
         const company = req.query.company;
 
         if (req.body?.email) {
-          console.log("rest api request");
           req.body.email = `${req.body.email.split("@")[0]}+${company}@${req.body.email.split("@")[1]}`;
         } else if (req.body?.variables?.email) {
-          // Handling GraphQL requests (email in req.body.variables)
-          console.log("graphql request");
           req.body.variables.email = `${req.body.variables.email.split("@")[0]}+${company}@${req.body.variables.email.split("@")[1]}`;
-          console.log(req.body.variables.email);
         }
       }
     }
