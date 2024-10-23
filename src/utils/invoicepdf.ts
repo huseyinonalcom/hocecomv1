@@ -60,11 +60,11 @@ export async function generateInvoice({ document }: { document: Document }): Pro
         doc.text(item.description, 150, y);
         doc.text(item.value.toFixed(2), 300, y, { width: 40, align: "right" });
         doc.text(item.amount, 350, y, { width: 40, align: "right" });
-        doc.text(item.subTotalTax.toFixed(2), 400, y, {
+        doc.text(Number(item.subTotalTax).toFixed(2), 400, y, {
           width: 40,
           align: "right",
         });
-        doc.text(item.subTotal.toFixed(2), 450, y, {
+        doc.text(Number(item.subTotal).toFixed(2), 450, y, {
           width: 40,
           align: "right",
         });
@@ -88,44 +88,50 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       // Totals
       doc.fontSize(10).text("Total Tax:", 400, y + 20);
       doc.text(
-        document.documentProducts.reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotalTax, 0),
+        document.documentProducts.reduce((acc: number, dp: DocumentProduct) => acc + Number(dp.subTotalTax), 0),
         480,
         y + 20
       );
       doc.fontSize(10).text("Total Tax (6%):", 400, y + 35);
       doc.text(
-        (document.documentProducts as DocumentProduct[]).filter((dp) => dp.tax === 6).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotalTax, 0),
+        (document.documentProducts as DocumentProduct[])
+          .filter((dp) => dp.tax === 6)
+          .reduce((acc: number, dp: DocumentProduct) => acc + Number(dp.subTotalTax), 0),
         480,
         y + 35
       );
       doc.fontSize(10).text("Total Tax (12%):", 400, y + 50);
       doc.text(
-        (document.documentProducts as DocumentProduct[]).filter((dp) => dp.tax === 12).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotalTax, 0),
+        (document.documentProducts as DocumentProduct[])
+          .filter((dp) => dp.tax === 12)
+          .reduce((acc: number, dp: DocumentProduct) => acc + Number(dp.subTotalTax), 0),
         480,
         y + 50
       );
       doc.fontSize(10).text("Total Tax (21%):", 400, y + 65);
       doc.text(
-        (document.documentProducts as DocumentProduct[]).filter((dp) => dp.tax === 21).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotalTax, 0),
+        (document.documentProducts as DocumentProduct[])
+          .filter((dp) => dp.tax === 21)
+          .reduce((acc: number, dp: DocumentProduct) => acc + Number(dp.subTotalTax), 0),
         480,
         y + 65
       );
       doc.text("Total:", 400, y + 80);
       doc.text(
-        (document.documentProducts as DocumentProduct[]).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotal, 0),
+        (document.documentProducts as DocumentProduct[]).reduce((acc: number, dp: DocumentProduct) => acc + Number(dp.subTotal), 0),
         480,
         y + 80
       );
       doc.text("Already Paid:", 400, y + 95);
       doc.text(
-        (document.payments as Payment[]).filter((p) => p.isVerified && !p.isDeleted).reduce((acc: number, dp: Payment) => acc + dp.value, 0),
+        (document.payments as Payment[]).filter((p) => p.isVerified && !p.isDeleted).reduce((acc: number, dp: Payment) => acc + Number(dp.value), 0),
         480,
         y + 95
       );
       doc.text("Amount Due:", 400, y + 110);
       doc.text(
         (document.documentProducts as DocumentProduct[]).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotal, 0) -
-          (document.payments as Payment[]).filter((p) => p.isVerified && !p.isDeleted).reduce((acc: number, dp: Payment) => acc + dp.value, 0),
+          (document.payments as Payment[]).filter((p) => p.isVerified && !p.isDeleted).reduce((acc: number, dp: Payment) => acc + Number(dp.value), 0),
         480,
         y + 110
       );
