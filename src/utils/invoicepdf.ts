@@ -3,6 +3,38 @@ import { dateFormatBe } from "./formatters/dateformatters";
 import { addDaysToDate } from "./addtodate";
 import { Buffer } from "buffer";
 
+function generateTableRow(doc, y, name, description, price, amount, tax, subtotal, isHeader = false) {
+  doc
+    .fontSize(10)
+    .text(name, 50, y)
+    .text(description, 150, y)
+    .text(price, 280, y, { width: 90, align: "right" })
+    .text(amount, 370, y, { width: 90, align: "right" })
+    .text(tax, 0, y, { align: "right" })
+    .text(subtotal, 0, y, { align: "right" })
+    .stroke();
+}
+
+function generateInvoiceTable(doc, documentProducts, y) {
+  let i,
+    invoiceTableTop = y;
+  generateTableRow(doc, invoiceTableTop, "Name", "Description", "Price", "Amount", "Tax", "Subtotal", true);
+  for (i = 1; i <= documentProducts.length; i++) {
+    const item = documentProducts[i - 1];
+    const position = invoiceTableTop + (i + 1) * 30;
+    generateTableRow(
+      doc,
+      position,
+      item.name,
+      item.description,
+      item.value.toFixed(2),
+      item.amount,
+      Number(item.subTotalTax).toFixed(2),
+      Number(item.subTotal).toFixed(2)
+    );
+  }
+}
+
 export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
   console.log(document);
   const establishment = document.establishment as Establishment;
@@ -11,7 +43,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
   return new Promise(async (resolve, reject) => {
     try {
       const PDFDocument = require("pdfkit");
-      const doc = new PDFDocument();
+      const doc = new PDFDocument({ size: "A4" });
       const buffers: Uint8Array[] = [];
 
       doc.on("data", buffers.push.bind(buffers));
@@ -21,7 +53,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       const logoBuffer = await Buffer.from(await response.arrayBuffer());
 
       // Add logo to the document
-      doc.image(logoBuffer, 50, 45, { width: 100 });
+      doc.image(logoBuffer, 50, 45, { height: 50 });
 
       // Header
       doc.fontSize(20).text("INVOICE", 400, 50);
@@ -45,30 +77,10 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       doc.text((document.delAddress as Address).street + " " + (document.delAddress as Address).door, 300, 160);
       doc.text((document.delAddress as Address).zip + " " + (document.delAddress as Address).city + " " + (document.delAddress as Address).country, 300, 175);
 
-      // Table Headers
-      doc.fontSize(10).text("Name", 50, 220);
-      doc.text("Description", 150, 220);
-      doc.text("Price", 300, 220);
-      doc.text("Amount", 350, 220);
-      doc.text("Tax", 400, 220);
-      doc.text("Subtotal", 450, 220);
+      doc.table();
 
       let y = 240;
-      document.documentProducts.forEach((item: DocumentProduct) => {
-        doc.text(item.name, 50, y);
-        doc.text(item.description, 150, y);
-        doc.text(item.value.toFixed(2), 300, y, { width: 40, align: "right" });
-        doc.text(item.amount, 350, y, { width: 40, align: "right" });
-        doc.text(Number(item.subTotalTax).toFixed(2), 400, y, {
-          width: 40,
-          align: "right",
-        });
-        doc.text(Number(item.subTotal).toFixed(2), 450, y, {
-          width: 40,
-          align: "right",
-        });
-        y += 20;
-      });
+      generateInvoiceTable(doc, document.documentProducts as DocumentProduct[], y);
 
       // Payment History
       doc.text("Payment History:", 50, y + 20);
