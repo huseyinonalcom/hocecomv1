@@ -8,7 +8,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
   return new Promise(async (resolve, reject) => {
     try {
       const PDFDocument = require("pdfkit");
-      const blobStream = require("blob-stream.js");
+      const blobStream = require("blob-stream");
       const doc = new PDFDocument();
       var stream = doc.pipe(blobStream("application/pdf"));
 
