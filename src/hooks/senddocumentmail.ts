@@ -1,9 +1,15 @@
+import payload from "payload";
 import { generateInvoice } from "../utils/invoicepdf";
 import { sendMail } from "../utils/sendmail";
 
 const sendDocumentMail = async ({ operation, doc }) => {
   try {
     console.log(doc);
+    doc.establishment = await payload.findByID({
+      collection: "establishments",
+      id: doc.establishment,
+      depth: 2,
+    });
     let pdf = null;
     try {
       pdf = await generateInvoice({
