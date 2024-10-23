@@ -10,7 +10,9 @@ const sendDocumentMail = async ({ operation, doc }) => {
         establishment: doc.establishment,
       });
     } catch (error) {
+      console.error(error);
       pdf = null;
+      throw new Error(error);
     }
     // doc doesn't have the populated data yet
     // so we need to populate it
@@ -24,6 +26,7 @@ const sendDocumentMail = async ({ operation, doc }) => {
       },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${doc.company.name}</p>`,
     });
   } catch (error) {
+    console.error(error);
   }
 };
 
