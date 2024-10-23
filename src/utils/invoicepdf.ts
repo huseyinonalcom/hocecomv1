@@ -4,6 +4,7 @@ import { addDaysToDate } from "./addtodate";
 import { Buffer } from "buffer";
 
 export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
+  console.log(document);
   const establishment = document.establishment as Establishment;
   const establishmentAddress = establishment.address as Address;
 
