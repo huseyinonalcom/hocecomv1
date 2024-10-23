@@ -10,6 +10,7 @@ const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) =
       collection: "establishments",
       id: doc.establishment.id,
       depth: 2,
+      overrideAccess: true,
     });
     let pdf = null;
     try {
