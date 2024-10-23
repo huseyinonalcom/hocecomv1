@@ -14,7 +14,6 @@ const sendDocumentMail = async ({ operation, doc }) => {
     try {
       pdf = await generateInvoice({
         document: doc,
-        establishment: doc.establishment,
       });
     } catch (error) {
       console.error(error);

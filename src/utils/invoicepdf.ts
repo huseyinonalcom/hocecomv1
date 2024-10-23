@@ -1,22 +1,9 @@
-import {
-  Address,
-  Document,
-  DocumentProduct,
-  Establishment,
-  Logo,
-  Payment,
-  User,
-} from "payload/generated-types";
+import { Address, Document, DocumentProduct, Establishment, Logo, Payment, User } from "payload/generated-types";
 import { dateFormatBe } from "./formatters/dateformatters";
 import { addDaysToDate } from "./addtodate";
 
-export async function generateInvoice({
-  document,
-  establishment,
-}: {
-  document: Document;
-  establishment: Establishment;
-}): Promise<Buffer> {
+export async function generateInvoice({ document }: { document: Document }): Promise<Buffer> {
+  const establishment = document.establishment as Establishment;
   return new Promise(async (resolve, reject) => {
     try {
       const PDFDocument = require("pdfkit");
@@ -45,54 +32,18 @@ export async function generateInvoice({
       doc.text("Date:", 400, 95);
       doc.text(dateFormatBe(document.date), 480, 95);
       doc.text("Valid Until:", 400, 110);
-      doc.text(
-        dateFormatBe(addDaysToDate(document.date, 15).toISOString()),
-        480,
-        110
-      );
+      doc.text(dateFormatBe(addDaysToDate(document.date, 15).toISOString()), 480, 110);
 
       // Establishment Details
       doc.text(establishment.name, 50, 130);
-      doc.text(
-        establishment.address[0].street + " " + establishment.address[0].door,
-        50,
-        145
-      );
-      doc.text(
-        establishment.address[0].zip +
-          " " +
-          establishment.address[0].city +
-          " " +
-          establishment.address[0].country,
-        50,
-        160
-      );
+      doc.text(establishment.address[0].street + " " + establishment.address[0].door, 50, 145);
+      doc.text(establishment.address[0].zip + " " + establishment.address[0].city + " " + establishment.address[0].country, 50, 160);
 
       // Customer Details
       doc.text("Invoicing:", 300, 130);
-      doc.text(
-        `${(document.customer as User).firstName} ${
-          (document.customer as User).lastName
-        }`,
-        300,
-        145
-      );
-      doc.text(
-        (document.delAddress as Address).street +
-          " " +
-          (document.delAddress as Address).door,
-        300,
-        160
-      );
-      doc.text(
-        (document.delAddress as Address).zip +
-          " " +
-          (document.delAddress as Address).city +
-          " " +
-          (document.delAddress as Address).country,
-        300,
-        175
-      );
+      doc.text(`${(document.customer as User).firstName} ${(document.customer as User).lastName}`, 300, 145);
+      doc.text((document.delAddress as Address).street + " " + (document.delAddress as Address).door, 300, 160);
+      doc.text((document.delAddress as Address).zip + " " + (document.delAddress as Address).city + " " + (document.delAddress as Address).country, 300, 175);
 
       // Table Headers
       doc.fontSize(10).text("Name", 50, 220);
@@ -136,72 +87,44 @@ export async function generateInvoice({
       // Totals
       doc.fontSize(10).text("Total Tax:", 400, y + 20);
       doc.text(
-        document.documentProducts.reduce(
-          (acc: number, dp: DocumentProduct) => acc + dp.subTotalTax,
-          0
-        ),
+        document.documentProducts.reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotalTax, 0),
         480,
         y + 20
       );
       doc.fontSize(10).text("Total Tax (6%):", 400, y + 35);
       doc.text(
-        (document.documentProducts as DocumentProduct[])
-          .filter((dp) => dp.tax === 6)
-          .reduce(
-            (acc: number, dp: DocumentProduct) => acc + dp.subTotalTax,
-            0
-          ),
+        (document.documentProducts as DocumentProduct[]).filter((dp) => dp.tax === 6).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotalTax, 0),
         480,
         y + 35
       );
       doc.fontSize(10).text("Total Tax (12%):", 400, y + 50);
       doc.text(
-        (document.documentProducts as DocumentProduct[])
-          .filter((dp) => dp.tax === 12)
-          .reduce(
-            (acc: number, dp: DocumentProduct) => acc + dp.subTotalTax,
-            0
-          ),
+        (document.documentProducts as DocumentProduct[]).filter((dp) => dp.tax === 12).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotalTax, 0),
         480,
         y + 50
       );
       doc.fontSize(10).text("Total Tax (21%):", 400, y + 65);
       doc.text(
-        (document.documentProducts as DocumentProduct[])
-          .filter((dp) => dp.tax === 21)
-          .reduce(
-            (acc: number, dp: DocumentProduct) => acc + dp.subTotalTax,
-            0
-          ),
+        (document.documentProducts as DocumentProduct[]).filter((dp) => dp.tax === 21).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotalTax, 0),
         480,
         y + 65
       );
       doc.text("Total:", 400, y + 80);
       doc.text(
-        (document.documentProducts as DocumentProduct[]).reduce(
-          (acc: number, dp: DocumentProduct) => acc + dp.subTotal,
-          0
-        ),
+        (document.documentProducts as DocumentProduct[]).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotal, 0),
         480,
         y + 80
       );
       doc.text("Already Paid:", 400, y + 95);
       doc.text(
-        (document.payments as Payment[])
-          .filter((p) => p.isVerified && !p.isDeleted)
-          .reduce((acc: number, dp: Payment) => acc + dp.value, 0),
+        (document.payments as Payment[]).filter((p) => p.isVerified && !p.isDeleted).reduce((acc: number, dp: Payment) => acc + dp.value, 0),
         480,
         y + 95
       );
       doc.text("Amount Due:", 400, y + 110);
       doc.text(
-        (document.documentProducts as DocumentProduct[]).reduce(
-          (acc: number, dp: DocumentProduct) => acc + dp.subTotal,
-          0
-        ) -
-          (document.payments as Payment[])
-            .filter((p) => p.isVerified && !p.isDeleted)
-            .reduce((acc: number, dp: Payment) => acc + dp.value, 0),
+        (document.documentProducts as DocumentProduct[]).reduce((acc: number, dp: DocumentProduct) => acc + dp.subTotal, 0) -
+          (document.payments as Payment[]).filter((p) => p.isVerified && !p.isDeleted).reduce((acc: number, dp: Payment) => acc + dp.value, 0),
         480,
         y + 110
       );
