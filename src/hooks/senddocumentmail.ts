@@ -6,6 +6,7 @@ import { CollectionAfterChangeHook } from "payload/types";
 const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) => {
   try {
     console.log("sendDocumentMail hook");
+    console.log(doc);
     doc.establishment = await payload.findByID({
       collection: "establishments",
       id: doc.establishment.id,
