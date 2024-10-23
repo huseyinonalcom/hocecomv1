@@ -3,6 +3,7 @@ import { sendMail } from "../utils/sendmail";
 
 const sendDocumentMail = async ({ operation, doc }) => {
   try {
+    console.log(doc);
     let pdf = null;
     try {
       pdf = await generateInvoice({
