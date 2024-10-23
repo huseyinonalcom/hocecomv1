@@ -4,22 +4,32 @@ import { addDaysToDate } from "./addtodate";
 import { Buffer } from "buffer";
 
 function generateTableRow(doc, y, name, description, price, amount, tax, subtotal, isHeader = false) {
-  doc
-    .fontSize(10)
-    .text(name, 50, y)
-    .text(description, 150, y)
-    .text(price, 280, y, { width: 90, align: "right" })
-    .text(amount, 370, y, { width: 90, align: "right" })
-    .text(tax, 0, y, { align: "right" })
-    .text(subtotal, 0, y, { align: "right" })
-    .stroke();
+  if (isHeader) {
+    doc
+      .fontSize(10)
+      .text(name, 50, y)
+      .text(description, 150, y)
+      .text(price, 280, y, { width: 90, align: "right" })
+      .text(amount, 370, y, { width: 90, align: "right" })
+      .text(tax, 0, y, { align: "right" })
+      .text(subtotal, 0, y, { align: "right" })
+      .stroke();
+  } else {
+    doc
+      .fontSize(10)
+      .text(name, 50, y)
+      .text(description, 150, y)
+      .text(price, 280, y, { width: 90, align: "right" })
+      .text(amount, 370, y, { width: 90, align: "right" })
+      .text(tax, 0, y, { align: "right" })
+      .text(subtotal, 0, y, { align: "right" });
+  }
 }
 
 function generateInvoiceTable(doc, documentProducts, y) {
-  let i,
-    invoiceTableTop = y;
+  let invoiceTableTop = y;
   generateTableRow(doc, invoiceTableTop, "Name", "Description", "Price", "Amount", "Tax", "Subtotal", true);
-  for (i = 1; i <= documentProducts.length; i++) {
+  for (let i = 1; i <= documentProducts.length; i++) {
     const item = documentProducts[i - 1];
     const position = invoiceTableTop + (i + 1) * 30;
     generateTableRow(
