@@ -5,21 +5,19 @@ import { CollectionAfterChangeHook } from "payload/types";
 
 const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) => {
   try {
-    console.log("sendDocumentMail hook");
     doc = await payload.findByID({
       collection: "documents",
       id: doc.id,
       depth: 3,
       overrideAccess: true,
     });
-    console.log(doc);
     let pdf = null;
     try {
       pdf = await generateInvoice({
         document: doc,
       });
     } catch (error) {
-      console.error(error);
+      console.error("error on pdf generation: ", error);
       pdf = null;
       throw new Error(error);
     }

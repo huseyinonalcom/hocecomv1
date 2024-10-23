@@ -166,6 +166,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
         });
       });
     } catch (error) {
+      console.error("error on pdf generation (invoice): ", error);
       reject(`Error generating invoice: ${error.message}`);
     }
   });
