@@ -86,8 +86,6 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       doc.text((document.delAddress as Address).street + " " + (document.delAddress as Address).door, 300, 160);
       doc.text((document.delAddress as Address).zip + " " + (document.delAddress as Address).city + " " + (document.delAddress as Address).country, 300, 175);
 
-      doc.table();
-
       let y = 240;
       generateInvoiceTable(doc, document.documentProducts as DocumentProduct[], y);
 
