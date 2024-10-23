@@ -45,6 +45,21 @@ function generateInvoiceTable(doc, documentProducts, y) {
   }
 }
 
+const bankDetails = ({ doc, y, establishment }) => {
+  let strings = [];
+  if (establishment.bankAccount1) {
+    strings.push(establishment.bankAccount1);
+  }
+  if (establishment.bankAccount2 != null) {
+    strings.push(establishment.bankAccount2);
+  }
+  if (establishment.bankAccount3 != null) {
+    strings.push(establishment.bankAccount3);
+  }
+  strings.map((string, index) => {
+    doc.text(string, 50, y + 175 + index * 15);
+  });
+};
 export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
   const establishment = document.establishment as Establishment;
   const establishmentAddress = establishment.address as Address;
@@ -62,23 +77,31 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       const logoBuffer = await Buffer.from(await response.arrayBuffer());
 
       // Add logo to the document
-      doc.image(logoBuffer, 50, 45, { height: 50 });
+      doc.image(logoBuffer, 20, 45, { height: 50 });
 
       // Header
-      doc.fontSize(20).text("INVOICE", 400, 50);
+      doc.fontSize(20).text("INVOICE", 450, 50);
 
       // Invoice Details
-      doc.fontSize(10).text("Invoice #:", 400, 80);
+      doc.fontSize(10).text("Invoice:", 400, 80);
       doc.text(`${document.prefix + document.number}`, 480, 80);
       doc.text("Date:", 400, 95);
       doc.text(dateFormatBe(document.date), 480, 95);
       doc.text("Valid Until:", 400, 110);
       doc.text(dateFormatBe(addDaysToDate(document.date, 15).toISOString()), 480, 110);
+      doc.text("Delivery Date:", 400, 125);
+      doc.text(dateFormatBe(addDaysToDate(document.date, 15).toISOString()), 480, 125);
 
       // Establishment Details
       doc.text(establishment.name, 50, 130);
-      doc.text(establishmentAddress.street + " " + establishmentAddress.door, 50, 145);
-      doc.text(establishmentAddress.zip + " " + establishmentAddress.city + " " + establishmentAddress.country, 50, 160);
+      doc.text(establishment.taxID, 50, 145);
+      bankDetails({
+        doc,
+        y: 130,
+        establishment,
+      });
+      doc.text(establishmentAddress.street + " " + establishmentAddress.door, 200, 145);
+      doc.text(establishmentAddress.zip + " " + establishmentAddress.city + " " + establishmentAddress.country, 200, 160);
 
       // Customer Details
       doc.text("Invoicing:", 300, 130);
