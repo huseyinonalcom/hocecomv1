@@ -6,13 +6,13 @@ import { CollectionAfterChangeHook } from "payload/types";
 const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) => {
   try {
     console.log("sendDocumentMail hook");
-    console.log(doc);
-    doc.establishment = await payload.findByID({
-      collection: "establishments",
-      id: doc.establishment.id,
-      depth: 2,
+    doc = await payload.findByID({
+      collection: "documents",
+      id: doc.id,
+      depth: 3,
       overrideAccess: true,
     });
+    console.log(doc);
     let pdf = null;
     try {
       pdf = await generateInvoice({
