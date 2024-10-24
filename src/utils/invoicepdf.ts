@@ -45,7 +45,7 @@ function generateInvoiceTable(doc, documentProducts, y) {
   }
 }
 
-const bankDetails = ({ doc, y, establishment }) => {
+const bankDetails = ({ doc, x, y, establishment }) => {
   let strings = [];
   if (establishment.bankAccount1) {
     strings.push(establishment.bankAccount1);
@@ -57,9 +57,38 @@ const bankDetails = ({ doc, y, establishment }) => {
     strings.push(establishment.bankAccount3);
   }
   strings.map((string, index) => {
-    doc.text(string, 50, y + 175 + index * 15);
+    doc.text(string, x, y + index * 15);
   });
 };
+
+const customerDetails = ({ doc, x, y, document }) => {
+  let strings = [];
+  const customer = document.customer as User;
+  const docAddress = document.delAddress as Address;
+
+  if (customer?.customerCompany) {
+    strings.push(customer.customerCompany);
+  }
+
+  if (customer?.customerTaxNumber) {
+    strings.push(customer.customerTaxNumber);
+  }
+
+  if (customer?.phone) {
+    strings.push(customer.phone);
+  }
+
+  strings.push(`${docAddress.street} ${docAddress.door}`);
+  if (docAddress.floor) {
+    strings.push(`${"floor"}:${docAddress.floor}`);
+  }
+  strings.push(`${docAddress.zip} ${docAddress.city} ${docAddress.country}`);
+
+  strings.map((string, index) => {
+    doc.text(string, x, y + index * 15);
+  });
+};
+
 export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
   const establishment = document.establishment as Establishment;
   const establishmentAddress = establishment.address as Address;
@@ -90,22 +119,36 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       doc.text("Valid Until:", 400, 110);
       doc.text(dateFormatBe(addDaysToDate(document.date, 15).toISOString()), 480, 110);
       doc.text("Delivery Date:", 400, 125);
-      doc.text(dateFormatBe(addDaysToDate(document.date, 15).toISOString()), 480, 125);
+      if (document.deliveryDate) {
+        doc.text(dateFormatBe(document.deliveryDate), 480, 125);
+      }
 
       // Establishment Details
+      // Column 1
       doc.text(establishment.name, 50, 130);
       doc.text(establishment.taxID, 50, 145);
       bankDetails({
         doc,
-        y: 130,
+        x: 50,
+        y: 160,
         establishment,
       });
-      doc.text(establishmentAddress.street + " " + establishmentAddress.door, 200, 145);
-      doc.text(establishmentAddress.zip + " " + establishmentAddress.city + " " + establishmentAddress.country, 200, 160);
+
+      // Column 2
+      doc.text(establishmentAddress.street + " " + establishmentAddress.door, 200, 130);
+      doc.text(establishmentAddress.zip + " " + establishmentAddress.city, 200, 145);
+      doc.text(establishment.phone, 200, 160);
+      doc.text(establishment.phone2, 200, 175);
 
       // Customer Details
-      doc.text("Invoicing:", 300, 130);
+      doc.text("Order: " + document.references, 300, 130);
       doc.text(`${(document.customer as User).firstName} ${(document.customer as User).lastName}`, 300, 145);
+      customerDetails({
+        doc,
+        x: 300,
+        y: 160,
+        document,
+      });
       doc.text((document.delAddress as Address).street + " " + (document.delAddress as Address).door, 300, 160);
       doc.text((document.delAddress as Address).zip + " " + (document.delAddress as Address).city + " " + (document.delAddress as Address).country, 300, 175);
 
