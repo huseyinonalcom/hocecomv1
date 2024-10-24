@@ -16,20 +16,20 @@ function generateTableRow(doc, y, name, description, price, amount, tax, subtota
       .fillColor("white")
       .text(name, columns[0], y)
       .text(description, columns[1], y)
-      .text(price, columns[3], y, { align: "right" })
-      .text(amount, columns[5], y, { align: "right" })
-      .text(tax, columns[6], y, { align: "right" })
-      .text(subtotal, columns[7], y, { align: "right" });
+      .text(price, columns[3], y)
+      .text(amount, columns[5], y)
+      .text(tax, columns[6], y)
+      .text(subtotal, columns[7], y);
   } else {
     doc
       .fontSize(10)
       .fillColor("black")
       .text(name, columns[0], y)
       .text(description, columns[1], y)
-      .text(price, columns[3], y, { align: "right" })
-      .text(amount, columns[5], y, { align: "right" })
-      .text(tax, columns[6], y, { align: "right" })
-      .text(subtotal, columns[7], y, { align: "right" });
+      .text(price, columns[3], y)
+      .text(amount, columns[5], y)
+      .text(tax, columns[6], y)
+      .text(subtotal, columns[7], y);
   }
 }
 
