@@ -7,7 +7,8 @@ function generateTableRow(doc, y, name, description, price, amount, tax, subtota
   if (isHeader) {
     doc.lineWidth(25);
     // line cap settings
-    doc.lineCap("butt").moveTo(30, y).lineTo(550, y).stroke();
+    const bgY = y + 5;
+    doc.lineCap("butt").moveTo(30, bgY).lineTo(600, bgY).stroke();
     doc
       .fontSize(10)
       .fillColor("white")
@@ -15,8 +16,8 @@ function generateTableRow(doc, y, name, description, price, amount, tax, subtota
       .text(description, 130, y)
       .text(price, 230, y, { width: 90, align: "right" })
       .text(amount, 310, y, { width: 90, align: "right" })
-      .text(tax, 370, y, { align: "right" })
-      .text(subtotal, 430, y, { align: "right" })
+      .text(tax, 340, y, { align: "right" })
+      .text(subtotal, 370, y, { align: "right" })
       .stroke();
   } else {
     doc
@@ -25,8 +26,8 @@ function generateTableRow(doc, y, name, description, price, amount, tax, subtota
       .text(description, 130, y)
       .text(price, 230, y, { width: 90, align: "right" })
       .text(amount, 310, y, { width: 90, align: "right" })
-      .text(tax, 370, y, { align: "right" })
-      .text(subtotal, 430, y, { align: "right" });
+      .text(tax, 340, y, { align: "right" })
+      .text(subtotal, 370, y, { align: "right" });
   }
 }
 
@@ -116,7 +117,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       doc.image(logoBuffer, pageLeft, pageTop, { height: 50 });
 
       // Header
-      doc.fontSize(20).text("INVOICE", 550, pageTop);
+      doc.fontSize(20).text("INVOICE", 500, pageTop);
 
       // Invoice Details
       doc.fontSize(10).text("Invoice:", 400, 80);
