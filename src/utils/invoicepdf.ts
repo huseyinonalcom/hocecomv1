@@ -102,6 +102,9 @@ const pageLeft = 20;
 const pageTop = 40;
 
 export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
+
+  console.log("document: ", document);
+
   const establishment = document.establishment as Establishment;
   const establishmentAddress = establishment.address as Address;
 
