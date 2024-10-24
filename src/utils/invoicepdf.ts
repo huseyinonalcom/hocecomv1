@@ -5,27 +5,28 @@ import { Buffer } from "buffer";
 
 function generateTableRow(doc, y, name, description, price, amount, tax, subtotal, isHeader = false) {
   if (isHeader) {
-    doc
-      .fontSize(10)
-      .text(name, 40, y)
-      .text(description, 150, y)
-      .text(price, 250, y, { width: 90, align: "right" })
-      .text(amount, 330, y, { width: 90, align: "right" })
-      .text(tax, 400, y, { align: "right" })
-      .text(subtotal, 450, y, { align: "right" })
-      .stroke();
     doc.lineWidth(25);
     // line cap settings
-    doc.lineCap("butt").moveTo(50, y).lineTo(550, y).stroke();
+    doc.lineCap("butt").moveTo(30, y).lineTo(550, y).stroke();
+    doc
+      .fontSize(10)
+      .fillColor("white")
+      .text(name, 40, y)
+      .text(description, 130, y)
+      .text(price, 230, y, { width: 90, align: "right" })
+      .text(amount, 310, y, { width: 90, align: "right" })
+      .text(tax, 370, y, { align: "right" })
+      .text(subtotal, 430, y, { align: "right" })
+      .stroke();
   } else {
     doc
       .fontSize(10)
       .text(name, 40, y)
-      .text(description, 150, y)
-      .text(price, 250, y, { width: 90, align: "right" })
-      .text(amount, 330, y, { width: 90, align: "right" })
-      .text(tax, 400, y, { align: "right" })
-      .text(subtotal, 450, y, { align: "right" });
+      .text(description, 130, y)
+      .text(price, 230, y, { width: 90, align: "right" })
+      .text(amount, 310, y, { width: 90, align: "right" })
+      .text(tax, 370, y, { align: "right" })
+      .text(subtotal, 430, y, { align: "right" });
   }
 }
 
