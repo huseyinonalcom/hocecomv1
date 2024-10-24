@@ -3,6 +3,8 @@ import { dateFormatBe } from "./formatters/dateformatters";
 import { addDaysToDate } from "./addtodate";
 import { Buffer } from "buffer";
 
+const columns = [70, 120, 170, 220, 270, 320, 370, 420, 470, 520];
+
 function generateTableRow(doc, y, name, description, price, amount, tax, subtotal, isHeader = false) {
   if (isHeader) {
     doc.lineWidth(25);
@@ -12,22 +14,22 @@ function generateTableRow(doc, y, name, description, price, amount, tax, subtota
     doc
       .fontSize(10)
       .fillColor("white")
-      .text(name, 40, y)
-      .text(description, 130, y)
-      .text(price, 230, y, { width: 90, align: "right" })
-      .text(amount, 310, y, { width: 90, align: "right" })
-      .text(tax, 340, y, { align: "right" })
-      .text(subtotal, 370, y, { align: "right" });
+      .text(name, columns[0], y)
+      .text(description, columns[1], y)
+      .text(price, columns[3], y, { align: "right" })
+      .text(amount, columns[5], y, { align: "right" })
+      .text(tax, columns[6], y, { align: "right" })
+      .text(subtotal, columns[7], y, { align: "right" });
   } else {
     doc
       .fontSize(10)
       .fillColor("black")
-      .text(name, 40, y)
-      .text(description, 130, y)
-      .text(price, 230, y, { width: 90, align: "right" })
-      .text(amount, 310, y, { width: 90, align: "right" })
-      .text(tax, 340, y, { width: 90, align: "right" })
-      .text(subtotal, 370, y, { width: 90, align: "right" });
+      .text(name, columns[0], y)
+      .text(description, columns[1], y)
+      .text(price, columns[3], y, { align: "right" })
+      .text(amount, columns[5], y, { align: "right" })
+      .text(tax, columns[6], y, { align: "right" })
+      .text(subtotal, columns[7], y, { align: "right" });
   }
 }
 
