@@ -17,17 +17,17 @@ function generateTableRow(doc, y, name, description, price, amount, tax, subtota
       .text(price, 230, y, { width: 90, align: "right" })
       .text(amount, 310, y, { width: 90, align: "right" })
       .text(tax, 340, y, { align: "right" })
-      .text(subtotal, 370, y, { align: "right" })
-      .stroke();
+      .text(subtotal, 370, y, { align: "right" });
   } else {
     doc
       .fontSize(10)
+      .fillColor("black")
       .text(name, 40, y)
       .text(description, 130, y)
       .text(price, 230, y, { width: 90, align: "right" })
       .text(amount, 310, y, { width: 90, align: "right" })
-      .text(tax, 340, y, { align: "right" })
-      .text(subtotal, 370, y, { align: "right" });
+      .text(tax, 340, y, { width: 90, align: "right" })
+      .text(subtotal, 370, y, { width: 90, align: "right" });
   }
 }
 
