@@ -95,6 +95,7 @@ const customerDetails = ({ doc, x, y, document }) => {
   strings.map((string, index) => {
     doc.text(string, x, y + index * 15);
   });
+  return y + strings.length * 15;
 };
 
 const pageLeft = 20;
@@ -134,39 +135,46 @@ export async function generateInvoice({ document }: { document: Document }): Pro
         doc.text(dateFormatBe(document.deliveryDate), 480, 125);
       }
 
+      let y = 140;
+
       // Establishment Details
       // Column 1
-      doc.text(establishment.name, 50, 130);
-      doc.text(establishment.taxID, 50, 145);
+      doc.text(establishment.name, 50, y);
+      doc.text(establishment.taxID, 50, y + 15);
       bankDetails({
         doc,
         x: 50,
-        y: 160,
+        y: y + 30,
         establishment,
       });
 
       // Column 2
-      doc.text(establishmentAddress.street + " " + establishmentAddress.door, 200, 130);
-      doc.text(establishmentAddress.zip + " " + establishmentAddress.city, 200, 145);
+      doc.text(establishmentAddress.street + " " + establishmentAddress.door, 200, y);
+      doc.text(establishmentAddress.zip + " " + establishmentAddress.city, 200, y + 15);
       doc.text(establishment.phone, 200, 160);
       doc.text(establishment.phone2, 200, 175);
 
       // Customer Details
-      doc.text("Order: " + document.references, 400, 130);
-      doc.text(`${(document.customer as User).firstName} ${(document.customer as User).lastName}`, 400, 145);
-      customerDetails({
+      doc.text("Order: " + document.references, 400, y);
+      doc.text(`${(document.customer as User).firstName} ${(document.customer as User).lastName}`, 400, y + 15);
+      y = customerDetails({
         doc,
         x: 400,
-        y: 160,
+        y: y + 30,
         document,
       });
-      doc.text((document.delAddress as Address).street + " " + (document.delAddress as Address).door, 400, 160);
-      doc.text((document.delAddress as Address).zip + " " + (document.delAddress as Address).city + " " + (document.delAddress as Address).country, 400, 175);
+
+      doc.text((document.delAddress as Address).street + " " + (document.delAddress as Address).door, 400, y + 15);
+      doc.text(
+        (document.delAddress as Address).zip + " " + (document.delAddress as Address).city + " " + (document.delAddress as Address).country,
+        400,
+        y + 30
+      );
       if ((document.delAddress as Address).floor) {
-        doc.text("Floor: " + (document.delAddress as Address).floor, 400, 190);
+        doc.text("Floor: " + (document.delAddress as Address).floor, 400, y + 45);
       }
 
-      let y = 240;
+      y += 60;
       y = generateInvoiceTable(doc, document.documentProducts as DocumentProduct[], y);
 
       // Payment History
