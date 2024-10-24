@@ -319,6 +319,10 @@ export async function generateInvoice({ document }: { document: Document }): Pro
 
       y = generateInvoiceTable(doc, invoiceDoc.documentProducts, y);
 
+      if (y < 500) {
+        y = 500;
+      }
+
       taxTable({
         doc: doc,
         x: 30,
