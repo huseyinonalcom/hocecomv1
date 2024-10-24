@@ -31,7 +31,7 @@ function generateInvoiceTable(doc, documentProducts, y) {
   generateTableRow(doc, invoiceTableTop, "Name", "Description", "Price", "Amount", "Tax", "Subtotal", true);
   for (let i = 1; i <= documentProducts.length; i++) {
     const item = documentProducts[i - 1];
-    const position = invoiceTableTop + (i + 1) * 30;
+    const position = invoiceTableTop + i * 20;
     generateTableRow(
       doc,
       position,
@@ -89,6 +89,9 @@ const customerDetails = ({ doc, x, y, document }) => {
   });
 };
 
+const pageLeft = 20;
+const pageTop = 40;
+
 export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
   const establishment = document.establishment as Establishment;
   const establishmentAddress = establishment.address as Address;
@@ -106,14 +109,14 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       const logoBuffer = await Buffer.from(await response.arrayBuffer());
 
       // Add logo to the document
-      doc.image(logoBuffer, 20, 45, { height: 50 });
+      doc.image(logoBuffer, pageLeft, pageTop, { height: 50 });
 
       // Header
-      doc.fontSize(20).text("INVOICE", 450, 50);
+      doc.fontSize(20).text("INVOICE", 550, pageTop);
 
       // Invoice Details
       doc.fontSize(10).text("Invoice:", 400, 80);
-      doc.text(`${document.prefix + document.number}`, 480, 80);
+      doc.text(`${(document.prefix ?? "") + document.number}`, 480, 80);
       doc.text("Date:", 400, 95);
       doc.text(dateFormatBe(document.date), 480, 95);
       doc.text("Valid Until:", 400, 110);
@@ -141,16 +144,19 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       doc.text(establishment.phone2, 200, 175);
 
       // Customer Details
-      doc.text("Order: " + document.references, 300, 130);
-      doc.text(`${(document.customer as User).firstName} ${(document.customer as User).lastName}`, 300, 145);
+      doc.text("Order: " + document.references, 400, 130);
+      doc.text(`${(document.customer as User).firstName} ${(document.customer as User).lastName}`, 400, 145);
       customerDetails({
         doc,
-        x: 300,
+        x: 400,
         y: 160,
         document,
       });
-      doc.text((document.delAddress as Address).street + " " + (document.delAddress as Address).door, 300, 160);
-      doc.text((document.delAddress as Address).zip + " " + (document.delAddress as Address).city + " " + (document.delAddress as Address).country, 300, 175);
+      doc.text((document.delAddress as Address).street + " " + (document.delAddress as Address).door, 400, 160);
+      doc.text((document.delAddress as Address).zip + " " + (document.delAddress as Address).city + " " + (document.delAddress as Address).country, 400, 175);
+      if ((document.delAddress as Address).floor) {
+        doc.text("Floor: " + (document.delAddress as Address).floor, 400, 190);
+      }
 
       let y = 240;
       generateInvoiceTable(doc, document.documentProducts as DocumentProduct[], y);
