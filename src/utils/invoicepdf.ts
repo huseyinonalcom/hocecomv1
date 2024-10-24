@@ -50,6 +50,7 @@ function generateInvoiceTable(doc, documentProducts, y) {
       Number(item.subTotal).toFixed(2)
     );
   }
+  return invoiceTableTop + (documentProducts.length + 1) * 20;
 }
 
 const bankDetails = ({ doc, x, y, establishment }) => {
@@ -166,7 +167,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       }
 
       let y = 240;
-      generateInvoiceTable(doc, document.documentProducts as DocumentProduct[], y);
+      y = generateInvoiceTable(doc, document.documentProducts as DocumentProduct[], y);
 
       // Payment History
       doc.text("Payment History:", 50, y + 20);
