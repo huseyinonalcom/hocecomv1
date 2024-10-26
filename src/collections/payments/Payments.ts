@@ -2,7 +2,7 @@ import { CollectionConfig } from "payload/types";
 import isSuperAdmin from "../users/access/superAdminCheck";
 import { setCompanyHook } from "../hooks/setCompany";
 import payload from "payload";
-import { Company } from "payload/generated-types";
+import { Company, DocumentProduct } from "payload/generated-types";
 
 const Payments: CollectionConfig = {
   slug: "payments",
@@ -42,8 +42,10 @@ const Payments: CollectionConfig = {
 
           let unitAmount = 0;
 
-          for (let i = 0; i < document.documentProducts.length; i++) {
-            unitAmount += parseFloat(document.documentProducts[i].subTotal);
+          const documentProducts = document.documentProducts as DocumentProduct[];
+
+          for (let i = 0; i < documentProducts.length; i++) {
+            unitAmount += parseFloat(documentProducts.at(i).subTotal.toString());
           }
 
           unitAmount = unitAmount * 100;
@@ -70,7 +72,6 @@ const Payments: CollectionConfig = {
               },
             },
           });
-
 
           res.status(200).send({ url: paymentLink.url });
         } catch (error) {

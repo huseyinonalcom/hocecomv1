@@ -30,7 +30,7 @@
     "node-cron": "^3.0.3",
     "node-polyfill-webpack-plugin": "^3.0.0",
     "nodemailer": "^6.9.15",
-    "payload": "^2.30.0",
+    "payload": "^2.30.3",
     "pdfkit": "^0.15.0",
     "stripe": "^16.12.0"
   },

@@ -4,105 +4,13 @@ import { addDaysToDate } from "./addtodate";
 import { Buffer } from "buffer";
 import { formatCurrency } from "./formatters/formatcurrency";
 
-const columns = [70, 120, 170, 220, 270, 320, 370, 420, 470, 520];
-
-function generateTableRow(doc, y, name, description, price, amount, tax, subtotal, isHeader = false) {
-  if (isHeader) {
-    doc.lineWidth(25);
-    // line cap settings
-    const bgY = y + 5;
-    doc.lineCap("butt").moveTo(30, bgY).lineTo(600, bgY).stroke();
-    doc
-      .fontSize(10)
-      .fillColor("white")
-      .text(name, columns[0], y)
-      .text(description, columns[1], y)
-      .text(price, columns[3], y)
-      .text(amount, columns[5], y)
-      .text(tax, columns[6], y)
-      .text(subtotal, columns[7], y);
-  } else {
-    doc
-      .fontSize(10)
-      .fillColor("black")
-      .text(name, columns[0], y)
-      .text(description, columns[1], y)
-      .text(price, columns[3], y)
-      .text(amount, columns[5], y)
-      .text(tax, columns[6], y)
-      .text(subtotal, columns[7], y);
-  }
-}
-
-function generateInvoiceTable(doc, documentProducts, y) {
-  let invoiceTableTop = y;
-  generateTableRow(doc, invoiceTableTop, "Name", "Description", "Price", "Amount", "Tax", "Subtotal", true);
-  for (let i = 1; i <= documentProducts.length; i++) {
-    const item = documentProducts[i - 1];
-    const position = invoiceTableTop + i * 20;
-    generateTableRow(
-      doc,
-      position,
-      item.name,
-      item.description,
-      item.value.toFixed(2),
-      item.amount,
-      Number(item.subTotalTax).toFixed(2),
-      Number(item.subTotal).toFixed(2)
-    );
-  }
-  return invoiceTableTop + (documentProducts.length + 1) * 20;
-}
-
-const bankDetails = ({ doc, x, y, establishment }) => {
-  let strings = [];
-  if (establishment.bankAccount1) {
-    strings.push(establishment.bankAccount1);
-  }
-  if (establishment.bankAccount2 != null) {
-    strings.push(establishment.bankAccount2);
-  }
-  if (establishment.bankAccount3 != null) {
-    strings.push(establishment.bankAccount3);
-  }
-  strings.map((string, index) => {
-    doc.text(string, x, y + index * 15);
-  });
-};
-
-const customerDetails = ({ doc, x, y, document }) => {
-  let strings = [];
-  const customer = document.customer as User;
-  const docAddress = document.delAddress as Address;
-
-  if (customer?.customerCompany) {
-    strings.push(customer.customerCompany);
-  }
-
-  if (customer?.customerTaxNumber) {
-    strings.push(customer.customerTaxNumber);
-  }
-
-  if (customer?.phone) {
-    strings.push(customer.phone);
-  }
-
-  strings.push(`${docAddress.street} ${docAddress.door}`);
-  if (docAddress.floor) {
-    strings.push(`${"floor"}:${docAddress.floor}`);
-  }
-  strings.push(`${docAddress.zip} ${docAddress.city} ${docAddress.country}`);
-
-  strings.map((string, index) => {
-    doc.text(string, x, y + index * 15);
-  });
-  return y + strings.length * 15;
-};
-
 export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
-  const establishment = document.establishment as Establishment;
-  const establishmentAddress = establishment.address as Address;
   const invoiceDoc = document;
+  const establishment = invoiceDoc.establishment as Establishment;
+  const establishmentAddress = establishment.address as Address;
+  const customer = invoiceDoc.customer as User;
+  const documentProducts = invoiceDoc.documentProducts as DocumentProduct[];
+  const payments = invoiceDoc.payments as Payment[];
 
   return new Promise(async (resolve, reject) => {
     const pageLeft = 20;
@@ -195,7 +103,6 @@ export async function generateInvoice({ document }: { document: Document }): Pro
 
       const customerDetails = ({ doc, x, y, invoiceDoc }) => {
         let strings = [];
-        const customer = invoiceDoc.customer;
         const docAddress = invoiceDoc.delAddress;
 
         if (customer.customerCompany) {
@@ -307,7 +214,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
 
       // Customer Details
       doc.text("Order: " + invoiceDoc.references, 380, y);
-      doc.text(invoiceDoc.customer.firstName + " " + invoiceDoc.customer.lastName, 380, y + 15);
+      doc.text(customer.firstName + " " + customer.lastName, 380, y + 15);
       y = customerDetails({
         doc: doc,
         x: 380,
@@ -317,7 +224,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
 
       y += 60;
 
-      y = generateInvoiceTable(doc, invoiceDoc.documentProducts, y);
+      y = generateInvoiceTable(doc, documentProducts, y);
 
       if (y < 500) {
         y = 500;
@@ -327,34 +234,34 @@ export async function generateInvoice({ document }: { document: Document }): Pro
         doc: doc,
         x: 30,
         y: y,
-        documentProducts: invoiceDoc.documentProducts,
+        documentProducts: documentProducts,
       });
 
-      paymentsTable({ doc: doc, x: 170, y: y + 30, payments: invoiceDoc.payments });
+      paymentsTable({ doc: doc, x: 170, y: y + 30, payments: payments });
 
       let totalsX = 410;
       doc.text("Total Excl. Tax:", totalsX, y + 50);
       doc.text(
         formatCurrency(
-          invoiceDoc.documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0) -
-            invoiceDoc.documentProducts.reduce((acc, dp) => acc + Number(dp.subTotalTax), 0)
+          documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0) -
+            documentProducts.reduce((acc, dp) => acc + Number(dp.subTotalTax), 0)
         ),
         totalsX + 70,
         y + 50
       );
       doc.text("Total:", totalsX, y + 65);
-      doc.text(formatCurrency(invoiceDoc.documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0)), totalsX + 70, y + 65);
+      doc.text(formatCurrency(documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0)), totalsX + 70, y + 65);
       doc.text("Already Paid:", totalsX, y + 80);
       doc.text(
-        formatCurrency(invoiceDoc.payments.filter((p) => p.isVerified && !p.isDeleted).reduce((acc, dp) => acc + Number(dp.value), 0)),
+        formatCurrency(payments.filter((p) => p.isVerified && !p.isDeleted).reduce((acc, dp) => acc + Number(dp.value), 0)),
         totalsX + 70,
         y + 80
       );
       doc.text("To Pay:", totalsX, y + 95);
       doc.text(
         formatCurrency(
-          invoiceDoc.documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0) -
-            invoiceDoc.payments.filter((p) => p.isVerified && !p.isDeleted).reduce((acc, dp) => acc + Number(dp.value), 0)
+          documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0) -
+            payments.filter((p) => p.isVerified && !p.isDeleted).reduce((acc, dp) => acc + Number(dp.value), 0)
         ),
         totalsX + 70,
         y + 95
