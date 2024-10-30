@@ -66,7 +66,6 @@ async function createZip(tempDir: string, zipPath: string): Promise<void> {
     archive
       .finalize()
       .then(() => {
-        console.log("Archive finalized and flushed.");
       })
       .catch((err) => {
         console.error("Error finalizing archive:", err);
