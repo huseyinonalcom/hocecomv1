@@ -107,6 +107,7 @@ async function sendEmailWithAttachment(zipPath: string): Promise<void> {
 
 const run = async () => {
   try {
+    console.log(documents.at(0));
     const tempDir = path.join(os.tmpdir(), "pdf_temp" + company.id + dateFormatOnlyDate(documents.at(0).date));
     await fs.emptyDir(tempDir);
     await writeAllPdfsToTempDir(tempDir, documents);
