@@ -117,6 +117,15 @@ const run = async () => {
     );
     await createZip(tempDir, zipPath);
     await sendEmailWithAttachment(zipPath);
+    console.log(
+      "Worker for dates",
+      dateFormatOnlyDate(documents.at(0).date),
+      "to",
+      dateFormatOnlyDate(documents.at(-1).date),
+      "for company",
+      company.name,
+      "finished"
+    );
   } catch (error) {
     console.log(documents.at(0));
     console.error("An error occurred:", error);
