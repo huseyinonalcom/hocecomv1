@@ -2,6 +2,7 @@ import express from "express";
 import payload from "payload";
 import { createDocumentsFromBolOrders } from "./jobs/bol-offer-sync";
 import { bulkSendDocuments } from "./jobs/bulkdocumentsenderstart";
+import { Company } from "./payload-types";
 
 require("dotenv").config();
 const app = express();
@@ -31,36 +32,62 @@ const start = async () => {
     }
   });
 
-  setTimeout(() => {
+  cron.schedule("0 0 2 * *", async () => {
     try {
-      bulkSendDocuments({
-        companyID: 3,
-        docTypes: ["invoice", "credit_note"],
-        month: 7,
-        year: 2024,
-      });
-      bulkSendDocuments({
-        companyID: 3,
-        docTypes: ["invoice", "credit_note"],
-        month: 8,
-        year: 2024,
-      });
-      bulkSendDocuments({
-        companyID: 3,
-        docTypes: ["invoice", "credit_note"],
-        month: 9,
-        year: 2024,
-      });
-      bulkSendDocuments({
-        companyID: 3,
-        docTypes: ["invoice", "credit_note"],
-        month: 10,
-        year: 2024,
-      });
+      let companiesWithMonthlyReportsActive = (
+        await payload.find({
+          collection: "companies",
+          limit: 200,
+          depth: 1,
+          where: {
+            monthlyReportsActive: {
+              equals: true,
+            },
+          },
+        })
+      ).docs;
+      let currentYear = new Date().getFullYear();
+      // for (let company of companiesWithMonthlyReportsActive) {
+      //   bulkSendDocuments({
+      //     companyID: (company as unknown as Company).id,
+      //     docTypes: ["invoice", "credit_note"],
+      //     month: new Date().getMonth(), // last month
+      //     year: currentYear, // Current year
+      //   });
+      // }
     } catch (error) {
       console.error("Error starting bulk document sender", error);
     }
-  }, 30000);
+  });
+
+  setTimeout(async () => {
+    try {
+      let companiesWithMonthlyReportsActive = (
+        await payload.find({
+          collection: "companies",
+          limit: 200,
+          depth: 1,
+          where: {
+            monthlyReportsActive: {
+              equals: true,
+            },
+          },
+        })
+      ).docs;
+      let currentYear = new Date().getFullYear();
+      console.log(companiesWithMonthlyReportsActive);
+      // for (let company of companiesWithMonthlyReportsActive) {
+      //   bulkSendDocuments({
+      //     companyID: (company as unknown as Company).id,
+      //     docTypes: ["invoice", "credit_note"],
+      //     month: new Date().getMonth(), // last month
+      //     year: currentYear, // Current year
+      //   });
+      // }
+    } catch (error) {
+      console.error("Error starting bulk document sender", error);
+    }
+  }, 10000);
 
   // Add your own express routes here
 };
