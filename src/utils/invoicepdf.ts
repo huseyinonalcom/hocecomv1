@@ -153,7 +153,7 @@ export async function generateInvoice({
           doc.text(dateFormatBe(payment.date), x + 10, y + 20 * (i + 1));
           doc.text(payment.type, x + 85, y + 20 * (i + 1));
           doc.text(formatCurrency(payment.value.toFixed(2)), x + 150, y + 20 * (i + 1), {
-            width: 40,
+            width: 80,
             align: "right",
           });
         });

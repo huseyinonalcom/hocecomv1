@@ -43,6 +43,8 @@ export const documentToXml = (document: Document) => {
   const totalBeforeTax = documentProducts.reduce((acc, product) => acc + product.value, 0);
   const total = documentProducts.reduce((acc, product) => acc + product.subTotal, 0);
 
+  const taxIDCleaned = establishment.taxID.replace("BE", "").replaceAll(".", "").trim();
+
   const content = `<?xml version="1.0" encoding="utf-8"?>
 <Invoice xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2"
   xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
@@ -74,10 +76,10 @@ export const documentToXml = (document: Document) => {
   </cac:AdditionalDocumentReference>
   <cac:AccountingSupplierParty>
     <cac:Party>
-      <cbc:EndpointID schemeID="BE:CBE">${establishment.taxID.replace("be", "")}</cbc:EndpointID>
+      <cbc:EndpointID schemeID="BE:CBE">${taxIDCleaned}</cbc:EndpointID>
       <cac:PartyIdentification>
         <cbc:ID schemeAgencyID="BE" schemeAgencyName="KBO" schemeURI="http://www.e-fff.be/KBO">
-          ${establishment.taxID.replace("be", "")}</cbc:ID>
+          ${taxIDCleaned}</cbc:ID>
       </cac:PartyIdentification>
       <cac:PartyName>
         <cbc:Name>BELANTRA</cbc:Name>
@@ -94,14 +96,14 @@ export const documentToXml = (document: Document) => {
         </cac:Country>
       </cac:PostalAddress>
       <cac:PartyTaxScheme>
-        <cbc:CompanyID>${establishment.taxID}</cbc:CompanyID>
+        <cbc:CompanyID>${establishment.taxID.replaceAll(".", "").replaceAll(" ", "")}</cbc:CompanyID>
         <cac:TaxScheme>
           <cbc:ID>VAT</cbc:ID>
         </cac:TaxScheme>
       </cac:PartyTaxScheme>
       <cac:PartyLegalEntity>
         <cbc:RegistrationName>BELANTRA</cbc:RegistrationName>
-        <cbc:CompanyID schemeID="BE:CBE"> ${establishment.taxID.replace("be", "")}</cbc:CompanyID>
+        <cbc:CompanyID schemeID="BE:CBE"> ${taxIDCleaned}</cbc:CompanyID>
       </cac:PartyLegalEntity>
       <cac:Contact>
         <cbc:Name>Ayfema</cbc:Name>
