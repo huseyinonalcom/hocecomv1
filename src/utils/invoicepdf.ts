@@ -42,7 +42,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
           doc.lineWidth(25);
           // line cap settings
           const bgY = y + 5;
-          doc.lineCap("butt").moveTo(30, bgY).lineTo(600, bgY).stroke("black");
+          doc.lineCap("butt").moveTo(30, bgY).lineTo(550, bgY).stroke("black");
           doc
             .fontSize(10)
             .fillColor("white")
