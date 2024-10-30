@@ -83,6 +83,7 @@ export interface Company {
   amazonClientID?: string | null;
   amazonClientSecret?: string | null;
   accountantEmail?: string | null;
+  monthlyReports?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
