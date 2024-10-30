@@ -68,7 +68,7 @@ const start = async () => {
           limit: 200,
           depth: 1,
           where: {
-            monthlyReportsActive: {
+            monthlyReports: {
               equals: true,
             },
           },
