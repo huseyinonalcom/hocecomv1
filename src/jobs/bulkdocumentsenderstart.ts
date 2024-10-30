@@ -27,7 +27,7 @@ async function fetchCompany(companyID: number) {
 async function fetchDocuments(companyID: number, docTypes: string[], month: number, year: number): Promise<Document[]> {
   let documents: Document[] = [];
   let page = 1;
-  let limit = 200;
+  let limit = 400;
   let allDocumentsFetched = false;
 
   while (!allDocumentsFetched) {

@@ -3,14 +3,17 @@ import path from "path";
 import archiver from "archiver";
 import { workerData } from "worker_threads";
 import os from "os";
-import { Document } from "payload/generated-types";
+import { Document, Establishment, Logo } from "payload/generated-types";
 import { generateInvoice } from "../utils/invoicepdf";
 import { sendMail } from "../utils/sendmail";
+import { dateFormatBe, dateFormatOnlyDate } from "../utils/formatters/dateformatters";
 
 const documents = workerData.documents;
 const company = workerData.company;
 
 async function writeAllPdfsToTempDir(tempDir: string, documents: Document[]): Promise<string[]> {
+  const response = await fetch(((documents.at(0).establishment as Establishment).logo as Logo).url);
+  let logoBuffer = await Buffer.from(await response.arrayBuffer());
   await fs.ensureDir(tempDir);
 
   const filePaths = await Promise.all(
@@ -20,6 +23,7 @@ async function writeAllPdfsToTempDir(tempDir: string, documents: Document[]): Pr
       try {
         pdf = await generateInvoice({
           document: document,
+          logoBuffer: logoBuffer,
         });
       } catch (error) {
         pdf = null;
@@ -73,25 +77,28 @@ async function createZip(tempDir: string, zipPath: string): Promise<void> {
 
 async function sendEmailWithAttachment(zipPath: string): Promise<void> {
   await sendMail({
-    recipient: "huseyin-_-onal@hotmail.com",
-    subject: `zip test`,
+    recipient: company.accountantEmail,
+    subject: `Documenten ${company.name} ${dateFormatBe(documents.at(0).date)} - ${dateFormatBe(documents.at(-1).date)}`,
     company: company,
     attachments: [
       {
-        filename: "files.zip",
+        filename: zipPath.split("/").pop(),
         path: zipPath,
       },
     ],
-    html: `<p>Beste</p>`,
+    html: `<p>Beste, in bijlage alle documenten van ${company.name} voor het periode tussen ${dateFormatBe(documents.at(0).date) + " en " + dateFormatBe(documents.at(-1).date)}.</p>`,
   });
 }
 
 const run = async () => {
   try {
-    const tempDir = path.join(os.tmpdir(), "pdf_temp");
+    const tempDir = path.join(os.tmpdir(), "pdf_temp" + company.id + documents.at(0).date);
     await fs.emptyDir(tempDir);
     await writeAllPdfsToTempDir(tempDir, documents);
-    const zipPath = path.join(tempDir, "pdfs.zip");
+    const zipPath = path.join(
+      tempDir,
+      "documents_" + company.name + "_" + dateFormatOnlyDate(documents.at(0).date) + "_" + dateFormatOnlyDate(documents.at(-1).date) + ".zip"
+    );
     await createZip(tempDir, zipPath);
     await sendEmailWithAttachment(zipPath);
   } catch (error) {

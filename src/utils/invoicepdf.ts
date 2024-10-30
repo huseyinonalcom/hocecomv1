@@ -4,7 +4,13 @@ import { addDaysToDate } from "./addtodate";
 import { Buffer } from "buffer";
 import { formatCurrency } from "./formatters/formatcurrency";
 
-export async function generateInvoice({ document }: { document: Document }): Promise<{ filename: string; content: Buffer; contentType: string }> {
+export async function generateInvoice({
+  document,
+  logoBuffer,
+}: {
+  document: Document;
+  logoBuffer?: Buffer;
+}): Promise<{ filename: string; content: Buffer; contentType: string }> {
   const invoiceDoc = document;
   const establishment = invoiceDoc.establishment as Establishment;
   const establishmentAddress = establishment.address as Address;
@@ -22,13 +28,16 @@ export async function generateInvoice({ document }: { document: Document }): Pro
 
       doc.on("data", buffers.push.bind(buffers));
 
-      // Fetch logo image from the URL
-      const response = await fetch((establishment.logo as Logo).url);
-      const logoBuffer = await Buffer.from(await response.arrayBuffer());
-
-      // Add logo to the document
-      doc.image(logoBuffer, pageLeft, pageTop, { height: 50 });
-
+      // If logoBuffer is provided, use it; otherwise, fetch the logo image
+      if (logoBuffer) {
+        // Use the provided logo buffer
+        doc.image(logoBuffer, pageLeft, pageTop, { height: 50 });
+      } else {
+        // Fetch logo image from the URL
+        const response = await fetch((establishment.logo as Logo).url);
+        logoBuffer = await Buffer.from(await response.arrayBuffer());
+        doc.image(logoBuffer, pageLeft, pageTop, { height: 50 });
+      }
       // this part is being designed in simulation at the moment
       //
       //
@@ -243,8 +252,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       doc.text("Total Excl. Tax:", totalsX, y + 50);
       doc.text(
         formatCurrency(
-          documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0) -
-            documentProducts.reduce((acc, dp) => acc + Number(dp.subTotalTax), 0)
+          documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0) - documentProducts.reduce((acc, dp) => acc + Number(dp.subTotalTax), 0)
         ),
         totalsX + 70,
         y + 50
@@ -252,11 +260,7 @@ export async function generateInvoice({ document }: { document: Document }): Pro
       doc.text("Total:", totalsX, y + 65);
       doc.text(formatCurrency(documentProducts.reduce((acc, dp) => acc + Number(dp.subTotal), 0)), totalsX + 70, y + 65);
       doc.text("Already Paid:", totalsX, y + 80);
-      doc.text(
-        formatCurrency(payments.filter((p) => p.isVerified && !p.isDeleted).reduce((acc, dp) => acc + Number(dp.value), 0)),
-        totalsX + 70,
-        y + 80
-      );
+      doc.text(formatCurrency(payments.filter((p) => p.isVerified && !p.isDeleted).reduce((acc, dp) => acc + Number(dp.value), 0)), totalsX + 70, y + 80);
       doc.text("To Pay:", totalsX, y + 95);
       doc.text(
         formatCurrency(
