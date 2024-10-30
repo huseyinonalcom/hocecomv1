@@ -89,6 +89,7 @@ const Companies: CollectionConfig = {
     { name: "amazonClientID", type: "text" },
     { name: "amazonClientSecret", type: "text" },
     { name: "accountantEmail", type: "email" },
+    { name: "monthlyReports", type: "checkbox" },
   ],
 };
 
