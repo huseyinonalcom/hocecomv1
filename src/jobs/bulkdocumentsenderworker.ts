@@ -7,9 +7,26 @@ import { Document, Establishment, Logo } from "payload/generated-types";
 import { generateInvoice } from "../utils/invoicepdf";
 import { sendMail } from "../utils/sendmail";
 import { dateFormatBe, dateFormatOnlyDate } from "../utils/formatters/dateformatters";
+import { documentToXml } from "../utils/xml/ayfemaxml";
 
 const documents = workerData.documents;
 const company = workerData.company;
+
+async function writeAllXmlsToTempDir(tempDir: string, documents: Document[]): Promise<string[]> {
+  await fs.ensureDir(tempDir);
+
+  const filePaths = await Promise.all(
+    documents.map(async (document) => {
+      let xml = documentToXml(document);
+      const filePath = path.join(tempDir, xml.filename);
+      await fs.writeFile(filePath, xml.content);
+
+      return filePath;
+    })
+  );
+
+  return filePaths;
+}
 
 async function writeAllPdfsToTempDir(tempDir: string, documents: Document[]): Promise<string[]> {
   const response = await fetch(((documents.at(0).establishment as Establishment).logo as Logo).url);
@@ -65,8 +82,7 @@ async function createZip(tempDir: string, zipPath: string): Promise<void> {
 
     archive
       .finalize()
-      .then(() => {
-      })
+      .then(() => {})
       .catch((err) => {
         console.error("Error finalizing archive:", err);
         reject(err);
@@ -91,9 +107,10 @@ async function sendEmailWithAttachment(zipPath: string): Promise<void> {
 
 const run = async () => {
   try {
-    const tempDir = path.join(os.tmpdir(), "pdf_temp" + company.id + documents.at(0).date);
+    const tempDir = path.join(os.tmpdir(), "pdf_temp" + company.id + dateFormatOnlyDate(documents.at(0).date));
     await fs.emptyDir(tempDir);
     await writeAllPdfsToTempDir(tempDir, documents);
+    await writeAllXmlsToTempDir(tempDir, documents);
     const zipPath = path.join(
       tempDir,
       "documents_" + company.name + "_" + dateFormatOnlyDate(documents.at(0).date) + "_" + dateFormatOnlyDate(documents.at(-1).date) + ".zip"

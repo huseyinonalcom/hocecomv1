@@ -66,6 +66,8 @@ async function startBulkDocumentSenderWorker({ companyID, docTypes, month, year 
   const company = await fetchCompany(companyID);
   const workerData = { documents, company };
 
+  console.log(workerData);
+
   new Worker(path.resolve(__dirname, "./bulkdocumentsenderworker.ts"), {
     execArgv: ["-r", "ts-node/register"],
     workerData,
