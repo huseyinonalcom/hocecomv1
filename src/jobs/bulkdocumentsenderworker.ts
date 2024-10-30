@@ -16,8 +16,8 @@ async function writeAllXmlsToTempDir(tempDir: string, documents: Document[]): Pr
   await fs.ensureDir(tempDir);
 
   const filePaths = await Promise.all(
-    documents.map(async (document) => {
-      let xml = documentToXml(document);
+    documents.map(async (doc) => {
+      let xml = documentToXml(doc);
       const filePath = path.join(tempDir, xml.filename);
       await fs.writeFile(filePath, xml.content);
 
@@ -34,12 +34,12 @@ async function writeAllPdfsToTempDir(tempDir: string, documents: Document[]): Pr
   await fs.ensureDir(tempDir);
 
   const filePaths = await Promise.all(
-    documents.map(async (document) => {
-      const filePath = path.join(tempDir, `${document.type}_${document.prefix ?? ""}${document.number}.pdf`);
+    documents.map(async (doc) => {
+      const filePath = path.join(tempDir, `${doc.type}_${doc.prefix ?? ""}${doc.number}.pdf`);
       let pdf;
       try {
         pdf = await generateInvoice({
-          document: document,
+          document: doc,
           logoBuffer: logoBuffer,
         });
       } catch (error) {
@@ -107,7 +107,6 @@ async function sendEmailWithAttachment(zipPath: string): Promise<void> {
 
 const run = async () => {
   try {
-    console.log(documents.at(0));
     const tempDir = path.join(os.tmpdir(), "pdf_temp" + company.id + dateFormatOnlyDate(documents.at(0).date));
     await fs.emptyDir(tempDir);
     await writeAllPdfsToTempDir(tempDir, documents);
@@ -119,6 +118,7 @@ const run = async () => {
     await createZip(tempDir, zipPath);
     await sendEmailWithAttachment(zipPath);
   } catch (error) {
+    console.log(documents.at(0));
     console.error("An error occurred:", error);
   }
 };
