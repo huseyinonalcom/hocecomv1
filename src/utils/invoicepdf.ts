@@ -68,7 +68,7 @@ export async function generateInvoice({
             .text(name, columns[0], y, { width: columns[3] - columns[0] })
             .text(description, columns[4], y)
             .text(price, columns[6], y)
-            .text(amount, columns[7], y)
+            .text(amount, columns[7] + 20, y)
             .text(tax, columns[8], y)
             .text(subtotal, columns[9], y);
         }
