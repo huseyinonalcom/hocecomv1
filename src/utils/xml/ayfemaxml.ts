@@ -156,7 +156,7 @@ export const documentToXml = (document: Document) => {
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
         <cbc:Name>OSS-S</cbc:Name>
         <cbc:Percent>${taxRate.rate}</cbc:Percent>
-        <cac:TaxScheme>VAT</cac:TaxScheme>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
       </cac:TaxCategory>
     </cac:TaxSubtotal>
     </cac:TaxTotal>`;
@@ -170,7 +170,7 @@ export const documentToXml = (document: Document) => {
   ${documentProducts.map((docProd, i) => {
     let taxAmount = docProd.subTotal - docProd.subTotal / (1 + docProd.tax / 100);
     return `<cac:InvoiceLine>
-    <cbc:ID>${i}</cbc:ID>
+    <cbc:ID>${i + 1}</cbc:ID>
     <cbc:Note>${docProd.name}</cbc:Note>
     <cbc:InvoicedQuantity>${docProd.amount}</cbc:InvoicedQuantity>
     <cbc:LineExtensionAmount currencyID="EUR">${(docProd.subTotal - taxAmount).toFixed(2)}</cbc:LineExtensionAmount>
@@ -188,13 +188,12 @@ export const documentToXml = (document: Document) => {
       </cac:TaxSubtotal>
     </cac:TaxTotal>
     <cac:Item>
-      <cbc:Description>${docProd.description}</cbc:Description>
       <cbc:Name>${docProd.name}</cbc:Name>
       <cac:ClassifiedTaxCategory>
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
         <cbc:Name>OSS-S</cbc:Name>
-        <cbc:Percent>${docProd.tax}</cbc:Percent>
-        <cac:TaxScheme>VAT</cac:TaxScheme>
+        <cbc:Percent>${docProd.tax}</cbc:Percent>        
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
       </cac:ClassifiedTaxCategory>
     </cac:Item>
   </cac:InvoiceLine>`;
