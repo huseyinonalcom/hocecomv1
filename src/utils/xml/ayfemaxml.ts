@@ -40,8 +40,10 @@ export const documentToXml = (document: Document) => {
     };
   });
 
-  const totalBeforeTax = documentProducts.reduce((acc, product) => acc + product.value, 0);
+  const totalTax = taxRates.reduce((acc, taxRate) => acc + taxRate.totalTax, 0);
+
   const total = documentProducts.reduce((acc, product) => acc + product.subTotal, 0);
+  const totalBeforeTax = total - totalTax;
 
   const taxIDCleaned = establishment.taxID.replace("BE", "").replaceAll(".", "").trim();
 
@@ -64,15 +66,11 @@ export const documentToXml = (document: Document) => {
   <cbc:CopyIndicator>false</cbc:CopyIndicator>
   <cbc:IssueDate>${dateFormatOnlyDate(document.date)}</cbc:IssueDate>
   <cbc:InvoiceTypeCode listURI="http://www.E-FFF.be/ubl/2.0/cl/gc/BE-InvoiceCode-1.0.gc">380</cbc:InvoiceTypeCode>
-  <cbc:Note>1370</cbc:Note>
-  <cbc:Note />
   <cbc:TaxPointDate>${dateFormatOnlyDate(document.date)}</cbc:TaxPointDate>
   <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
   <cac:AdditionalDocumentReference>
     <cbc:ID>${filename}</cbc:ID>
     <cbc:DocumentType>CommercialInvoice</cbc:DocumentType>
-    <cac:Attachment>
-    </cac:Attachment>
   </cac:AdditionalDocumentReference>
   <cac:AccountingSupplierParty>
     <cac:Party>
@@ -133,7 +131,6 @@ export const documentToXml = (document: Document) => {
       </cac:PartyTaxScheme>
       <cac:Contact>
         <cbc:Name>${customer.firstName + " " + customer.lastName}</cbc:Name>
-        <cbc:ElectronicMail></cbc:ElectronicMail>
       </cac:Contact>
     </cac:Party>
   </cac:AccountingCustomerParty>
@@ -152,9 +149,6 @@ export const documentToXml = (document: Document) => {
       </cac:FinancialInstitutionBranch>
     </cac:PayeeFinancialAccount>
   </cac:PaymentMeans>
-  <cac:PaymentTerms>
-    <cbc:Note></cbc:Note>
-  </cac:PaymentTerms>
   ${taxRates.map((taxRate) => {
     return `<cac:TaxTotal>
     <cbc:TaxAmount currencyID="EUR">${taxRate.totalTax.toFixed(2)}</cbc:TaxAmount>
