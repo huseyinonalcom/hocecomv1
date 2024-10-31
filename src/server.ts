@@ -60,7 +60,7 @@ const start = async () => {
     }
   });
 
-  setTimeout(async () => {
+ /*  setTimeout(async () => {
     try {
       let companiesWithMonthlyReportsActive = (
         await payload.find({
@@ -105,7 +105,7 @@ const start = async () => {
       console.error("Error starting bulk document sender", error);
     }
   }, 10000);
-
+ */
   // Add your own express routes here
 };
 
