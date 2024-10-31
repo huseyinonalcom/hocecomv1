@@ -83,7 +83,6 @@ export const documentToXml = (document: Document) => {
         <cbc:Name>BELANTRA</cbc:Name>
       </cac:PartyName>
       <cac:PostalAddress>
-        <cbc:Postbox />
         <cbc:StreetName>Bist</cbc:StreetName>
         <cbc:BuildingNumber>19</cbc:BuildingNumber>
         <cbc:CityName>Aartselaar</cbc:CityName>
@@ -101,7 +100,8 @@ export const documentToXml = (document: Document) => {
       </cac:PartyTaxScheme>
       <cac:PartyLegalEntity>
         <cbc:RegistrationName>BELANTRA</cbc:RegistrationName>
-        <cbc:CompanyID schemeID="BE:CBE"> ${taxIDCleaned}</cbc:CompanyID>
+        <cbc:CompanyID schemeID="BE:CBE">${taxIDCleaned}</cbc:CompanyID>
+        <cbc:ElectronicMail>${customer.email}</cbc:ElectronicMail>
       </cac:PartyLegalEntity>
       <cac:Contact>
         <cbc:Name>Ayfema</cbc:Name>
@@ -135,7 +135,6 @@ export const documentToXml = (document: Document) => {
       listURI="http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/PaymentMeansCode-2.0.gc">
       1</cbc:PaymentMeansCode>
     <cbc:PaymentDueDate>${dateFormatOnlyDate(addDaysToDate(document.date, 15).toString())}</cbc:PaymentDueDate>
-    <cbc:InstructionID>1370</cbc:InstructionID>
     <cac:PayeeFinancialAccount>
       <cbc:ID schemeName="IBAN">BE07068937722366</cbc:ID>
       <cac:FinancialInstitutionBranch>
