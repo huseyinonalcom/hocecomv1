@@ -156,7 +156,7 @@ export const documentToXml = (document: Document) => {
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
         <cbc:Name>OSS-S</cbc:Name>
         <cbc:Percent>${taxRate.rate}</cbc:Percent>
-        <cac:TaxScheme />
+        <cac:TaxScheme>VAT</cac:TaxScheme>
       </cac:TaxCategory>
     </cac:TaxSubtotal>
     </cac:TaxTotal>`;
@@ -188,11 +188,13 @@ export const documentToXml = (document: Document) => {
       </cac:TaxSubtotal>
     </cac:TaxTotal>
     <cac:Item>
+      <cbc:Description>${docProd.description}</cbc:Description>
       <cbc:Name>${docProd.name}</cbc:Name>
       <cac:ClassifiedTaxCategory>
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
         <cbc:Name>OSS-S</cbc:Name>
         <cbc:Percent>${docProd.tax}</cbc:Percent>
+        <cac:TaxScheme>VAT</cac:TaxScheme>
       </cac:ClassifiedTaxCategory>
     </cac:Item>
   </cac:InvoiceLine>`;
