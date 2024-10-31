@@ -60,6 +60,52 @@ const start = async () => {
     }
   });
 
+  setTimeout(async () => {
+    try {
+      let companiesWithMonthlyReportsActive = (
+        await payload.find({
+          collection: "companies",
+          limit: 200,
+          depth: 1,
+          where: {
+            monthlyReports: {
+              equals: true,
+            },
+          },
+        })
+      ).docs;
+      let currentYear = new Date().getFullYear();
+      for (let company of companiesWithMonthlyReportsActive) {
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth(), // last month
+          year: currentYear, // Current year
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 1, // last month
+          year: currentYear, // Current year
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 2, // last month
+          year: currentYear, // Current year
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 3, // last month
+          year: currentYear, // Current year
+        });
+      }
+    } catch (error) {
+      console.error("Error starting bulk document sender", error);
+    }
+  }, 10000);
+
   // Add your own express routes here
 };
 

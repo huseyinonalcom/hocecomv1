@@ -1,5 +1,5 @@
 import { Address, Document, DocumentProduct, Establishment, User } from "payload/generated-types";
-import { dateFormatBe } from "../formatters/dateformatters";
+import { dateFormatOnlyDate } from "../formatters/dateformatters";
 import { addDaysToDate } from "../addtodate";
 
 export const documentToXml = (document: Document) => {
@@ -62,11 +62,11 @@ export const documentToXml = (document: Document) => {
   <cbc:ProfileID>E-FFF.BE BILLIT.BE</cbc:ProfileID>
   <cbc:ID>${document.number}</cbc:ID>
   <cbc:CopyIndicator>false</cbc:CopyIndicator>
-  <cbc:IssueDate>${dateFormatBe(document.date)}</cbc:IssueDate>
+  <cbc:IssueDate>${dateFormatOnlyDate(document.date)}</cbc:IssueDate>
   <cbc:InvoiceTypeCode listURI="http://www.E-FFF.be/ubl/2.0/cl/gc/BE-InvoiceCode-1.0.gc">380</cbc:InvoiceTypeCode>
   <cbc:Note>1370</cbc:Note>
   <cbc:Note />
-  <cbc:TaxPointDate>${dateFormatBe(document.date)}</cbc:TaxPointDate>
+  <cbc:TaxPointDate>${dateFormatOnlyDate(document.date)}</cbc:TaxPointDate>
   <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
   <cac:AdditionalDocumentReference>
     <cbc:ID>${filename}</cbc:ID>
@@ -141,7 +141,7 @@ export const documentToXml = (document: Document) => {
     <cbc:PaymentMeansCode listID="UN/ECE 4461" listName="Payment Means"
       listURI="http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/PaymentMeansCode-2.0.gc">
       1</cbc:PaymentMeansCode>
-    <cbc:PaymentDueDate>${dateFormatBe(addDaysToDate(document.date, 15).toString())}</cbc:PaymentDueDate>
+    <cbc:PaymentDueDate>${dateFormatOnlyDate(addDaysToDate(document.date, 15).toString())}</cbc:PaymentDueDate>
     <cbc:InstructionID>1370</cbc:InstructionID>
     <cac:PayeeFinancialAccount>
       <cbc:ID schemeName="IBAN">BE07068937722366</cbc:ID>
@@ -157,10 +157,10 @@ export const documentToXml = (document: Document) => {
   </cac:PaymentTerms>
   ${taxRates.map((taxRate) => {
     return `<cac:TaxTotal>
-    <cbc:TaxAmount currencyID="EUR">${taxRate.totalTax}</cbc:TaxAmount>
+    <cbc:TaxAmount currencyID="EUR">${taxRate.totalTax.toFixed(2)}</cbc:TaxAmount>
     <cac:TaxSubtotal>
-      <cbc:TaxableAmount currencyID="EUR">${taxRate.totalBeforeTax}</cbc:TaxableAmount>
-      <cbc:TaxAmount currencyID="EUR">${taxRate.totalTax}</cbc:TaxAmount>
+      <cbc:TaxableAmount currencyID="EUR">${taxRate.totalBeforeTax.toFixed(2)}</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="EUR">${taxRate.totalTax.toFixed(2)}</cbc:TaxAmount>
       <cbc:Percent>${taxRate.rate}</cbc:Percent>
       <cac:TaxCategory>
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
@@ -174,10 +174,10 @@ export const documentToXml = (document: Document) => {
     </cac:TaxTotal>`;
   })}
   <cac:LegalMonetaryTotal>
-    <cbc:LineExtensionAmount currencyID="EUR">${totalBeforeTax}</cbc:LineExtensionAmount>
-    <cbc:TaxExclusiveAmount currencyID="EUR">${totalBeforeTax}</cbc:TaxExclusiveAmount>
-    <cbc:TaxInclusiveAmount currencyID="EUR">${total}</cbc:TaxInclusiveAmount>
-    <cbc:PayableAmount currencyID="EUR">${total}</cbc:PayableAmount>
+    <cbc:LineExtensionAmount currencyID="EUR">${totalBeforeTax.toFixed(2)}</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="EUR">${totalBeforeTax.toFixed(2)}</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="EUR">${total.toFixed(2)}</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="EUR">${total.toFixed(2)}</cbc:PayableAmount>
   </cac:LegalMonetaryTotal>
   ${documentProducts.map((docProd, i) => {
     let taxAmount = docProd.subTotal - docProd.subTotal / (1 + docProd.tax / 100);
@@ -185,12 +185,12 @@ export const documentToXml = (document: Document) => {
     <cbc:ID>${i}</cbc:ID>
     <cbc:Note>${docProd.name}</cbc:Note>
     <cbc:InvoicedQuantity>${docProd.amount}</cbc:InvoicedQuantity>
-    <cbc:LineExtensionAmount currencyID="EUR">${docProd.subTotal - taxAmount}</cbc:LineExtensionAmount>
+    <cbc:LineExtensionAmount currencyID="EUR">${(docProd.subTotal - taxAmount).toFixed(2)}</cbc:LineExtensionAmount>
     <cac:TaxTotal>
-      <cbc:TaxAmount currencyID="EUR">${taxAmount}</cbc:TaxAmount>
+      <cbc:TaxAmount currencyID="EUR">${taxAmount.toFixed(2)}</cbc:TaxAmount>
       <cac:TaxSubtotal>
-        <cbc:TaxableAmount currencyID="EUR">${docProd.subTotal - taxAmount}</cbc:TaxableAmount>
-        <cbc:TaxAmount currencyID="EUR">${taxAmount}</cbc:TaxAmount>
+        <cbc:TaxableAmount currencyID="EUR">${(docProd.subTotal - taxAmount).toFixed(2)}</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="EUR">${taxAmount.toFixed(2)}</cbc:TaxAmount>
         <cbc:Percent>${docProd.tax}</cbc:Percent>
         <cac:TaxCategory>
           <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
