@@ -176,8 +176,8 @@ export const documentToXml = (document: Document) => {
   <cac:LegalMonetaryTotal>
     <cbc:LineExtensionAmount currencyID="EUR">${totalBeforeTax.toFixed(2)}</cbc:LineExtensionAmount>
     <cbc:TaxExclusiveAmount currencyID="EUR">${totalBeforeTax.toFixed(2)}</cbc:TaxExclusiveAmount>
-    <cbc:TaxInclusiveAmount currencyID="EUR">${total.toFixed(2)}</cbc:TaxInclusiveAmount>
-    <cbc:PayableAmount currencyID="EUR">${total.toFixed(2)}</cbc:PayableAmount>
+    <cbc:TaxInclusiveAmount currencyID="EUR">${Number(total).toFixed(2)}</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="EUR">${Number(total).toFixed(2)}</cbc:PayableAmount>
   </cac:LegalMonetaryTotal>
   ${documentProducts.map((docProd, i) => {
     let taxAmount = docProd.subTotal - docProd.subTotal / (1 + docProd.tax / 100);
