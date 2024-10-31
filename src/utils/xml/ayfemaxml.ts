@@ -101,7 +101,6 @@ export const documentToXml = (document: Document) => {
       <cac:PartyLegalEntity>
         <cbc:RegistrationName>BELANTRA</cbc:RegistrationName>
         <cbc:CompanyID schemeID="BE:CBE">${taxIDCleaned}</cbc:CompanyID>
-        <cbc:ElectronicMail>${customer.email}</cbc:ElectronicMail>
       </cac:PartyLegalEntity>
       <cac:Contact>
         <cbc:Name>Ayfema</cbc:Name>
