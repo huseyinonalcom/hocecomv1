@@ -115,7 +115,6 @@ export const documentToXml = (document: Document) => {
         <cbc:Name>${customer.firstName + " " + customer.lastName}</cbc:Name>
       </cac:PartyName>
       <cac:PostalAddress>
-        <cbc:Postbox />
         <cbc:StreetName>${docAddress.street}</cbc:StreetName>
         <cbc:BuildingNumber>${docAddress.door}</cbc:BuildingNumber>
         <cbc:CityName>${docAddress.city}</cbc:CityName>
@@ -125,12 +124,9 @@ export const documentToXml = (document: Document) => {
           <cbc:Name>${docAddress.country}</cbc:Name>
         </cac:Country>
       </cac:PostalAddress>
-      <cac:PartyTaxScheme>
-        <cbc:CompanyID />
-        <cac:TaxScheme />
-      </cac:PartyTaxScheme>
       <cac:Contact>
         <cbc:Name>${customer.firstName + " " + customer.lastName}</cbc:Name>
+        <cbc:ElectronicMail>${customer.email}</cbc:ElectronicMail>
       </cac:Contact>
     </cac:Party>
   </cac:AccountingCustomerParty>
@@ -160,8 +156,6 @@ export const documentToXml = (document: Document) => {
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
         <cbc:Name>OSS-S</cbc:Name>
         <cbc:Percent>${taxRate.rate}</cbc:Percent>
-        <cbc:TaxExemptionReasonCode />
-        <cbc:TaxExemptionReason />
         <cac:TaxScheme />
       </cac:TaxCategory>
     </cac:TaxSubtotal>
@@ -190,22 +184,15 @@ export const documentToXml = (document: Document) => {
           <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
           <cbc:Name>OSS-S</cbc:Name>
           <cbc:Percent>${docProd.tax}</cbc:Percent>
-          <cbc:TaxExemptionReasonCode />
-          <cbc:TaxExemptionReason />
-          <cac:TaxScheme />
         </cac:TaxCategory>
       </cac:TaxSubtotal>
     </cac:TaxTotal>
     <cac:Item>
-      <cbc:Description>${docProd.description}</cbc:Description>
       <cbc:Name>${docProd.name}</cbc:Name>
       <cac:ClassifiedTaxCategory>
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
         <cbc:Name>OSS-S</cbc:Name>
         <cbc:Percent>${docProd.tax}</cbc:Percent>
-        <cbc:TaxExemptionReasonCode />
-        <cbc:TaxExemptionReason />
-        <cac:TaxScheme />
       </cac:ClassifiedTaxCategory>
     </cac:Item>
   </cac:InvoiceLine>`;
