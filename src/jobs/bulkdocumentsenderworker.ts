@@ -13,11 +13,18 @@ const documents = workerData.documents;
 const company = workerData.company;
 
 async function writeAllXmlsToTempDir(tempDir: string, documents: Document[]): Promise<string[]> {
+  const response = await fetch(((documents.at(0).establishment as Establishment).logo as Logo).url);
+  let logoBuffer = await Buffer.from(await response.arrayBuffer());
   await fs.ensureDir(tempDir);
 
   const filePaths = await Promise.all(
     documents.map(async (doc) => {
-      let xml = documentToXml(doc);
+      let pdf;
+      pdf = await generateInvoice({
+        document: doc,
+        logoBuffer: logoBuffer,
+      });
+      let xml = documentToXml(doc, pdf);
       const filePath = path.join(tempDir, xml.filename);
       await fs.writeFile(filePath, xml.content);
 
@@ -109,7 +116,7 @@ const run = async () => {
   try {
     const tempDir = path.join(os.tmpdir(), "pdf_temp" + company.id + dateFormatOnlyDate(documents.at(0).date));
     await fs.emptyDir(tempDir);
-    await writeAllPdfsToTempDir(tempDir, documents);
+    // await writeAllPdfsToTempDir(tempDir, documents);
     await writeAllXmlsToTempDir(tempDir, documents);
     const zipPath = path.join(
       tempDir,

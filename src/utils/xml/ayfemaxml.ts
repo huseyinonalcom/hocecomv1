@@ -2,7 +2,14 @@ import { Address, Document, DocumentProduct, Establishment, User } from "payload
 import { dateFormatOnlyDate } from "../formatters/dateformatters";
 import { addDaysToDate } from "../addtodate";
 
-export const documentToXml = (document: Document) => {
+export const documentToXml = (
+  document: Document,
+  pdf: {
+    filename: string;
+    content: Buffer;
+    contentType: string;
+  }
+) => {
   const filename = `xml_${document.type}_${document.prefix ?? ""}${document.number}.xml`;
 
   const establishment = document.establishment as Establishment;
@@ -71,6 +78,11 @@ export const documentToXml = (document: Document) => {
   <cac:AdditionalDocumentReference>
     <cbc:ID>${filename}</cbc:ID>
     <cbc:DocumentType>CommercialInvoice</cbc:DocumentType>
+    <cac:Attachment>
+      <cbc:EmbeddedDocumentBinaryObject mimeCode="application/pdf" filename="${pdf.filename}">
+      ${btoa(pdf.content.toString())}
+      </cbc:EmbeddedDocumentBinaryObject>
+  </cac:Attachment>
   </cac:AdditionalDocumentReference>
   <cac:AccountingSupplierParty>
     <cac:Party>
