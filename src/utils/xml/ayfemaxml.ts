@@ -80,7 +80,7 @@ export const documentToXml = (
     <cbc:DocumentType>CommercialInvoice</cbc:DocumentType>
     <cac:Attachment>
       <cbc:EmbeddedDocumentBinaryObject mimeCode="application/pdf" filename="${pdf.filename}">
-      ${btoa(pdf.content.toString())}
+      ${pdf.content.toString("base64")}
       </cbc:EmbeddedDocumentBinaryObject>
   </cac:Attachment>
   </cac:AdditionalDocumentReference>
