@@ -41,7 +41,7 @@ const Documents: CollectionConfig = {
               sort: "-number",
             });
 
-            const lastDocument: Document = documents.docs[0];
+            const lastDocument = documents.docs[0] as unknown as Document;
 
             const year = new Date().getFullYear().toString();
             if (!lastDocument) {
@@ -198,6 +198,25 @@ const Documents: CollectionConfig = {
         {
           label: "Credit Note",
           value: "credit_note",
+        },
+      ],
+    },
+    {
+      name: "currency",
+      type: "select",
+      defaultValue: "EUR",
+      options: [
+        {
+          label: "Euro",
+          value: "EUR",
+        },
+        {
+          label: "Turkish Lira",
+          value: "TRY",
+        },
+        {
+          label: "US Dollar",
+          value: "USD",
         },
       ],
     },
