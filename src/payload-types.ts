@@ -200,6 +200,7 @@ export interface Document {
   id: number;
   number: string;
   type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note';
+  currency?: ('EUR' | 'TRY' | 'USD') | null;
   prefix?: string | null;
   date: string;
   deliveryDate?: string | null;
