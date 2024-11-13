@@ -123,7 +123,7 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
       if (!response.ok) {
         console.error(await response.text());
       } else {
-        console.log(`Fetched ${response.json()} orders from Bol.com`);
+        console.log(`Fetched ${await response.json()} orders from Bol.com`);
         orders = orders.concat(await response.json());
       }
       
