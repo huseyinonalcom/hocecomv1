@@ -45,6 +45,7 @@ async function authenticateBolCom(clientId, clientSecret) {
     });
 
     if (!response.ok) {
+      console.error(await response.text());
       return false;
     }
 
@@ -64,6 +65,7 @@ async function authenticateBolCom(clientId, clientSecret) {
 
     return newToken.token;
   } catch (error) {
+    console.error(error);
     return false;
   }
 }
@@ -116,7 +118,7 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
     });
 
     if (!response.ok) {
-      console.error(response);
+      console.error(await response.text());
       return null;
     }
 
@@ -138,6 +140,7 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
     });
 
     if (!response.ok) {
+      console.error(await response.text());
       return null;
     }
 
