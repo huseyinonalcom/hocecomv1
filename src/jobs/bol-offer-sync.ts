@@ -110,8 +110,8 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
   try {
     let orders = [];
     let today = new Date();
-    today.setDate(today.getDate() - 14);
-    for (let i = 0; i < 14; i++) {
+    today.setDate(today.getDate() - 7);
+    for (let i = 0; i < 7; i++) {
       today.setDate(today.getDate() + 1);
       const response = await fetch(`${bolApiUrl}/orders?fulfilment-method=ALL&status=ALL&latest-change-date=${dateString(today)}&page=1`, {
         method: "GET",
