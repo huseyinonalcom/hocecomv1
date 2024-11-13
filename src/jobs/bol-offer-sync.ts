@@ -108,22 +108,31 @@ export const createDocumentsFromBolOrders = async () => {
 async function getBolComOrders(bolClientID, bolClientSecret) {
   await authenticateBolCom(bolClientID, bolClientSecret);
 
-  let today = new Date();
-  let todayString = today.toISOString().split("T")[0];
+  const dateString = (date) => date.toISOString().split("T")[0];
 
   try {
-    const response = await fetch(`${bolApiUrl}/orders?fulfilment-method=FBR&status=ALL&latest-change-date=${todayString}&page=1`, {
-      method: "GET",
-      headers: bolHeaders("json", bolClientID),
-    });
-
-    if (!response.ok) {
-      console.error(await response.text());
-      return null;
+    let orders = [];
+    let today = new Date();
+    today.setDate(today.getDate() - 14);
+    for (let i = 0; i < 14; i++) {
+      today.setDate(today.getDate() + 1);
+      const response = await fetch(
+        `${bolApiUrl}/orders?fulfilment-method=ALL&status=ALL&latest-change-date=${dateString(today)}&page=1`,
+        {
+          method: "GET",
+          headers: bolHeaders("json", bolClientID),
+        }
+      );
+      if (!response.ok) {
+        console.error(await response.text());
+      } else {
+        orders = orders.concat(await response.json());
+      }
+      // wait for a second
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    const data = await response.json();
-    return data;
+    return orders;
   } catch (error) {
     console.error(error);
     return null;
