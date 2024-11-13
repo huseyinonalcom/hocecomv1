@@ -19,7 +19,7 @@ function bolHeaders(headersType, clientId) {
     return;
   }
 
-  const contentType = headersType === "json" ? "application/vnd.retailer.v9+json" : "application/vnd.retailer.v9+csv";
+  const contentType = headersType === "json" ? "application/vnd.retailer.v11+json" : "application/vnd.retailer.v11+csv";
   return {
     "Content-Type": contentType,
     Accept: contentType,
