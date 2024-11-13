@@ -116,12 +116,14 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
     });
 
     if (!response.ok) {
+      console.error(response);
       return null;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }
@@ -142,6 +144,7 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
     const data = await response.json();
     return data;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }
@@ -395,5 +398,7 @@ const saveDocument = async (bolDoc, company) => {
         },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${company.name}</p>`,
       });
     } catch (error) {}
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
