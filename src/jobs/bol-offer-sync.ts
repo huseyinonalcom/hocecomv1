@@ -154,7 +154,6 @@ async function getBolComOrder(orderId, bolClientID, bolClientSecret) {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);
