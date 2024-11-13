@@ -89,9 +89,9 @@ export const createDocumentsFromBolOrders = async () => {
       for (let i = 0; i < companiesToSync.length; i++) {
         const currCompany = companiesToSync[i];
         getBolComOrders(currCompany.bolClientID, currCompany.bolClientSecret).then(async (orders) => {
-          if (orders && orders.orders && orders.orders.length > 0) {
-            const sortedOrders = orders.orders.sort((a, b) => new Date(a.orderPlacedDateTime).getTime() - new Date(b.orderPlacedDateTime).getTime());
-            for (let i = 0; i < orders.orders.length; i++) {
+          if (orders && orders.length > 0) {
+            const sortedOrders = orders.sort((a, b) => new Date(a.orderPlacedDateTime).getTime() - new Date(b.orderPlacedDateTime).getTime());
+            for (let i = 0; i < orders.length; i++) {
               await getBolComOrder(sortedOrders[i].orderId, currCompany.bolClientID, currCompany.bolClientSecret).then(async (orderDetails) => {
                 orderDetails && (await saveDocument(orderDetails, currCompany));
               });
