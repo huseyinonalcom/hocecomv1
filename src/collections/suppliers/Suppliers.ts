@@ -67,7 +67,7 @@ const Suppliers: CollectionConfig = {
     {
       name: "category",
       type: "text",
-      required: true,
+      required: false,
     },
     {
       name: "products",
