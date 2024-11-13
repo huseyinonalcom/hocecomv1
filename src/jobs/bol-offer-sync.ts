@@ -98,6 +98,7 @@ export const createDocumentsFromBolOrders = async () => {
                 });
               } catch (error) {
                 console.error(error);
+                console.error("Error fetching order details for orderId: ", sortedOrders[i]);
               }
             }
           }
