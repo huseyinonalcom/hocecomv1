@@ -116,13 +116,10 @@ async function getBolComOrders(bolClientID, bolClientSecret) {
     today.setDate(today.getDate() - 14);
     for (let i = 0; i < 14; i++) {
       today.setDate(today.getDate() + 1);
-      const response = await fetch(
-        `${bolApiUrl}/orders?fulfilment-method=ALL&status=ALL&latest-change-date=${dateString(today)}&page=1`,
-        {
-          method: "GET",
-          headers: bolHeaders("json", bolClientID),
-        }
-      );
+      const response = await fetch(`${bolApiUrl}/orders?fulfilment-method=ALL&status=ALL&latest-change-date=${dateString(today)}&page=1`, {
+        method: "GET",
+        headers: bolHeaders("json", bolClientID),
+      });
       if (!response.ok) {
         console.error(await response.text());
       } else {
@@ -200,7 +197,7 @@ const saveDocument = async (bolDoc, company) => {
     let docAddress = null;
     let delAddress = null;
 
-    const tramsformEmail = (email) => {
+    const transformEmail = (email) => {
       let parts = email.split("@");
       let localPart = parts[0].split("+")[0];
       let domainPart = parts[1];
@@ -213,7 +210,7 @@ const saveDocument = async (bolDoc, company) => {
       collection: "users",
       where: {
         email: {
-          equals: tramsformEmail(bolDoc.billingDetails.email),
+          equals: transformEmail(bolDoc.billingDetails.email),
         },
       },
     });
@@ -400,7 +397,7 @@ const saveDocument = async (bolDoc, company) => {
 
     try {
       const customer = document.customer as unknown as User;
-      await sendMail({
+      sendMail({
         recipient: "huseyin-_-onal@hotmail.com",
         subject: `Bestelling ${document.prefix ?? ""}${document.number}`,
         company: company,
