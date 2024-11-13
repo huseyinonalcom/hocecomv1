@@ -25,7 +25,11 @@ const start = async () => {
   app.listen(3421);
 
   console.log("Running Cron Job for Bol Orders");
-  await createDocumentsFromBolOrders();
+  try {
+    await createDocumentsFromBolOrders();
+  } catch (error) {
+    console.error("Error running cron job", error);
+  }
   console.log("Finished Cron Job for Bol Orders");
 
   cron.schedule("*/5 * * * *", async () => {
