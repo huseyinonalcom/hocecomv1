@@ -32,8 +32,6 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
       overrideAccess: true,
     });
 
-    console.log(JSON.stringify(ordersToSort.docs));
-
     if (ordersToSort.docs.length > 0) {
       let numbers = ordersToSort.docs.map((order) => Number(order.number));
       numbers.sort();
@@ -52,9 +50,11 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
       for (let i = 0; i < ordersToSort.docs.length; i++) {
         newOrders.push({
           id: ordersToSort.docs[i].id,
+          date: ordersToSort.docs[i].date,
           number: numbers[i],
         });
       }
+      console.log(JSON.stringify(newOrders));
       for (let order of newOrders) {
         await payload.update({
           collection: "documents",
