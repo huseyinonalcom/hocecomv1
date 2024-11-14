@@ -66,7 +66,10 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
           return 0;
         }
       });
-      console.log(ordersToSort.docs);
+      console.log(ordersToSort.docs.map((order) => order.number));
+      console.log(numbers);
+      console.log(ordersToSort.docs.map((order) => order.date));
+      console.log(ordersToSort.docs.map((order) => order.time));
       //   for (let order of ordersToSort.docs) {
       //     await payload.update({
       //       collection: "documents",
