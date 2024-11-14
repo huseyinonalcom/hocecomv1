@@ -64,7 +64,7 @@ const Documents: CollectionConfig = {
     beforeOperation: [
       ({ operation, args }) => {
         if (operation == "read") {
-          if (args.req.query.sort.date == "desc") {
+          if (args.req.query?.sort?.date == "desc") {
             delete args.req.query.sort.date;
           }
         }
