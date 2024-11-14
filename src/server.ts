@@ -27,7 +27,7 @@ const start = async () => {
 
   try {
     fixOrder({
-      firstOrderID: "15284",
+      firstOrderID: "15226",
       lastOrderID: "15455",
       company: "3",
       type: "invoice",
