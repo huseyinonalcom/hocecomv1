@@ -66,10 +66,20 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
           return 0;
         }
       });
-      console.log(ordersToSort.docs.map((order) => order.number));
-      console.log(numbers);
-      console.log(ordersToSort.docs.map((order) => order.date));
-      console.log(ordersToSort.docs.map((order) => order.time));
+      console.log(
+        ordersToSort.docs.map((order) => {
+          order.number, order.date, order.date;
+        })
+      );
+      let newOrders = [];
+      for (let i = 0; i < ordersToSort.docs.length; i++) {
+        newOrders.push({
+          date: ordersToSort.docs[i].date,
+          number: numbers[i],
+          time: ordersToSort.docs[i].time,
+        });
+      }
+      console.log(newOrders);
       //   for (let order of ordersToSort.docs) {
       //     await payload.update({
       //       collection: "documents",
