@@ -65,16 +65,15 @@ const Documents: CollectionConfig = {
     beforeOperation: [
       async ({ operation, args, req }) => {
         if (operation == "read") {
-          console.log("args", args);
-          req.query.sort = "-date";
+          req.query.sort = "-number";
           return {
             ...args,
-            sort: "-date",
+            sort: "-number",
             req: {
               ...args.req,
               query: {
                 ...args.req.query,
-                sort: "-date",
+                sort: "-number",
               },
             },
           };
