@@ -34,6 +34,7 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
 
     if (ordersToSort.docs.length > 0) {
       let numbers = ordersToSort.docs.map((order) => Number(order.number));
+      numbers.sort();
       numbers.reverse();
 
       ordersToSort.docs.sort((a, b) => {
