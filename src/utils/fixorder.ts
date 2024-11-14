@@ -34,16 +34,16 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
 
     if (ordersToSort.docs.length > 0) {
       console.log(ordersToSort);
-      for (let order of ordersToSort.docs) {
-        await payload.update({
-          collection: "documents",
-          id: order.id,
-          data: {
-            number: order.number,
-          },
-          overrideAccess: true,
-        });
-      }
+    //   for (let order of ordersToSort.docs) {
+    //     await payload.update({
+    //       collection: "documents",
+    //       id: order.id,
+    //       data: {
+    //         number: order.number,
+    //       },
+    //       overrideAccess: true,
+    //     });
+    //   }
     }
   } catch (error) {
     console.error(error);
