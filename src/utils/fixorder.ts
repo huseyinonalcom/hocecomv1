@@ -37,8 +37,20 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
       numbers.reverse();
 
       ordersToSort.docs.sort((a, b) => {
-        const timeA = a.time || a.createdAt || "00:00:00";
-        const timeB = b.time || b.createdAt || "00:00:00";
+        let timeA = a.time || a.createdAt || "00:00:00";
+        let timeB = b.time || b.createdAt || "00:00:00";
+
+        if (a.time) {
+          timeA = a.time;
+        } else if (a.createdAt) {
+          timeA = a.createdAt.split("T")[1];
+        }
+
+        if (b.time) {
+          timeB = b.time;
+        } else if (b.createdAt) {
+          timeB = b.createdAt.split("T")[1];
+        }
 
         const dateA = new Date(`1970-01-01T${timeA}Z`);
         const dateB = new Date(`1970-01-01T${timeB}Z`);
