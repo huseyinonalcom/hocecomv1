@@ -62,7 +62,7 @@ const Documents: CollectionConfig = {
     ],
     afterChange: [sendDocumentMail],
     beforeOperation: [
-      ({ operation, args }) => {
+      async ({ operation, args }) => {
         if (operation == "read") {
           return {
             ...args,
