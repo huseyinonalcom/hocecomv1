@@ -29,7 +29,7 @@ const start = async () => {
     collection: "documents",
     id: "15457",
     data: {
-    number: "20240000009",  
+      number: "20240000009",
     },
     overrideAccess: true,
   });
