@@ -33,21 +33,16 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
     });
 
     if (ordersToSort.docs.length > 0) {
-      console.log(ordersToSort);
-      // take all the numbers into an array
       let numbers = ordersToSort.docs.map((order) => Number(order.number));
       numbers.reverse();
-      // sort ordersToSort on time, time can be null, in that case treat null as 00:00:00
 
       ordersToSort.docs.sort((a, b) => {
         const timeA = a.time || "00:00:00";
         const timeB = b.time || "00:00:00";
 
-        // Convert time strings to Date objects for comparison
         const dateA = new Date(`1970-01-01T${timeA}Z`);
         const dateB = new Date(`1970-01-01T${timeB}Z`);
 
-        // Compare the dates
         if (dateA > dateB) {
           return 1;
         } else if (dateA < dateB) {
@@ -66,30 +61,23 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
           return 0;
         }
       });
-      console.log(
-        ordersToSort.docs.map((order) => {
-          order.number, order.date, order.date;
-        })
-      );
       let newOrders = [];
       for (let i = 0; i < ordersToSort.docs.length; i++) {
         newOrders.push({
-          date: ordersToSort.docs[i].date,
+          id: ordersToSort.docs[i].id,
           number: numbers[i],
-          time: ordersToSort.docs[i].time,
         });
       }
-      console.log(newOrders);
-      //   for (let order of ordersToSort.docs) {
-      //     await payload.update({
-      //       collection: "documents",
-      //       id: order.id,
-      //       data: {
-      //         number: order.number,
-      //       },
-      //       overrideAccess: true,
-      //     });
-      //   }
+      for (let order of newOrders) {
+        await payload.update({
+          collection: "documents",
+          id: order.id,
+          data: {
+            number: order.number.toFixed(0),
+          },
+          overrideAccess: true,
+        });
+      }
     }
   } catch (error) {
     console.error(error);
