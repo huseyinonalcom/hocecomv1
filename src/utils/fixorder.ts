@@ -36,7 +36,7 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
       console.log(ordersToSort);
       // take all the numbers into an array
       let numbers = ordersToSort.docs.map((order) => Number(order.number));
-
+      numbers.reverse();
       // sort ordersToSort on time, time can be null, in that case treat null as 00:00:00
 
       ordersToSort.docs.sort((a, b) => {
