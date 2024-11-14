@@ -34,16 +34,21 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
 
     if (ordersToSort.docs.length > 0) {
       console.log(ordersToSort);
-    //   for (let order of ordersToSort.docs) {
-    //     await payload.update({
-    //       collection: "documents",
-    //       id: order.id,
-    //       data: {
-    //         number: order.number,
-    //       },
-    //       overrideAccess: true,
-    //     });
-    //   }
+      // take all the numbers into an array
+      let numbers = ordersToSort.docs.map((order) => Number(order.number));
+
+      // sort ordersToSort on date and time (date is the day with time set to 0 and time is just the time)
+
+      //   for (let order of ordersToSort.docs) {
+      //     await payload.update({
+      //       collection: "documents",
+      //       id: order.id,
+      //       data: {
+      //         number: order.number,
+      //       },
+      //       overrideAccess: true,
+      //     });
+      //   }
     }
   } catch (error) {
     console.error(error);

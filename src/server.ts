@@ -25,11 +25,20 @@ const start = async () => {
 
   app.listen(3421);
 
+  payload.update({
+    collection: "documents",
+    id: "15457",
+    data: {
+    number: "20240000009",  
+    },
+    overrideAccess: true,
+  });
+
   try {
     fixOrder({
-      firstOrderID: "15456",
-      lastOrderID: "15457",
-      company: "7",
+      firstOrderID: "15284",
+      lastOrderID: "15455",
+      company: "3",
       type: "quote",
     });
   } catch (error) {
