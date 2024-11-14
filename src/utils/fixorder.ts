@@ -32,11 +32,13 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
       overrideAccess: true,
     });
 
+    console.log(JSON.stringify(ordersToSort.docs));
+
     if (ordersToSort.docs.length > 0) {
       let numbers = ordersToSort.docs.map((order) => Number(order.number));
       numbers.sort();
-      console.log(numbers);
       ordersToSort.docs.sort((a, b) => {
+        console.log(a.date, b.date);
         if (a.date > b.date) {
           return 1;
         } else if (a.date < b.date) {
