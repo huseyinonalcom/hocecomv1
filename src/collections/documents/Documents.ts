@@ -61,6 +61,11 @@ const Documents: CollectionConfig = {
       },
     ],
     afterChange: [sendDocumentMail],
+    beforeRead: [
+      async ({ req }) => {
+       console.log(req.query);
+      },
+    ],
   },
   endpoints: [
     {
