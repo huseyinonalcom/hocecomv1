@@ -61,10 +61,12 @@ const Documents: CollectionConfig = {
       },
     ],
     afterChange: [sendDocumentMail],
-    beforeRead: [
-      (args) => {
-        if (args.req.query.sort.date == "desc") {
-          delete args.req.query.sort.date;
+    beforeOperation: [
+      ({ operation, args }) => {
+        if (operation == "read") {
+          if (args.req.query.sort.date == "desc") {
+            delete args.req.query.sort.date;
+          }
         }
         return args;
       },
