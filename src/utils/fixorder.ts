@@ -96,5 +96,6 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
     return false;
   }
 
+  console.log("Finished fixing order");
   return true;
 };
