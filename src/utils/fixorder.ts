@@ -37,8 +37,8 @@ export const fixOrder = async ({ firstOrderID, lastOrderID, company, type }: { f
       numbers.reverse();
 
       ordersToSort.docs.sort((a, b) => {
-        const timeA = a.time || "00:00:00";
-        const timeB = b.time || "00:00:00";
+        const timeA = a.time || a.createdAt || "00:00:00";
+        const timeB = b.time || b.createdAt || "00:00:00";
 
         const dateA = new Date(`1970-01-01T${timeA}Z`);
         const dateB = new Date(`1970-01-01T${timeB}Z`);
