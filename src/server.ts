@@ -3,6 +3,7 @@ import payload from "payload";
 import { createDocumentsFromBolOrders } from "./jobs/bol-offer-sync";
 import { bulkSendDocuments } from "./jobs/bulkdocumentsenderstart";
 import { Company } from "./payload-types";
+import { fixOrder } from "./utils/fixorder";
 
 require("dotenv").config();
 const app = express();
@@ -24,13 +25,16 @@ const start = async () => {
 
   app.listen(3421);
 
-  console.log("Running Cron Job for Bol Orders");
   try {
-    await createDocumentsFromBolOrders();
+    fixOrder({
+      firstOrderID: "15456",
+      lastOrderID: "15457",
+      company: "7",
+      type: "quote",
+    });
   } catch (error) {
-    console.error("Error running cron job", error);
+    console.error("Error fixing doc order", error);
   }
-  console.log("Finished Cron Job for Bol Orders");
 
   cron.schedule("*/5 * * * *", async () => {
     try {
