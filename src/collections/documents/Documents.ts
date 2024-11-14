@@ -64,9 +64,17 @@ const Documents: CollectionConfig = {
     beforeOperation: [
       ({ operation, args }) => {
         if (operation == "read") {
-          args.req.query.sort = "-date";
+          return {
+            ...args,
+            req: {
+              ...args.req,
+              query: {
+                ...args.req.query,
+                sort: "-date",
+              },
+            },
+          };
         }
-        return args;
       },
     ],
   },
