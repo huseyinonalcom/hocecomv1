@@ -3,7 +3,6 @@ import payload from "payload";
 import { createDocumentsFromBolOrders } from "./jobs/bol-offer-sync";
 import { bulkSendDocuments } from "./jobs/bulkdocumentsenderstart";
 import { Company } from "./payload-types";
-import { fixOrder } from "./utils/fixorder";
 
 require("dotenv").config();
 const app = express();
@@ -25,16 +24,16 @@ const start = async () => {
 
   app.listen(3421);
 
-  try {
-    fixOrder({
-      firstOrderID: "15226",
-      lastOrderID: "15455",
-      company: "3",
-      type: "invoice",
-    });
-  } catch (error) {
-    console.error("Error fixing doc order", error);
-  }
+  // try {
+  //   fixOrder({
+  //     firstOrderID: "15226",
+  //     lastOrderID: "15455",
+  //     company: "3",
+  //     type: "invoice",
+  //   });
+  // } catch (error) {
+  //   console.error("Error fixing doc order", error);
+  // }
 
   cron.schedule("*/5 * * * *", async () => {
     try {

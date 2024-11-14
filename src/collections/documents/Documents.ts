@@ -61,9 +61,11 @@ const Documents: CollectionConfig = {
       },
     ],
     afterChange: [sendDocumentMail],
+
     beforeOperation: [
       async ({ operation, args, req }) => {
         if (operation == "read") {
+          console.log("args", args);
           req.query.sort = "-date";
           return {
             ...args,
