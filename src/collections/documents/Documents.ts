@@ -61,6 +61,16 @@ const Documents: CollectionConfig = {
       },
     ],
     afterChange: [sendDocumentMail],
+    beforeOperation: [
+      ({ operation, args }) => {
+        if (operation == "read") {
+          if (args.req.query?.sort?.number == "desc" && args.req.query?.sort?.date == "desc") {
+            delete args.req.query.sort.number;
+          }
+        }
+        return args;
+      },
+    ],
   },
   endpoints: [
     {
