@@ -69,6 +69,7 @@ const Documents: CollectionConfig = {
           req.query.sort = "-date";
           return {
             ...args,
+            sort: "-date",
             req: {
               ...args.req,
               query: {
