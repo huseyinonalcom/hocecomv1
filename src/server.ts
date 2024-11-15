@@ -1,8 +1,8 @@
-import express from "express";
-import payload from "payload";
 import { createDocumentsFromBolOrders } from "./jobs/bol-offer-sync";
 import { bulkSendDocuments } from "./jobs/bulkdocumentsenderstart";
 import { Company } from "./payload-types";
+import express from "express";
+import payload from "payload";
 
 require("dotenv").config();
 const app = express();
@@ -22,61 +22,61 @@ const start = async () => {
     },
   });
 
-  try {
-    let companiesWithMonthlyReportsActive = (
-      await payload.find({
-        collection: "companies",
-        limit: 200,
-        depth: 1,
-        where: {
-          monthlyReports: {
-            equals: true,
-          },
-        },
-      })
-    ).docs;
-    let currentYear = new Date().getFullYear();
-    for (let company of companiesWithMonthlyReportsActive) {
-      bulkSendDocuments({
-        companyID: (company as unknown as Company).id,
-        docTypes: ["invoice", "credit_note"],
-        month: new Date().getMonth(), // last month
-        year: currentYear, // Current year
-      });
-      bulkSendDocuments({
-        companyID: (company as unknown as Company).id,
-        docTypes: ["invoice", "credit_note"],
-        month: new Date().getMonth() - 1, // last month
-        year: currentYear, // Current year
-      });
-      bulkSendDocuments({
-        companyID: (company as unknown as Company).id,
-        docTypes: ["invoice", "credit_note"],
-        month: new Date().getMonth() - 2, // last month
-        year: currentYear, // Current year
-      });
-      bulkSendDocuments({
-        companyID: (company as unknown as Company).id,
-        docTypes: ["invoice", "credit_note"],
-        month: new Date().getMonth() - 3, // last month
-        year: currentYear, // Current year
-      });
-      bulkSendDocuments({
-        companyID: (company as unknown as Company).id,
-        docTypes: ["invoice", "credit_note"],
-        month: new Date().getMonth() - 4, // last month
-        year: currentYear, // Current year
-      });
-      bulkSendDocuments({
-        companyID: (company as unknown as Company).id,
-        docTypes: ["invoice", "credit_note"],
-        month: new Date().getMonth() - 5, // last month
-        year: currentYear, // Current year
-      });
-    }
-  } catch (error) {
-    console.error("Error starting bulk document sender", error);
-  }
+  // try {
+  //   let companiesWithMonthlyReportsActive = (
+  //     await payload.find({
+  //       collection: "companies",
+  //       limit: 200,
+  //       depth: 1,
+  //       where: {
+  //         monthlyReports: {
+  //           equals: true,
+  //         },
+  //       },
+  //     })
+  //   ).docs;
+  //   let currentYear = new Date().getFullYear();
+  //   for (let company of companiesWithMonthlyReportsActive) {
+  //     bulkSendDocuments({
+  //       companyID: (company as unknown as Company).id,
+  //       docTypes: ["invoice", "credit_note"],
+  //       month: new Date().getMonth(), // last month
+  //       year: currentYear, // Current year
+  //     });
+  //     bulkSendDocuments({
+  //       companyID: (company as unknown as Company).id,
+  //       docTypes: ["invoice", "credit_note"],
+  //       month: new Date().getMonth() - 1, // last month
+  //       year: currentYear, // Current year
+  //     });
+  //     bulkSendDocuments({
+  //       companyID: (company as unknown as Company).id,
+  //       docTypes: ["invoice", "credit_note"],
+  //       month: new Date().getMonth() - 2, // last month
+  //       year: currentYear, // Current year
+  //     });
+  //     bulkSendDocuments({
+  //       companyID: (company as unknown as Company).id,
+  //       docTypes: ["invoice", "credit_note"],
+  //       month: new Date().getMonth() - 3, // last month
+  //       year: currentYear, // Current year
+  //     });
+  //     bulkSendDocuments({
+  //       companyID: (company as unknown as Company).id,
+  //       docTypes: ["invoice", "credit_note"],
+  //       month: new Date().getMonth() - 4, // last month
+  //       year: currentYear, // Current year
+  //     });
+  //     bulkSendDocuments({
+  //       companyID: (company as unknown as Company).id,
+  //       docTypes: ["invoice", "credit_note"],
+  //       month: new Date().getMonth() - 5, // last month
+  //       year: currentYear, // Current year
+  //     });
+  //   }
+  // } catch (error) {
+  //   console.error("Error starting bulk document sender", error);
+  // }
 
   app.listen(3421);
 
