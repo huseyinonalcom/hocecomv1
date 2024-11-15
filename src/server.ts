@@ -22,56 +22,6 @@ const start = async () => {
     },
   });
 
-  app.listen(3421);
-
-  // try {
-  //   fixOrder({
-  //     firstOrderID: "15226",
-  //     lastOrderID: "15455",
-  //     company: "3",
-  //     type: "invoice",
-  //   });
-  // } catch (error) {
-  //   console.error("Error fixing doc order", error);
-  // }
-
-  cron.schedule("*/5 * * * *", async () => {
-    try {
-      console.log("Running Cron Job for Bol Orders");
-      createDocumentsFromBolOrders();
-    } catch (error) {
-      console.error("Error running cron job", error);
-    }
-  });
-
-  cron.schedule("0 0 2 * *", async () => {
-    try {
-      let companiesWithMonthlyReportsActive = (
-        await payload.find({
-          collection: "companies",
-          limit: 200,
-          depth: 1,
-          where: {
-            monthlyReports: {
-              equals: true,
-            },
-          },
-        })
-      ).docs;
-      let currentYear = new Date().getFullYear();
-      for (let company of companiesWithMonthlyReportsActive) {
-        bulkSendDocuments({
-          companyID: (company as unknown as Company).id,
-          docTypes: ["invoice", "credit_note"],
-          month: new Date().getMonth(), // last month
-          year: currentYear, // Current year
-        });
-      }
-    } catch (error) {
-      console.error("Error starting bulk document sender", error);
-    }
-  });
-
   try {
     let companiesWithMonthlyReportsActive = (
       await payload.find({
@@ -127,6 +77,56 @@ const start = async () => {
   } catch (error) {
     console.error("Error starting bulk document sender", error);
   }
+
+  app.listen(3421);
+
+  // try {
+  //   fixOrder({
+  //     firstOrderID: "15226",
+  //     lastOrderID: "15455",
+  //     company: "3",
+  //     type: "invoice",
+  //   });
+  // } catch (error) {
+  //   console.error("Error fixing doc order", error);
+  // }
+
+  cron.schedule("*/5 * * * *", async () => {
+    try {
+      console.log("Running Cron Job for Bol Orders");
+      createDocumentsFromBolOrders();
+    } catch (error) {
+      console.error("Error running cron job", error);
+    }
+  });
+
+  cron.schedule("0 0 2 * *", async () => {
+    try {
+      let companiesWithMonthlyReportsActive = (
+        await payload.find({
+          collection: "companies",
+          limit: 200,
+          depth: 1,
+          where: {
+            monthlyReports: {
+              equals: true,
+            },
+          },
+        })
+      ).docs;
+      let currentYear = new Date().getFullYear();
+      for (let company of companiesWithMonthlyReportsActive) {
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth(), // last month
+          year: currentYear, // Current year
+        });
+      }
+    } catch (error) {
+      console.error("Error starting bulk document sender", error);
+    }
+  });
 
   // Add your own express routes here
 };
