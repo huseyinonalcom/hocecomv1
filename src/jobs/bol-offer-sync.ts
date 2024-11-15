@@ -72,7 +72,7 @@ async function authenticateBolCom(clientId, clientSecret) {
 
 export const createDocumentsFromBolOrders = async () => {
   companiesToSync = [];
-  payload
+  await payload
     .find({
       overrideAccess: true,
       collection: "companies",
@@ -105,6 +105,7 @@ export const createDocumentsFromBolOrders = async () => {
         });
       }
     });
+  console.log("Finished Cron Job for Bol Orders");
 };
 
 async function getBolComOrders(bolClientID, bolClientSecret) {

@@ -54,6 +54,7 @@ const Documents: CollectionConfig = {
               data.number = year + (Number(lastDocument.number.slice(4)) + 1).toString().padStart(7, "0");
             }
           } catch (error) {
+            console.error("Error getting last document", error);
             const year = new Date().getFullYear().toString();
             data.number = year + "0000001";
           }
