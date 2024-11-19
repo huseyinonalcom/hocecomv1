@@ -20,22 +20,22 @@ export const documentToXml = (
   let taxRates = [];
 
   documentProducts.forEach((product) => {
-    if (!taxRates.includes(product.tax)) {
-      taxRates.push(product.tax);
+    if (!taxRates.includes(Number(product.tax))) {
+      taxRates.push(Number(product.tax));
     }
   });
 
   taxRates = taxRates.map((tax) => {
     const totalBeforeTax = documentProducts.reduce((acc, product) => {
       if (product.tax === tax) {
-        return acc + product.subTotal / (1 + product.tax / 100);
+        return acc + Number(product.subTotal) / (1 + Number(product.tax) / 100);
       }
       return acc;
     }, 0);
 
     const totalTax = documentProducts.reduce((acc, product) => {
       if (product.tax === tax) {
-        return acc + product.subTotal - product.subTotal / (1 + product.tax / 100);
+        return acc + Number(product.subTotal) - Number(product.subTotal) / (1 + Number(product.tax) / 100);
       }
       return acc;
     }, 0);
@@ -47,10 +47,10 @@ export const documentToXml = (
     };
   });
 
-  const totalTax = taxRates.reduce((acc, taxRate) => acc + taxRate.totalTax, 0);
+  const totalTax = Number(taxRates.reduce((acc, taxRate) => acc + taxRate.totalTax, 0));
 
-  const total = documentProducts.reduce((acc, product) => acc + product.subTotal, 0);
-  const totalBeforeTax = total - totalTax;
+  const total = Number(documentProducts.reduce((acc, product) => acc + product.subTotal, 0));
+  const totalBeforeTax = Number(total) - Number(totalTax);
 
   const taxIDCleaned = establishment.taxID.replace("BE", "").replaceAll(".", "").trim();
 
@@ -157,10 +157,10 @@ export const documentToXml = (
   </cac:PaymentMeans>
   ${taxRates.map((taxRate) => {
     return `<cac:TaxTotal>
-    <cbc:TaxAmount currencyID="EUR">${taxRate.totalTax.toFixed(2)}</cbc:TaxAmount>
+    <cbc:TaxAmount currencyID="EUR">${Number(taxRate.totalTax).toFixed(2)}</cbc:TaxAmount>
     <cac:TaxSubtotal>
-      <cbc:TaxableAmount currencyID="EUR">${taxRate.totalBeforeTax.toFixed(2)}</cbc:TaxableAmount>
-      <cbc:TaxAmount currencyID="EUR">${taxRate.totalTax.toFixed(2)}</cbc:TaxAmount>
+      <cbc:TaxableAmount currencyID="EUR">${Number(taxRate.totalBeforeTax).toFixed(2)}</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="EUR">${Number(taxRate.totalTax).toFixed(2)}</cbc:TaxAmount>
       <cbc:Percent>${taxRate.rate}</cbc:Percent>
       <cac:TaxCategory>
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
@@ -172,28 +172,28 @@ export const documentToXml = (
     </cac:TaxTotal>`;
   })}
   <cac:LegalMonetaryTotal>
-    <cbc:LineExtensionAmount currencyID="EUR">${totalBeforeTax.toFixed(2)}</cbc:LineExtensionAmount>
-    <cbc:TaxExclusiveAmount currencyID="EUR">${totalBeforeTax.toFixed(2)}</cbc:TaxExclusiveAmount>
+    <cbc:LineExtensionAmount currencyID="EUR">${Number(totalBeforeTax).toFixed(2)}</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="EUR">${Number(totalBeforeTax).toFixed(2)}</cbc:TaxExclusiveAmount>
     <cbc:TaxInclusiveAmount currencyID="EUR">${Number(total).toFixed(2)}</cbc:TaxInclusiveAmount>
     <cbc:PayableAmount currencyID="EUR">${Number(total).toFixed(2)}</cbc:PayableAmount>
   </cac:LegalMonetaryTotal>
   ${documentProducts.map((docProd, i) => {
-    let taxAmount = docProd.subTotal - docProd.subTotal / (1 + docProd.tax / 100);
+    let taxAmount = Number(docProd.subTotal) - Number(docProd.subTotal) / (1 + Number(docProd.tax) / 100);
     return `<cac:InvoiceLine>
     <cbc:ID>${i + 1}</cbc:ID>
     <cbc:Note>${docProd.name}</cbc:Note>
-    <cbc:InvoicedQuantity>${docProd.amount}</cbc:InvoicedQuantity>
-    <cbc:LineExtensionAmount currencyID="EUR">${(docProd.subTotal - taxAmount).toFixed(2)}</cbc:LineExtensionAmount>
+    <cbc:InvoicedQuantity>${Number(docProd.amount)}</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="EUR">${(Number(docProd.subTotal) - Number(taxAmount)).toFixed(2)}</cbc:LineExtensionAmount>
     <cac:TaxTotal>
-      <cbc:TaxAmount currencyID="EUR">${taxAmount.toFixed(2)}</cbc:TaxAmount>
+      <cbc:TaxAmount currencyID="EUR">${Number(taxAmount).toFixed(2)}</cbc:TaxAmount>
       <cac:TaxSubtotal>
-        <cbc:TaxableAmount currencyID="EUR">${(docProd.subTotal - taxAmount).toFixed(2)}</cbc:TaxableAmount>
-        <cbc:TaxAmount currencyID="EUR">${taxAmount.toFixed(2)}</cbc:TaxAmount>
-        <cbc:Percent>${docProd.tax}</cbc:Percent>
+        <cbc:TaxableAmount currencyID="EUR">${(Number(docProd.subTotal) - Number(taxAmount)).toFixed(2)}</cbc:TaxableAmount>        
+        <cbc:TaxAmount currencyID="EUR">${Number(taxAmount).toFixed(2)}</cbc:TaxAmount>   
+        <cbc:Percent>${Number(docProd.tax)}</cbc:Percent>   
         <cac:TaxCategory>
           <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
           <cbc:Name>OSS-S</cbc:Name>
-          <cbc:Percent>${docProd.tax}</cbc:Percent>
+          <cbc:Percent>${Number(docProd.tax)}</cbc:Percent>
         <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
         </cac:TaxCategory>
       </cac:TaxSubtotal>
@@ -203,7 +203,7 @@ export const documentToXml = (
       <cac:ClassifiedTaxCategory>
         <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
         <cbc:Name>OSS-S</cbc:Name>
-        <cbc:Percent>${docProd.tax}</cbc:Percent>        
+        <cbc:Percent>${Number(docProd.tax)}</cbc:Percent>
         <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
       </cac:ClassifiedTaxCategory>
     </cac:Item>
