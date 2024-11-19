@@ -53,15 +53,19 @@ export const documentToXml = (
   const totalBeforeTax = Number(total) - Number(totalTax);
 
   if (isNaN(totalBeforeTax)) {
-    console.error("error document: ", document.number, {
-      values: {
-        total,
-        totalBeforeTax,
-        totalTax,
-        taxRates,
-        documentProducts,
-      },
-    });
+    console.error(
+      "error document: ",
+      document.number,
+      JSON.stringify({
+        values: {
+          total,
+          totalBeforeTax,
+          totalTax,
+          taxRates,
+          documentProducts,
+        },
+      })
+    );
   }
 
   const taxIDCleaned = establishment.taxID.replace("BE", "").replaceAll(".", "").trim();
