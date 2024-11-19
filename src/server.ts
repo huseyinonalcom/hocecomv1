@@ -3,6 +3,7 @@ import { bulkSendDocuments } from "./jobs/bulkdocumentsenderstart";
 import { Company } from "./payload-types";
 import express from "express";
 import payload from "payload";
+import { fixOrder } from "./utils/fixorder";
 
 require("dotenv").config();
 const app = express();
@@ -22,74 +23,77 @@ const start = async () => {
     },
   });
 
-  // try {
-  //   let companiesWithMonthlyReportsActive = (
-  //     await payload.find({
-  //       collection: "companies",
-  //       limit: 200,
-  //       depth: 1,
-  //       where: {
-  //         monthlyReports: {
-  //           equals: true,
-  //         },
-  //       },
-  //     })
-  //   ).docs;
-  //   let currentYear = new Date().getFullYear();
-  //   for (let company of companiesWithMonthlyReportsActive) {
-  //     bulkSendDocuments({
-  //       companyID: (company as unknown as Company).id,
-  //       docTypes: ["invoice", "credit_note"],
-  //       month: new Date().getMonth(), // last month
-  //       year: currentYear, // Current year
-  //     });
-  //     bulkSendDocuments({
-  //       companyID: (company as unknown as Company).id,
-  //       docTypes: ["invoice", "credit_note"],
-  //       month: new Date().getMonth() - 1, // last month
-  //       year: currentYear, // Current year
-  //     });
-  //     bulkSendDocuments({
-  //       companyID: (company as unknown as Company).id,
-  //       docTypes: ["invoice", "credit_note"],
-  //       month: new Date().getMonth() - 2, // last month
-  //       year: currentYear, // Current year
-  //     });
-  //     bulkSendDocuments({
-  //       companyID: (company as unknown as Company).id,
-  //       docTypes: ["invoice", "credit_note"],
-  //       month: new Date().getMonth() - 3, // last month
-  //       year: currentYear, // Current year
-  //     });
-  //     bulkSendDocuments({
-  //       companyID: (company as unknown as Company).id,
-  //       docTypes: ["invoice", "credit_note"],
-  //       month: new Date().getMonth() - 4, // last month
-  //       year: currentYear, // Current year
-  //     });
-  //     bulkSendDocuments({
-  //       companyID: (company as unknown as Company).id,
-  //       docTypes: ["invoice", "credit_note"],
-  //       month: new Date().getMonth() - 5, // last month
-  //       year: currentYear, // Current year
-  //     });
-  //   }
-  // } catch (error) {
-  //   console.error("Error starting bulk document sender", error);
-  // }
+  if (process.env.FORCE_INVOICE_ON_STARTUP === "true") {
+    try {
+      let companiesWithMonthlyReportsActive = (
+        await payload.find({
+          collection: "companies",
+          limit: 200,
+          depth: 1,
+          where: {
+            monthlyReports: {
+              equals: true,
+            },
+          },
+        })
+      ).docs;
+      let currentYear = new Date().getFullYear();
+      for (let company of companiesWithMonthlyReportsActive) {
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth(), // last month
+          year: currentYear, // Current year
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 1, // last month
+          year: currentYear, // Current year
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 2, // last month
+          year: currentYear, // Current year
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 3, // last month
+          year: currentYear, // Current year
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 4, // last month
+          year: currentYear, // Current year
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 5, // last month
+          year: currentYear, // Current year
+        });
+      }
+    } catch (error) {
+      console.error("Error starting bulk document sender", error);
+    }
+  }
 
   app.listen(3421);
-
-  // try {
-  //   fixOrder({
-  //     firstOrderID: "15226",
-  //     lastOrderID: "15455",
-  //     company: "3",
-  //     type: "invoice",
-  //   });
-  // } catch (error) {
-  //   console.error("Error fixing doc order", error);
-  // }
+  if (process.env.FIX_ORDER === "true" && process.env.FIX_ORDER_COMPANY && process.env.FIRST && process.env.LAST) {
+    try {
+      fixOrder({
+        firstOrderID: process.env.FIRST,
+        lastOrderID: process.env.LAST,
+        company: process.env.FIX_ORDER_COMPANY,
+        type: "invoice",
+      });
+    } catch (error) {
+      console.error("Error fixing doc order", error);
+    }
+  }
 
   cron.schedule("*/5 * * * *", async () => {
     try {
