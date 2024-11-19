@@ -52,6 +52,10 @@ export const documentToXml = (
   const total = Number(documentProducts.reduce((acc, product) => acc + product.subTotal, 0));
   const totalBeforeTax = Number(total) - Number(totalTax);
 
+  if (isNaN(totalBeforeTax)) {
+    console.error("error document: ", document.number);
+  }
+
   const taxIDCleaned = establishment.taxID.replace("BE", "").replaceAll(".", "").trim();
 
   const content = `<?xml version="1.0" encoding="utf-8"?>
