@@ -15,57 +15,68 @@ export const documentToXml = (
   const establishment = document.establishment as Establishment;
   const customer = document.customer as User;
   const docAddress = document.docAddress as Address;
+
+  // Convert string values to numbers consistently
   const documentProducts = document.documentProducts as DocumentProduct[];
 
   let taxRates = [];
 
+  // First collect unique tax rates
   documentProducts.forEach((product) => {
     if (!taxRates.includes(Number(product.tax))) {
       taxRates.push(Number(product.tax));
     }
   });
 
+  // Calculate totals with explicit number conversion
   taxRates = taxRates.map((tax) => {
     const totalBeforeTax = documentProducts.reduce((acc, product) => {
-      if (product.tax === tax) {
-        return acc + Number(product.subTotal) / (1 + Number(product.tax) / 100);
+      if (Number(product.tax) === tax) {
+        const subTotal = Number(product.subTotal);
+        return acc + subTotal / (1 + tax / 100);
       }
       return acc;
     }, 0);
 
     const totalTax = documentProducts.reduce((acc, product) => {
-      if (product.tax === tax) {
-        return acc + Number(product.subTotal) - Number(product.subTotal) / (1 + Number(product.tax) / 100);
+      if (Number(product.tax) === tax) {
+        const subTotal = Number(product.subTotal);
+        const beforeTax = subTotal / (1 + tax / 100);
+        return acc + (subTotal - beforeTax);
       }
       return acc;
     }, 0);
 
     return {
       rate: tax,
-      totalBeforeTax,
-      totalTax,
+      totalBeforeTax: Number(totalBeforeTax.toFixed(2)),
+      totalTax: Number(totalTax.toFixed(2)),
     };
   });
 
-  const totalTax = Number(taxRates.reduce((acc, taxRate) => acc + taxRate.totalTax, 0));
+  // Calculate final totals with explicit number conversion
+  const totalTax = Number(taxRates.reduce((acc, taxRate) => acc + taxRate.totalTax, 0).toFixed(2));
 
-  const total = Number(documentProducts.reduce((acc, product) => acc + product.subTotal, 0));
-  const totalBeforeTax = Number(total) - Number(totalTax);
+  const total = Number(documentProducts.reduce((acc, product) => acc + Number(product.subTotal), 0).toFixed(2));
 
-  if (isNaN(totalBeforeTax)) {
-    console.error(
-      "error document: ",
-      document.number,
-      JSON.stringify({
-        values: {
-          total,
-          totalBeforeTax,
-          totalTax,
-          taxRates,
-          documentProducts,
-        },
-      })
-    );
+  const totalBeforeTax = Number((total - totalTax).toFixed(2));
+
+  // Add validation
+  if (isNaN(total) || isNaN(totalBeforeTax) || isNaN(totalTax)) {
+    console.error("Calculation error:", {
+      documentNumber: document.number,
+      values: {
+        total,
+        totalBeforeTax,
+        totalTax,
+        taxRates,
+        documentProducts: documentProducts.map((p) => ({
+          ...p,
+          subTotal: Number(p.subTotal),
+          tax: Number(p.tax),
+        })),
+      },
+    });
   }
 
   const taxIDCleaned = establishment.taxID.replace("BE", "").replaceAll(".", "").trim();
