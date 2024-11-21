@@ -42,6 +42,12 @@ const start = async () => {
         bulkSendDocuments({
           companyID: (company as unknown as Company).id,
           docTypes: ["invoice", "credit_note"],
+          month: new Date().getMonth() - 3, // last month
+          year: currentYear, // Current yer
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note"],
           month: new Date().getMonth() - 2, // last month
           year: currentYear, // Current year
         });
