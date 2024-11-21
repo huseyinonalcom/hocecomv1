@@ -211,6 +211,10 @@ const Documents: CollectionConfig = {
           label: "Credit Note",
           value: "credit_note",
         },
+        {
+          label: "Purchase",
+          value: "purchase",
+        },
       ],
     },
     {

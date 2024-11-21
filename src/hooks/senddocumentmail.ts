@@ -11,6 +11,9 @@ const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) =
       depth: 3,
       overrideAccess: true,
     });
+    if (doc.type == "purchase") {
+      return;
+    }
     let pdf = null;
     try {
       pdf = await generateInvoice({
