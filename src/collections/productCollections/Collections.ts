@@ -56,7 +56,7 @@ const ProductCollections: CollectionConfig = {
     { name: "isDeleted", type: "checkbox", defaultValue: false },
     { name: "isFeatured", type: "checkbox", defaultValue: false },
     { name: "tags", type: "textarea" },
-    // company relation is awlways required
+    // company relation is always required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };

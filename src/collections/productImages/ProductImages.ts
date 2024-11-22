@@ -55,7 +55,7 @@ const ProductImages: CollectionConfig = {
   fields: [
     { name: "name", type: "text", required: true },
     { name: "priority", type: "number", defaultValue: 0 },
-    // company relation is awlways required
+    // company relation is always required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };

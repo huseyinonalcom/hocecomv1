@@ -57,7 +57,7 @@ const Projects: CollectionConfig = {
       hasMany: false,
       relationTo: "files",
     },
-    // company relation is awlways required
+    // company relation is always required
     {
       name: "company",
       type: "relationship",

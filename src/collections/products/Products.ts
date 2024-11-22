@@ -119,7 +119,7 @@ const Products: CollectionConfig = {
       },
     },
     { name: "isActive", type: "checkbox", defaultValue: false },
-    // company relation is awlways required
+    // company relation is always required
     {
       name: "company",
       type: "relationship",

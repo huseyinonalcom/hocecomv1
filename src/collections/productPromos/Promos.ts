@@ -60,7 +60,7 @@ const ProductPromos: CollectionConfig = {
     { name: "endDate", type: "date", required: true },
     { name: "customers", type: "relationship", relationTo: "users", hasMany: true },
     { name: "creator", type: "relationship", relationTo: "users", hasMany: false },
-    // company relation is awlways required
+    // company relation is always required
     { name: "company", type: "relationship", hasMany: false, relationTo: "companies" },
   ],
 };
