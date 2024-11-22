@@ -41,25 +41,25 @@ const start = async () => {
       for (let company of companiesWithMonthlyReportsActive) {
         bulkSendDocuments({
           companyID: (company as unknown as Company).id,
-          docTypes: ["invoice", "credit_note"],
+          docTypes: ["invoice", "credit_note", "purchase"],
           month: new Date().getMonth() - 3, // last month
           year: currentYear, // Current yer
         });
         bulkSendDocuments({
           companyID: (company as unknown as Company).id,
-          docTypes: ["invoice", "credit_note"],
+          docTypes: ["invoice", "credit_note", "purchase"],
           month: new Date().getMonth() - 2, // last month
           year: currentYear, // Current year
         });
         bulkSendDocuments({
           companyID: (company as unknown as Company).id,
-          docTypes: ["invoice", "credit_note"],
+          docTypes: ["invoice", "credit_note", "purchase"],
           month: new Date().getMonth() - 1, // last month
           year: currentYear, // Current year
         });
         bulkSendDocuments({
           companyID: (company as unknown as Company).id,
-          docTypes: ["invoice", "credit_note"],
+          docTypes: ["invoice", "credit_note", "purchase"],
           month: new Date().getMonth(), // last month
           year: currentYear, // Current year
         });
@@ -110,7 +110,7 @@ const start = async () => {
       for (let company of companiesWithMonthlyReportsActive) {
         bulkSendDocuments({
           companyID: (company as unknown as Company).id,
-          docTypes: ["invoice", "credit_note"],
+          docTypes: ["invoice", "credit_note", "purchase"],
           month: new Date().getMonth(), // last month
           year: currentYear, // Current year
         });
