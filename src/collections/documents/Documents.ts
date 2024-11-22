@@ -21,42 +21,46 @@ const Documents: CollectionConfig = {
             throw new APIError("type required", 400);
           }
 
-          try {
-            const documents = await payload.find({
-              collection: "documents",
-              depth: 2,
-              overrideAccess: true,
-              where: {
-                type: {
-                  equals: data.type,
+          if (data.number) {
+            return;
+          } else {
+            try {
+              const documents = await payload.find({
+                collection: "documents",
+                depth: 2,
+                overrideAccess: true,
+                where: {
+                  type: {
+                    equals: data.type,
+                  },
+                  company: {
+                    equals: data.company,
+                  },
+                  isDeleted: {
+                    equals: false,
+                  },
                 },
-                company: {
-                  equals: data.company,
-                },
-                isDeleted: {
-                  equals: false,
-                },
-              },
-              limit: 1,
-              sort: "-number",
-            });
+                limit: 1,
+                sort: "-number",
+              });
 
-            const lastDocument = documents.docs[0] as unknown as Document;
+              const lastDocument = documents.docs[0] as unknown as Document;
 
-            const year = new Date().getFullYear().toString();
-            if (!lastDocument) {
+              const year = new Date().getFullYear().toString();
+              if (!lastDocument) {
+                data.number = year + "0000001";
+              } else {
+                // number looks like 202400000001
+                // we need to increment the number by 1
+                // and make sure the first 4 digits are the current year
+                // and the total length is 11
+                data.number = year + (Number(lastDocument.number.slice(4)) + 1).toString().padStart(7, "0");
+              }
+            } catch (error) {
+              console.error("Error getting last document", error);
+              const year = new Date().getFullYear().toString();
               data.number = year + "0000001";
-            } else {
-              // number looks like 202400000001
-              // we need to increment the number by 1
-              // and make sure the first 4 digits are the current year
-              // and the total length is 11
-              data.number = year + (Number(lastDocument.number.slice(4)) + 1).toString().padStart(7, "0");
             }
-          } catch (error) {
-            console.error("Error getting last document", error);
-            const year = new Date().getFullYear().toString();
-            data.number = year + "0000001";
           }
         }
       },
