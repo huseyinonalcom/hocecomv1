@@ -8,7 +8,7 @@ const ProductImages: CollectionConfig = {
     disableLocalStorage: true,
     staticURL: "https://d3bocqotv3jto7.cloudfront.net",
     staticDir: "product-images",
-    mimeTypes: ["image/*"],
+    mimeTypes: ["*"],
   },
   hooks: {
     beforeChange: [setCompanyHook],
