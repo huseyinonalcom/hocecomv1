@@ -4,10 +4,11 @@ import archiver from "archiver";
 import { workerData } from "worker_threads";
 import os from "os";
 import { Document, Establishment, Logo } from "payload/generated-types";
-import { generateInvoice } from "../utils/invoicepdf";
+import { generateInvoiceOut } from "../utils/invoiceoutpdf";
 import { sendMail } from "../utils/sendmail";
 import { dateFormatBe, dateFormatOnlyDate } from "../utils/formatters/dateformatters";
 import { documentToXml } from "../utils/xml/ayfemaxml";
+import { generateCreditNoteOut } from "../utils/creditnoteoutpdf";
 
 const documents = workerData.documents;
 const company = workerData.company;
@@ -20,10 +21,21 @@ async function writeAllXmlsToTempDir(tempDir: string, documents: Document[]): Pr
   const filePaths = await Promise.all(
     documents.map(async (doc) => {
       let pdf;
-      pdf = await generateInvoice({
-        document: doc,
-        logoBuffer: logoBuffer,
-      });
+
+      if (doc.type == "invoice") {
+        pdf = await generateInvoiceOut({
+          document: doc,
+          logoBuffer: logoBuffer,
+        });
+      } else if (doc.type == "credit_note") {
+        pdf = await generateCreditNoteOut({
+          document: doc,
+          logoBuffer: logoBuffer,
+        });
+      } else if (doc.type == "purchase") {
+        pdf = doc.files[0].url;
+      }
+
       let xml = documentToXml(doc, pdf);
       const filePath = path.join(tempDir, xml.filename);
       await fs.writeFile(filePath, xml.content);
@@ -45,7 +57,7 @@ async function writeAllPdfsToTempDir(tempDir: string, documents: Document[]): Pr
       const filePath = path.join(tempDir, `${doc.type}_${doc.prefix ?? ""}${doc.number}.pdf`);
       let pdf;
       try {
-        pdf = await generateInvoice({
+        pdf = await generateInvoiceOut({
           document: doc,
           logoBuffer: logoBuffer,
         });

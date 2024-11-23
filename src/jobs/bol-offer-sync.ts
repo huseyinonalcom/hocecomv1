@@ -2,7 +2,7 @@ import payload from "payload";
 import { generateRandomString } from "../utils/random";
 import { Company, Document, DocumentProduct } from "payload/generated-types";
 import { sendMail } from "../utils/sendmail";
-import { generateInvoice } from "../utils/invoicepdf";
+import { generateInvoice } from "../utils/invoiceoutpdf";
 import { eutaxes } from "../utils/eutaxes";
 import { User } from "payload/dist/auth";
 

@@ -4,7 +4,7 @@ import { addDaysToDate } from "./addtodate";
 import { Buffer } from "buffer";
 import { formatCurrency } from "./formatters/formatcurrency";
 
-export async function generateInvoice({
+export async function generateInvoiceOut({
   document,
   logoBuffer,
 }: {
@@ -28,28 +28,19 @@ export async function generateInvoice({
 
       doc.on("data", buffers.push.bind(buffers));
 
-      // If logoBuffer is provided, use it; otherwise, fetch the logo image
       if (logoBuffer) {
-        // Use the provided logo buffer
         doc.image(logoBuffer, pageLeft, pageTop, { height: 50 });
       } else {
-        // Fetch logo image from the URL
         const response = await fetch((establishment.logo as Logo).url);
         logoBuffer = await Buffer.from(await response.arrayBuffer());
         doc.image(logoBuffer, pageLeft, pageTop, { height: 50 });
       }
-      // this part is being designed in simulation at the moment
-      //
-      //
-      //
-      //
 
       const columns = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
       const generateTableRow = (doc, y, name, description, price, amount, tax, subtotal, isHeader = false) => {
         if (isHeader) {
           doc.lineWidth(25);
-          // line cap settings
           const bgY = y + 5;
           doc.lineCap("butt").moveTo(30, bgY).lineTo(550, bgY).stroke("black");
           doc
@@ -170,7 +161,6 @@ export async function generateInvoice({
 
         taxRates = taxRates.sort((a, b) => a - b);
 
-        // Totals
         doc.fontSize(10).text("Total Tax:", x, y + 50);
         doc.text(formatCurrency(documentProducts.reduce((acc, dp) => acc + Number(dp.subTotalTax), 0)), x + 80, y + 50);
 
@@ -187,10 +177,8 @@ export async function generateInvoice({
         return y + taxRates.length * 15 + 50;
       };
 
-      // Header
       doc.fontSize(20).text("INVOICE", 455, pageTop);
 
-      // Invoice Details
       doc.fontSize(10).text("Invoice:", 380, 80);
       doc.text(invoiceDoc.number, 450, 80);
       doc.text("Date:", 380, 95);
@@ -204,8 +192,6 @@ export async function generateInvoice({
 
       let y = 140;
 
-      // Establishment Details
-      // Column 1
       doc.text(establishment.name, 50, y);
       doc.text(establishment.taxID, 50, y + 15);
       bankDetails({
@@ -215,13 +201,11 @@ export async function generateInvoice({
         establishment: establishment,
       });
 
-      // Column 2
       doc.text(establishmentAddress.street + " " + establishmentAddress.door, 200, y);
       doc.text(establishmentAddress.zip + " " + establishmentAddress.city, 200, y + 15);
       doc.text(establishment.phone, 200, y + 30);
       doc.text(establishment.phone2, 200, y + 45);
 
-      // Customer Details
       doc.text("Order: " + invoiceDoc.references, 380, y);
       doc.text(customer.firstName + " " + customer.lastName, 380, y + 15);
       y = customerDetails({
@@ -270,12 +254,6 @@ export async function generateInvoice({
         totalsX + 70,
         y + 95
       );
-
-      //
-      //
-      //
-      //
-      // this part is being designed in simulation at the moment
 
       doc.end();
       doc.on("end", () => {

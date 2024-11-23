@@ -1,5 +1,5 @@
 import payload from "payload";
-import { generateInvoice } from "../utils/invoicepdf";
+import { generateInvoice } from "../utils/invoiceoutpdf";
 import { sendMail } from "../utils/sendmail";
 import { CollectionAfterChangeHook } from "payload/types";
 

@@ -199,7 +199,7 @@ export interface Establishment {
 export interface Document {
   id: number;
   number: string;
-  type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note';
+  type: 'quote' | 'order' | 'delivery_note' | 'invoice' | 'credit_note' | 'purchase';
   currency?: ('EUR' | 'TRY' | 'USD') | null;
   prefix?: string | null;
   date: string;
@@ -250,7 +250,7 @@ export interface Supplier {
   addresses?: (number | Address)[] | null;
   isDeleted?: boolean | null;
   supplierOrders?: (number | SupplierOrder)[] | null;
-  category: string;
+  category?: string | null;
   products?: (number | Product)[] | null;
   phone?: string | null;
   orderMail?: string | null;
