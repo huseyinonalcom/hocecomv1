@@ -21,7 +21,7 @@ const Documents: CollectionConfig = {
             throw new APIError("type required", 400);
           }
 
-          if (data.number) {
+          if (data.number && data.type == "purchase") {
             return;
           } else {
             try {
