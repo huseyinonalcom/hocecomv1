@@ -2,7 +2,7 @@ import payload from "payload";
 import { generateRandomString } from "../utils/random";
 import { Company, Document, DocumentProduct } from "payload/generated-types";
 import { sendMail } from "../utils/sendmail";
-import { generateInvoice } from "../utils/invoiceoutpdf";
+import { generateInvoiceOut } from "../utils/invoiceoutpdf";
 import { eutaxes } from "../utils/eutaxes";
 import { User } from "payload/dist/auth";
 
@@ -405,7 +405,7 @@ const saveDocument = async (bolDoc, company) => {
         recipient: "huseyin-_-onal@hotmail.com",
         subject: `Bestelling ${document.prefix ?? ""}${document.number}`,
         company: company,
-        attachments: [await generateInvoice({ document: document as unknown as Document })],
+        attachments: [await generateInvoiceOut({ document: document as unknown as Document })],
         html: `<p>Beste ${
           customer.firstName + " " + customer.lastName
         },</p><p>In bijlage vindt u het factuur voor uw laatste bestelling bij ons.</p><p>Met vriendelijke groeten.</p><p>${company.name}</p>`,
