@@ -115,7 +115,6 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
     disablePlaygroundInProduction: false,
-    maxComplexity: 1000,
   },
   csrf: [
     "http://localhost:5173",
