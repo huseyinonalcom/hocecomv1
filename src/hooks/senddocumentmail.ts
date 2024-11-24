@@ -1,5 +1,5 @@
 import payload from "payload";
-import { generateInvoice } from "../utils/invoiceoutpdf";
+import { generateInvoiceOut } from "../utils/invoiceoutpdf";
 import { sendMail } from "../utils/sendmail";
 import { CollectionAfterChangeHook } from "payload/types";
 
@@ -16,7 +16,7 @@ const sendDocumentMail: CollectionAfterChangeHook = async ({ operation, doc }) =
     }
     let pdf = null;
     try {
-      pdf = await generateInvoice({
+      pdf = await generateInvoiceOut({
         document: doc,
       });
     } catch (error) {
