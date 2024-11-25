@@ -402,7 +402,7 @@ const saveDocument = async (bolDoc, company) => {
     try {
       const customer = document.customer as unknown as User;
       sendMail({
-        recipient: "huseyin-_-onal@hotmail.com",
+        recipient: "contact@huseyinonal.com",
         subject: `Bestelling ${document.prefix ?? ""}${document.number}`,
         company: company,
         attachments: [await generateInvoiceOut({ document: document as unknown as Document })],
