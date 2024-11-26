@@ -23,7 +23,7 @@ const start = async () => {
     },
   });
 
-  if (process.env.FORCE_INVOICE_ON_STARTUP === "true") {
+  if (process.env.FORCE_INVOICE_ON_STARTUP === "true" && process.env.MONTH_TO_SEND) {
     try {
       let companiesWithMonthlyReportsActive = (
         await payload.find({
@@ -42,7 +42,7 @@ const start = async () => {
         bulkSendDocuments({
           companyID: (company as unknown as Company).id,
           docTypes: ["invoice", "credit_note", "purchase"],
-          month: 7, // last month
+          month: Number(process.env.MONTH_TO_SEND), // last month
           year: currentYear, // Current yer
         });
       }
