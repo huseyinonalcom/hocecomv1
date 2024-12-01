@@ -150,21 +150,21 @@ export const documentToXml = (
   <cac:AccountingCustomerParty>
     <cac:Party>
       <cac:PartyName>
-        <cbc:Name>${customer.firstName + " " + customer.lastName}</cbc:Name>
+        <cbc:Name>${customer.firstName.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;") + " " + customer.lastName.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;")}</cbc:Name>
       </cac:PartyName>
       <cac:PostalAddress>
-        <cbc:StreetName>${docAddress.street}</cbc:StreetName>
+        <cbc:StreetName>${docAddress.street.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;")}</cbc:StreetName>
         <cbc:BuildingNumber>${docAddress.door}</cbc:BuildingNumber>
-        <cbc:CityName>${docAddress.city}</cbc:CityName>
-        <cbc:PostalZone>${docAddress.zip}</cbc:PostalZone>
+        <cbc:CityName>${docAddress.city.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;")}</cbc:CityName>
+        <cbc:PostalZone>${docAddress.zip.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;")}</cbc:PostalZone>
         <cac:Country>
-          <cbc:IdentificationCode>${docAddress.country}</cbc:IdentificationCode>
-          <cbc:Name>${docAddress.country}</cbc:Name>
+          <cbc:IdentificationCode>${docAddress.country.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;")}</cbc:IdentificationCode>
+          <cbc:Name>${docAddress.country.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;")}</cbc:Name>
         </cac:Country>
       </cac:PostalAddress>
       <cac:Contact>
-        <cbc:Name>${customer.firstName + " " + customer.lastName}</cbc:Name>
-        <cbc:ElectronicMail>${customer.email}</cbc:ElectronicMail>
+        <cbc:Name>${customer.firstName.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;") + " " + customer.lastName.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;")}</cbc:Name>
+        <cbc:ElectronicMail>${customer.email.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;")}</cbc:ElectronicMail>
       </cac:Contact>
     </cac:Party>
   </cac:AccountingCustomerParty>

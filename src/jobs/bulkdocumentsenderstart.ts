@@ -40,6 +40,9 @@ async function fetchDocuments(companyID: number, docTypes: string[], month: numb
           company: {
             equals: companyID,
           },
+          isDeleted: {
+            equals: false,
+          },
           type: {
             in: docTypes,
           },
