@@ -45,6 +45,37 @@ const start = async () => {
           month: Number(process.env.MONTH_TO_SEND), // last month
           year: currentYear, // Current yer
         });
+
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note", "purchase"],
+          month: Number(process.env.MONTH_TO_SEND) - 1, // last month
+          year: currentYear, // Current yer
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note", "purchase"],
+          month: Number(process.env.MONTH_TO_SEND) - 2, // last month
+          year: currentYear, // Current yer
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note", "purchase"],
+          month: Number(process.env.MONTH_TO_SEND) - 3, // last month
+          year: currentYear, // Current yer
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note", "purchase"],
+          month: Number(process.env.MONTH_TO_SEND) - 4, // last month
+          year: currentYear, // Current yer
+        });
+        bulkSendDocuments({
+          companyID: (company as unknown as Company).id,
+          docTypes: ["invoice", "credit_note", "purchase"],
+          month: Number(process.env.MONTH_TO_SEND) - 5, // last month
+          year: currentYear, // Current yer
+        });
       }
     } catch (error) {
       console.error("Error starting bulk document sender", error);
