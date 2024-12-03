@@ -21,6 +21,31 @@ const Documents: CollectionConfig = {
             throw new APIError("type required", 400);
           }
 
+          if (data.type == "credit_note") {
+            let source = data.references.split("-").at(-1);
+            let originalDocRef = "";
+            if (source) {
+              const originalDoc = await payload.find({
+                collection: "documents",
+                depth: 2,
+                overrideAccess: true,
+                where: {
+                  number: {
+                    equals: source,
+                  },
+                  company: {
+                    equals: data.company,
+                  },
+                  isDeleted: {
+                    equals: false,
+                  },
+                },
+              });
+              originalDocRef = originalDoc.docs[0].references;
+            }
+            data.references = data.references + " - " + originalDocRef;
+          }
+
           if (data.number && data.type == "purchase") {
             return;
           } else {
