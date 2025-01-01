@@ -37,7 +37,7 @@ const start = async () => {
           },
         })
       ).docs;
-      let currentYear = new Date().getFullYear();
+      let currentYear = new Date().getFullYear() - 1;
       for (let company of companiesWithMonthlyReportsActive) {
         bulkSendDocuments({
           companyID: (company as unknown as Company).id,
